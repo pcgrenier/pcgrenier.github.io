@@ -2,10 +2,10 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
 
   <title><![CDATA[NiFi.rocks]]></title>
-  <link href="nifi.rocks/atom.xml" rel="self"/>
-  <link href="nifi.rocks/"/>
-  <updated>2014-12-05T04:49:08+00:00</updated>
-  <id>nifi.rocks/</id>
+  <link href="http://pcgrenier.github.io/atom.xml" rel="self"/>
+  <link href="http://pcgrenier.github.io/"/>
+  <updated>2014-12-05T05:27:04+00:00</updated>
+  <id>http://pcgrenier.github.io/</id>
   <author>
     <name><![CDATA[]]></name>
     

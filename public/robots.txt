@@ -1,4 +1,4 @@
 User-agent: *
 Disallow: 
 
-Sitemap: nifi.rocks/sitemap.xml 
+Sitemap: http://pcgrenier.github.io/sitemap.xml 
