@@ -10,13 +10,14 @@
         </div>
 
         <div class="navbar-collapse collapse">
-            <ul class="nav navbar-nav">
+            <ul class="nav navbar-nav">                
                 <li {% if page.navbar == 'Blog' %}class="active"{% endif %}>
-                    <a rel="index" href="{{ root_url }}/">Blog</a>
-                </li>
+                    <a rel="index" href="{{ root_url }}/blog/">Blog</a>
+                </li> 
                 <li {% if page.navbar == 'Archives' %}class="active"{% endif %}>
                     <a href="{{ root_url }}/blog/archives">Archives</a>
                 </li>
+              
             </ul>
             <ul class="nav navbar-nav navbar-right">
                 {% if site.simple_search %}
