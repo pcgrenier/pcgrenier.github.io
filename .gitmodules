@@ -1,0 +1,9 @@
+[submodule ".themes/mnml"]
+	path = .themes/mnml
+	url = git://github.com/ioveracker/mnml.git
+[submodule "themes/whitespace"]
+	path = themes/whitespace
+	url = git://github.com/lucaslew/whitespace.git
+[submodule ".themes/whitespace"]
+	path = .themes/whitespace
+	url = git://github.com/lucaslew/whitespace.git

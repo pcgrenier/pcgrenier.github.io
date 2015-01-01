@@ -1,5 +1,4 @@
-$noise-bg: image-url('noise.png') top left !default;
-$img-border: inline-image('dotted-border.png') !default;
+$img-border: inline-image('dotted-border.png');
 
 // Main Link Colors
 $link-color: lighten(#165b94, 3) !default;
@@ -26,7 +25,7 @@ $nav-bg: #ccc !default;
 $nav-bg-front: image-url('noise.png') !default;
 $nav-bg-back: linear-gradient(lighten($nav-bg, 8), $nav-bg, darken($nav-bg, 11)) !default;
 $nav-color: darken($nav-bg, 38) !default;
-$nav-color-hover: darken($nav-color, 25) !default;
+$nav-color-hover: lighten(#165b94, 20) !default;
 $nav-placeholder: desaturate(darken($nav-bg, 10), 15) !default;
 $nav-border: darken($nav-bg, 10) !default;
 $nav-border-top: lighten($nav-bg, 15) !default;
@@ -60,19 +59,26 @@ $page-border-bottom: darken($footer-bg, 5) !default;
 
 /* Core theme application */
 
-/* from whiterspace */
-.flex-content { max-width: 100%; height: auto; }
-.basic-alignment {
-  &.left { float: left; margin-right: 1.5em; }
-  &.right { float: right; margin-left: 1.5em; }
-  &.center { display:block; margin: 0 auto 1.5em; }
-  &.left, &.right { margin-bottom: .8em; }
+a {
+  @include link-colors($link-color, $hover: $link-color-hover, $focus: $link-color-hover, $visited: $link-color-visited, $active: $link-color-active);
+}
+aside.sidebar a {
+  @include link-colors($sidebar-link-color, $hover: $sidebar-link-color-hover, $focus: $sidebar-link-color-hover, $active: $sidebar-link-color-active);
+}
+a {
+  @include transition(color .3s);
 }
 
-.text-uppercase {
-    text-transform: uppercase;
+html {
+  background: $page-bg image-url('line-tile.png') top left;
 }
-
-.page-content {
-    margin-bottom: 42px;
+body {
+  > div {
+    background: $sidebar-bg;
+    border-bottom: 1px solid $page-border-bottom;
+    > div {
+      background: $main-bg;
+      border-right: 1px solid $sidebar-border;
+    }
+  }
 }
