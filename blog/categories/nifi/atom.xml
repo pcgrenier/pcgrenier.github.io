@@ -4,7 +4,7 @@
   <title><![CDATA[Category: nifi | NiFi.rocks]]></title>
   <link href="http://nifi.rocks/blog/categories/nifi/atom.xml" rel="self"/>
   <link href="http://nifi.rocks/"/>
-  <updated>2015-01-21T05:18:55+00:00</updated>
+  <updated>2015-01-21T05:24:33+00:00</updated>
   <id>http://nifi.rocks/</id>
   <author>
     <name><![CDATA[]]></name>
@@ -24,7 +24,7 @@
 
 <h2>Using Vagrant</h2>
 
-<p>If you like to keep your project dependencies seperate like me, I&rsquo;ve created a <a href="http://nifi.rocks/assets/Vagrantfile">Vagrantfile</a> that will get all dependencies and then build the project in the shared /vagrant/ folder.  After building it will start nifi and you can point your browser to localhost:8080/nifi/ and skip to <a href="#building-dataflow">Building a Simple Dataflow</a>.  The provisioning of the VM will take about</p>
+<p>If you like to keep your project dependencies seperate like me, I&rsquo;ve created a <a href="http://nifi.rocks/assets/Vagrantfile">Vagrantfile</a> that will get all dependencies and then build the project in the shared /vagrant/ folder.  After building it will start nifi and you can point your browser to localhost:8080/nifi/ and skip to <a href="#building-dataflow">Building a Simple Dataflow</a>.  The provisioning of the VM will take about 10-15 minutes depending on your hardware.</p>
 
 <h2>Checkout and Build</h2>
 
