@@ -5,11 +5,11 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>What is NiFi.rocks? - NiFi.rocks</title>
+  <title>NiFi.rocks</title>
   <meta name="author" content="">
 
   
-  <meta name="description" content="What Is NiFi.rocks? NiFi.rocks is a place to understand and learn about the new Apache Project NiFi. NiFi is a framework built around the flow based &hellip;">
+  <meta name="description" content="Install options Apache NiFi is currently in incubation and so does not have any releases, so to start we have to checkout the project and build the &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -77,72 +77,162 @@
 </nav>
   <div id="main">
     <div id="content">
-      <div>
-<article role="article">
+      <div class="blog-index">
   
+  
+  
+    <article>
+      
   <header>
-    <h1 class="entry-title">What Is NiFi.rocks?</h1>
-    <p class="meta">
-
-
-
-
-
-
-
-
   
-
-
-<time datetime="2014-12-12T03:41:00+00:00" pubdate data-updated="true"></time></p>
-  </header>
-  
-  <p>NiFi.rocks is a place to understand and learn about the new <a href="http://nifi.incubator.apache.org/">Apache Project NiFi</a>.  NiFi is a framework built around the <a href="http://en.wikipedia.org/wiki/Flow-based_programming">flow based programming</a> (FBP) paradigm.</p>
-
-<p>If you aren&rsquo;t familiar with FBP, it is a programming concept of a set of processes that exchange data over predefined paths to achieve a larger goal in an application.  Flow based programming allows for modularization of the code beyond interfaces and allows processing units to be reused and reassembled to achieve whatever goal you have in mind.  It is a pretty cool idea and takes code reausability to a new level.</p>
-
-<p>Nifi is currently in incubation and was just recently accepted into the Apache Software Foundation.  This means the project is going through alot of changes and will be adding additional funcionality with each release.  We hope to follow it&rsquo;s progess and deliver tutorials and how-to&rsquo;s, both written and through screen casts, to help those interested take advantage of NiFi.</p>
-
-  
-    <footer>
+    
+      <h1 class="entry-title"><a href="/blog/2015/01/16/getting-started-with-apache-nifi/">Getting Started With Apache Nifi</a></h1>
+      
+      
+    
       <p class="meta">
         
-        
 
 
 
 
-
-
-
-
-  
-
-
-<time datetime="2014-12-12T03:41:00+00:00" pubdate data-updated="true"></time>
+<time class='entry-date' datetime='2015-01-16T01:08:03+00:00'><span class='date'>January 16, 2015</span> <span class='time'></span></time>
         
       </p>
-      
-        <div class="sharing">
-  
-  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://nifi.rocks/index.html" data-via="" data-counturl="http://nifi.rocks/index.html" >Tweet</a>
-  
-  
-  
+    
+  </header>
+
+
+  <div class="entry-content"><h1>Install options</h1>
+
+<p><a href="http://nifi.incubator.apache.org/">Apache NiFi</a> is currently in incubation and so does not have any releases, so to start we have to checkout the project and build the code base.  A users guide is avaialble on the <a href="http://nifi.incubator.apache.org/development/quickstart.html">nifi website</a> with requirements for building and running nifi, mainly java 7 and maven 3.0.5+.  OpendJDK will work but currently the unit tests will not pass.  A quick tldr; can be found below.</p>
+
+<h2>Using Vagrant</h2>
+
+<p>If you like to keep your project dependencies seperate like me, I&rsquo;ve created a <a href="http://nifi.rocks/assets/Vagrantfile">Vagrantfile</a> that will get all dependencies and then build the project in the shared /vagrant/ folder.  After building it will start nifi and you can point your browser to localhost:8080/nifi/ and skip to <a href="#building-dataflow">Building a Simple Dataflow</a>.  The provisioning of the VM will take about 10-15 minutes depending on your hardware.</p>
+
+<h2>Checkout and Build</h2>
+
+<p>If you want to build it for yourself it normally takes 2-6 minutes depending on your system, with parrallel builds enabled.
+Clone from apache nifi git repo:</p>
+
+<pre><code>git clone http://git-wip-us.apache.org/repos/asf/incubator-nifi.git
+cd incubator-nifi
+git checkout develop
+</code></pre>
+
+<p>Once you have the source, first have to build the nar-maven-plugin.</p>
+
+<pre><code>cd nar-maven-plugin
+mvn clean install
+</code></pre>
+
+<p>Now build the rest of the source from the root directory.</p>
+
+<pre><code>cd ../nifi
+mvn -T C2.0 clean install
+</code></pre>
+
+<p>NiFi recently updated their build process so it now supports parrallel building of components using the -T maven arg to speed up the build.</p>
+
+<p>The last step is to build the assembly and unpack the created tar.gz.</p>
+
+<pre><code>cd assembly
+mvn assembly:assembly
+cp target/nifi-*-SNAPSHOT-bin.tar.gz ~/nifi-example/
+tar -zxf nifi-*-SNAPSHOT-bin.tar.gz
+</code></pre>
+
+<p>After unpacking, cd into the directory and start NiFi in the background using the nifi.sh script in the bin directory.</p>
+
+<pre><code>cd nifi-*-incubatin-SNAPSHOT
+bin/nifi.sh start
+</code></pre>
+
+<p>Now open a browser and point to localhost:8080/nifi to view the NiFi flow UI.</p>
+
+<p><img src="/images/nifi-home.png"></p>
+
+<h1><a name="building-dataflow"></a>Building your first dataflow</h1>
+
+<p>The homepage webpage for Apache NiFi is a grid with some options on the top of the page.  This is where you build your data flows, the configuration of each processor and the relationship between processors.  This is saved as a FlowFile and can be saved for later use or imported into another NiFi instance.  As an example, we&rsquo;ll fetch an XML document from an RSS feed and then based on an attribute and move it to a predefined directory.</p>
+
+<p>To start, drag the processor icon, <img src="/images/processor.png"> in the menu bar down to the canvas below.  Select the GetHTTP processor from the list, you can use the search bar on the right side of the Add Processor modal or the Tags on the left to filter the list.
+<img src="/images/add-processor-highlight.png"></p>
+
+<p>Right clicking on the processor brings up a dropdown that allows you to configure the processor along with a few other options.
+<img class="right" src="/images/processor-dropdown.png"></p>
+
+<p>From this selection a &ldquo;Configure Processor&rdquo; modal opens.  Most default settinsg are fine, you can change the name if you would like to &ldquo;Fetch from XKCD&rdquo;, but look through the tabs just to see what they contain.  Select the properties tab to configure the options of the processor.</p>
+
+<p><img src="/images/configure-processor.png"></p>
+
+<p>The URL we are going to grab a file from is <a href="www.xkcd.com">XKCD&rsquo;s</a> rss feed, <a href="http://xkcd.com/rss.xml">rss.xml</a>.  The GetHTTP procesor is simple to configure and just needs the URL property to be set to <a href="http://xkcd.com/rss.xml.">http://xkcd.com/rss.xml.</a>  Click on the value across from the URL property and enter <a href="http://xkcd.com/rss.xml.">http://xkcd.com/rss.xml.</a></p>
+
+<p>Now drag down another processor, EvaluateXPath.  Under the properties for this processor, set the following property-value pairs:</p>
+
+<ul>
+<li>Destination   -   flowfile-attribute</li>
+<li>Return Type   -   auto-detect</li>
+</ul>
+
+
+<p>Now add a new property as follows by clicking the New property symbol in the upper right side of the Configure Processor modal.</p>
+
+<ul>
+<li>pubDate   -   channel/item[2]/pubDate</li>
+<li>title     -   channel/item[2]/title</li>
+<li>link      -   channel/item[2]/link</li>
+</ul>
+
+
+<p><img src="/images/config-xpath.png"></p>
+
+<p>After applying the changes, we can now connect the two processors we have.  Click the middle of the GetHTTP processor and then drag to the EvaluateXPath processor.  A new modal will appear to confirm the relationship and click ok.  After connecting the two. <img class="right" src="/images/connected-procs.png"></p>
+
+<p>We are almost done, just two more PutFile processors to go.  Before we add the next two processors, we need to create two directories to put matched and unmatched files.  (This is really optional since the PutFile processor will create the directory by default if it does not exist, but it&rsquo;s easier to do in advance knowing the full path.)  If you used the Vagrantfile that I linked to earlier, these directories are already created for you, so you can skip this part.  If you did not, just create a directory called matched and unmatched and remember the full path.</p>
+
+<p>Now add two PutFile Processors and change one name to matched, the other to unmatched.  Both PutFile processors will have auto terminated relationships for failure and success.  These are checked off on the Settings tab when configuring each processor. <img src="/images/auto-terminate-hg.png">  For the matched PutFile processor, change the directory property value to the directory you created earlier called matched, with the full path. If you are using the Vagrantfile, the directory is &ldquo;/vagrant/matched/&rdquo;.  For the unmatched PutFile processor, do the same thing for the unmatched directory you created, &ldquo;/vagrant/unmatched/&rdquo; if using the Vagrantfile.</p>
+
+<p>Now wire the last few processors, EvaluateXPath and the two PutFile processors.  Make sure to connect the correct relationships from the EvaluateXPath for the matched and unmatched.  Lastly, wire the failure relationship for the EvaluateXPath back to itself by left clicking on the processor as you normally would to connect processors, pulling away and then back to the original processor and then select failure from the relationship modal.  This allows failures to retry on the processor they failed on, EvaluateXPath in this example.</p>
+
+<p>Your final flow should look similar to this.</p>
+
+<p><img src="/images/completed-flow.png"></p>
+
+<p>All processors should be stopped and have a red square in their top left.  If they have an exclaimation mark in a yellow triangle, then there is an issue with the processor.  Hover of the yellow triangle to get more information.  (To see an example, remove one of the auto terminate relationships from a PutFile processor).</p>
+
+<p>Now we can run our flow file and see what happens!  Run the flow by clicking the play button in the flow menu bar.</p>
+
+<p><img src="/images/menu-bar-hg.png"></p>
+
+<p>Make sure you don&rsquo;t have a processor selected or it will only start that one processor.  After running, it should pull down the rss.xml file, parse the attributes, and route it to the matched directory via the PutFile processor.  You can view the statistics on each processor from the flow, In and out, and Tasks/Time.  After it grabs the file, it should look similar to below.  You can check the directory you specified in the matched PutFile processor and the file should be there!</p>
+
+<p><img src="/images/finished-flow.png"></p>
+
+<p>I hope this simple walk through of creating a flow was helpful and you can start to see the power behind Apache Nifi.  In our next post we will show you how to create a custom processor and add it to your flow.</p>
 </div>
-
-      
-    </footer>
   
-</article>
+  
 
+
+    </article>
+  
+  <div class="pagination">
+    
+    <a href="/blog/archives">Blog Archives</a>
+    
+  </div>
 </div>
-
 <aside class="sidebar">
   
     <section>
   <h1>Recent Posts</h1>
   <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2015/01/16/getting-started-with-apache-nifi/">Getting Started with Apache Nifi</a>
+      </li>
     
   </ul>
 </section>
@@ -153,7 +243,6 @@
 
   
 </aside>
-
 
     </div>
   </div>
