@@ -11,5 +11,5 @@ Vagrant.configure("2") do |config|
   end
     
   config.vm.provision "shell", 
-      inline: "sudo apt-get -y install build-essential git npm; sudo apt-get update; sudo apt-get -y install ruby1.9.3; sudo gem install jekyll rdiscount --no-ri --no-rdoc;gem install bundler;"
+      inline: "sudo apt-get -y install build-essential git npm; sudo apt-get update; sudo apt-get -y install ruby1.9.3; sudo gem install jekyll rdiscount bundler --no-ri --no-rdoc;cd /vagrant && bundle install;"
 end
