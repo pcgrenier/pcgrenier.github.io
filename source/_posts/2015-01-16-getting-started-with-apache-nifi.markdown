@@ -3,6 +3,8 @@ layout: post
 title: "Getting Started with Apache Nifi"
 date: 2015-01-16 01:08:03 +0000
 comments: true
+sharing: true
+footer: true
 categories: nifi
 ---
 
