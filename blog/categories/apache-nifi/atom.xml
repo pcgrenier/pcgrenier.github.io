@@ -4,7 +4,7 @@
   <title><![CDATA[Category: apache nifi | NiFi.rocks]]></title>
   <link href="http://nifi.rocks/blog/categories/apache-nifi/atom.xml" rel="self"/>
   <link href="http://nifi.rocks/"/>
-  <updated>2015-01-28T04:14:54+00:00</updated>
+  <updated>2015-01-28T04:49:48+00:00</updated>
   <id>http://nifi.rocks/</id>
   <author>
     <name><![CDATA[]]></name>
@@ -65,21 +65,21 @@ bin/nifi.sh start
 
 <p>Now open a browser and point to localhost:8080/nifi to view the NiFi flow UI.</p>
 
-<p><img src="/images/getting-started/nifi-home.png"></p>
+<p>{% img /images/getting-started/nifi-home.png %}</p>
 
 <h1><a name="building-dataflow"></a>Building your first Apache Nifi dataflow</h1>
 
 <p>The homepage webpage for Apache NiFi is a grid with some options on the top of the page.  This is where you build your data flows, the configuration of each processor and the relationship between processors.  This is saved as a FlowFile and can be saved for later use or imported into another Apache NiFi instance.  As an example, we&rsquo;ll fetch an XML document from an RSS feed and then based on an attribute and move it to a predefined directory.</p>
 
-<p>To start, drag the processor icon, <img src="/images/getting-started/processor.png"> in the menu bar down to the canvas below.  Select the GetHTTP processor from the list, you can use the search bar on the right side of the Add Processor modal or the Tags on the left to filter the list.
-<img src="/images/getting-started/add-processor-highlight.png"></p>
+<p>To start, drag the processor icon, {% img /images/getting-started/processor.png %} in the menu bar down to the canvas below.  Select the GetHTTP processor from the list, you can use the search bar on the right side of the Add Processor modal or the Tags on the left to filter the list.
+{% img /images/getting-started/add-processor-highlight.png %}</p>
 
 <p>Right clicking on the processor brings up a dropdown that allows you to configure the processor along with a few other options.
-<img class="right" src="/images/getting-started/processor-dropdown.png"></p>
+{% img right /images/getting-started/processor-dropdown.png %}</p>
 
 <p>From this selection a &ldquo;Configure Processor&rdquo; modal opens.  Most default settinsg are fine, you can change the name if you would like to &ldquo;Fetch from XKCD&rdquo;, but look through the tabs just to see what they contain.  Select the properties tab to configure the options of the processor.</p>
 
-<p><img src="/images/getting-started/configure-processor.png"></p>
+<p>{% img /images/getting-started/configure-processor.png %}</p>
 
 <p>The URL we are going to grab a file from is <a href="http://xkcd.com">XKCD&rsquo;s</a> rss feed, <a href="http://xkcd.com/rss.xml">rss.xml</a>.  The GetHTTP procesor is simple to configure and just needs the URL property to be set to <a href="http://xkcd.com/rss.xml.">http://xkcd.com/rss.xml.</a>  Click on the value across from the URL property and enter <a href="http://xkcd.com/rss.xml.">http://xkcd.com/rss.xml.</a></p>
 
@@ -100,29 +100,29 @@ bin/nifi.sh start
 </ul>
 
 
-<p><img src="/images/getting-started/config-xpath.png"></p>
+<p>{% img /images/getting-started/config-xpath.png %}</p>
 
-<p>After applying the changes, we can now connect the two processors we have.  Click the middle of the GetHTTP processor and then drag to the EvaluateXPath processor.  A new modal will appear to confirm the relationship and click ok.  After connecting the two. <img class="right" src="/images/getting-started/connected-procs.png"></p>
+<p>After applying the changes, we can now connect the two processors we have.  Click the middle of the GetHTTP processor and then drag to the EvaluateXPath processor.  A new modal will appear to confirm the relationship and click ok.  After connecting the two. {% img right /images/getting-started/connected-procs.png %}</p>
 
 <p>We are almost done, just two more PutFile processors to go.  Before we add the next two processors, we need to create two directories to put matched and unmatched files.  (This is really optional since the PutFile processor will create the directory by default if it does not exist, but it&rsquo;s easier to do in advance knowing the full path.)  If you used the Vagrantfile that I linked to earlier, these directories are already created for you, so you can skip this part.  If you did not, just create a directory called matched and unmatched and remember the full path.</p>
 
-<p>Now add two PutFile Processors and change one name to matched, the other to unmatched.  Both PutFile processors will have auto terminated relationships for failure and success.  These are checked off on the Settings tab when configuring each processor. <img src="/images/getting-started/auto-terminate-hg.png">  For the matched PutFile processor, change the directory property value to the directory you created earlier called matched, with the full path. If you are using the Vagrantfile, the directory is &ldquo;/vagrant/matched/&rdquo;.  For the unmatched PutFile processor, do the same thing for the unmatched directory you created, &ldquo;/vagrant/unmatched/&rdquo; if using the Vagrantfile.</p>
+<p>Now add two PutFile Processors and change one name to matched, the other to unmatched.  Both PutFile processors will have auto terminated relationships for failure and success.  These are checked off on the Settings tab when configuring each processor. {% img /images/getting-started/auto-terminate-hg.png %}  For the matched PutFile processor, change the directory property value to the directory you created earlier called matched, with the full path. If you are using the Vagrantfile, the directory is &ldquo;/vagrant/matched/&rdquo;.  For the unmatched PutFile processor, do the same thing for the unmatched directory you created, &ldquo;/vagrant/unmatched/&rdquo; if using the Vagrantfile.</p>
 
 <p>Now wire the last few processors, EvaluateXPath and the two PutFile processors.  Make sure to connect the correct relationships from the EvaluateXPath for the matched and unmatched.  Lastly, wire the failure relationship for the EvaluateXPath back to itself by left clicking on the processor as you normally would to connect processors, pulling away and then back to the original processor and then select failure from the relationship modal.  This allows failures to retry on the processor they failed on, EvaluateXPath in this example.</p>
 
 <p>Your final flow should look similar to this.</p>
 
-<p><img src="/images/getting-started/completed-flow.png"></p>
+<p>{% img /images/getting-started/completed-flow.png %}</p>
 
 <p>All processors should be stopped and have a red square in their top left.  If they have an exclaimation mark in a yellow triangle, then there is an issue with the processor.  Hover of the yellow triangle to get more information.  (To see an example, remove one of the auto terminate relationships from a PutFile processor).</p>
 
 <p>Now we can run our flow file and see what happens!  Run the flow by clicking the play button in the flow menu bar.</p>
 
-<p><img src="/images/getting-started/menu-bar-hg.png"></p>
+<p>{% img /images/getting-started/menu-bar-hg.png %}</p>
 
 <p>Make sure you don&rsquo;t have a processor selected or it will only start that one processor.  After running, it should pull down the rss.xml file, parse the attributes, and route it to the matched directory via the PutFile processor.  You can view the statistics on each processor from the flow, In and out, and Tasks/Time.  After it grabs the file, it should look similar to below.  You can check the directory you specified in the matched PutFile processor and the file should be there!</p>
 
-<p><img src="/images/getting-started/finished-flow.png"></p>
+<p>{% img /images/getting-started/finished-flow.png %}</p>
 
 <p>I hope this simple walk through of creating a flow was helpful and you can start to see the power behind Apache Nifi.  In our next post we will show you how to create a custom processor and add it to your flow.</p>
 ]]></content>
