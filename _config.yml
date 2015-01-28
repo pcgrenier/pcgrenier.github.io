@@ -4,10 +4,11 @@
 
 url: http://nifi.rocks
 title: NiFi.rocks
-subtitle: Your home for everything NiFi
+subtitle: Your home for everything Apache NiFi
 author:
 simple_search: https://www.google.com/search
-description:
+description: How tos, videos, tips and tricks for Apache Nifi.
+keywords: Apache Nifi, Nifi, nifi, nifi rocks
 
 # Default date format is "ordinal" (resulting in "July 22nd 2007")
 # You can customize the format as defined in
@@ -28,7 +29,7 @@ email:
 
 # If publishing to a subdirectory as in https://site.com/project set 'root: /project'
 root: /
-permalink: /blog/:year/:month/:day/:title/
+permalink: /blog/:title/
 source: source
 destination: public
 plugins: plugins
