@@ -19,6 +19,8 @@ categories: [Apache Nifi, How-Tos]
 
 If you like to keep your project dependencies seperate like me, I've created a [Vagrantfile](https://gist.github.com/czobrisky/a1ed32d9429600f4e661#file-vagrantfile) that will get all dependencies and then build the project in the shared /vagrant/ folder.  After building it will start nifi and you can point your browser to localhost:8080/nifi/ and skip to [Building a Simple Dataflow](#building-dataflow).  The provisioning of the VM will take about 10-15 minutes depending on your hardware.
 
+<!-- more -->
+
 <script src="https://gist.github.com/czobrisky/a1ed32d9429600f4e661.js"></script>
 
 If you want to build it for yourself it normally takes 2-6 minutes depending on your system, with parrallel builds enabled.
