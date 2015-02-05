@@ -11,6 +11,8 @@ keywords: Apache Nifi, apache nifi, Nifi, Dataflow, data flow, Nifi dataflow
 categories: [Apache Nifi, How-Tos]
 ---
 
+* Update Feb. 2nd 2014: The Vagrantfile has been updated to pull the release tag 0.0.1 for stability
+
 # Install options
 
 [Apache NiFi](http://nifi.incubator.apache.org/) is currently in incubation and so does not have any releases, so to start we have to checkout the project and build the code base.  A users guide is avaialble on the [nifi website](http://nifi.incubator.apache.org/development/quickstart.html) with requirements for building and running nifi, mainly java 7 and maven 3.0.5+.  OpendJDK will work but currently the unit tests will not pass.  A quick tldr; can be found below.
