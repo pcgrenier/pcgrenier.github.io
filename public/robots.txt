@@ -1,4 +1,4 @@
 User-agent: *
 Disallow: 
 
-Sitemap: http://nifi.rocks/sitemap.xml 
+Sitemap: http://www.nifi.rocks/sitemap.xml 
