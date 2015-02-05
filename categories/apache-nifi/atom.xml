@@ -81,7 +81,7 @@
   <title><![CDATA[Category: apache nifi | NiFi.rocks]]></title>
   <link href="http://nifi.rocks/categories/apache-nifi/atom.xml" rel="self"/>
   <link href="http://nifi.rocks/"/>
-  <updated>2015-01-31T19:12:22+00:00</updated>
+  <updated>2015-02-05T02:43:52+00:00</updated>
   <id>http://nifi.rocks/</id>
   <author>
     <name><![CDATA[]]></name>
@@ -89,6 +89,34 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[What's in Nifi's first release: Nifi 0.0.1]]></title>
+    <link href="http://nifi.rocks/whats-in-nifis-first-release-nifi-0-dot-0-1/"/>
+    <updated>2015-02-04T21:54:57+00:00</updated>
+    <id>http://nifi.rocks/whats-in-nifis-first-release-nifi-0-dot-0-1</id>
+    <content type="html"><![CDATA[<p>Apache Nifi just had their first release, <a href="https://nifi.incubator.apache.org/downloads/">0.0.1</a>.  It showed good movement forward with 75 bug fixes, 24 improvements, and 2 new features.  A list of <a href="https://issues.apache.org/jira/secure/ReleaseNote.jspa?projectId=12316020&amp;version=12329078">Release Notes</a> is on their Jira page.  With the release, it gives the users source downloads to start from, which is great, but lets look at the highlights of this release.</p>
+
+<h2>Apache Nifi Release 0.0.1 Highlights</h2>
+
+<ul>
+<li>One of the biggest changes was the directory structure to allow parrallel maven builds.  This took the build time down from 20-30 minutes to 3-7 minutes. <a href="https://issues.apache.org/jira/browse/NIFI-169">Nifi Jira 169</a></li>
+<li>The improvement of the assembly process also allowed for more stream lined packaging. <a href="https://issues.apache.org/jira/browse/NIFI-228">Nifi Jira 228</a></li>
+</ul>
+
+
+<p>Outside of the build process, most of the updates were cleaning up the code base to make it more developer friendly and fixing alot of small bugs;</p>
+
+<ul>
+<li>Updating libraries to their most current version</li>
+<li>Adding documentation/users guides</li>
+<li>Guarantee builds on varying OSes: OSX, Linux, Windows.</li>
+</ul>
+
+
+<p>I&rsquo;m pretty excited to see what&rsquo;s in the next release, but also excited that I don&rsquo;t have to build nifi to use it.  Release binaries are available on the <a href="https://nifi.incubator.apache.org/downloads/">nifi website</a>.</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Navigating Apache Nifi]]></title>
@@ -109,7 +137,12 @@
     <link href="http://nifi.rocks/getting-started-with-apache-nifi/"/>
     <updated>2015-01-16T01:08:03+00:00</updated>
     <id>http://nifi.rocks/getting-started-with-apache-nifi</id>
-    <content type="html"><![CDATA[<h1>Install options</h1>
+    <content type="html"><![CDATA[<ul>
+<li>Update Feb. 2nd 2014: The Vagrantfile has been updated to pull the release tag 0.0.1 for stability</li>
+</ul>
+
+
+<h1>Install options</h1>
 
 <p><a href="http://nifi.incubator.apache.org/">Apache NiFi</a> is currently in incubation and so does not have any releases, so to start we have to checkout the project and build the code base.  A users guide is avaialble on the <a href="http://nifi.incubator.apache.org/development/quickstart.html">nifi website</a> with requirements for building and running nifi, mainly java 7 and maven 3.0.5+.  OpendJDK will work but currently the unit tests will not pass.  A quick tldr; can be found below.</p>
 

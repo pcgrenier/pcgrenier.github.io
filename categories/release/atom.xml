@@ -5,10 +5,10 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>NiFi.rocks</title>
+  <title>Category: release - NiFi.rocks</title>
   <meta name="author" content="">
 
-<meta name="description" content="How tos, videos, tips and tricks for Apache Nifi.">
+<meta name="description" content="Category: release">
 <meta name="keywords" content="Apache Nifi, Nifi, nifi, nifi rocks">
   <!-- http://t.co/dKP3o1e -->
   <meta name="HandheldFriendly" content="True">
@@ -16,7 +16,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <link rel="canonical" href="http://nifi.rocks/blog">
+  <link rel="canonical" href="http://nifi.rocks/categories/release/atom.xml">
   <link href="/favicon.png" rel="icon">
   <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
   <link href="/atom.xml" rel="alternate" title="NiFi.rocks" type="application/atom+xml">
@@ -75,57 +75,50 @@
 </nav>
   <div id="main">
     <div id="content">
-      <div class="row">
-  <div class="page-content col-md-9">
-    <div class="blog-index" itemscope itemtype="http://schema.org/Blog">
-    <meta itemprop="name" content="NiFi.rocks" />
-    <meta itemprop="description" content="How tos, videos, tips and tricks for Apache Nifi." />
-    <meta itemprop="url" content="http://nifi.rocks" />
-      
-      
-    </div>
+      <?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
 
-    <ul class="pager">
-      
-        <li class="previous disabled"><a href="#">&larr;&nbsp;Older</a></li>
-      
-      <li><a href="/blog/archives">Blog Archives</a></li>
-      
-        <li class="next disabled"><a href="#">Newer&nbsp;&rarr;</a></li>
-      
-    </ul>
-  </div>
+  <title><![CDATA[Category: release | NiFi.rocks]]></title>
+  <link href="http://nifi.rocks/categories/release/atom.xml" rel="self"/>
+  <link href="http://nifi.rocks/"/>
+  <updated>2015-02-05T02:43:52+00:00</updated>
+  <id>http://nifi.rocks/</id>
+  <author>
+    <name><![CDATA[]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
 
   
-    <aside class="sidebar col-md-3">
-      
-        <section>
-  <h1>Recent Posts</h1>
-  <ul id="recent_posts">
-    
-      <li class="post">
-        <a href="/whats-in-nifis-first-release-nifi-0-dot-0-1/">What&#8217;s in Nifi&#8217;s first release: Nifi 0.0.1</a>
-      </li>
-    
-      <li class="post">
-        <a href="/navigating-apache-nifi/">Navigating Apache Nifi</a>
-      </li>
-    
-      <li class="post">
-        <a href="/getting-started-with-apache-nifi/">Getting Started with Apache Nifi</a>
-      </li>
-    
-  </ul>
-</section>
+  <entry>
+    <title type="html"><![CDATA[What's in Nifi's first release: Nifi 0.0.1]]></title>
+    <link href="http://nifi.rocks/whats-in-nifis-first-release-nifi-0-dot-0-1/"/>
+    <updated>2015-02-04T21:54:57+00:00</updated>
+    <id>http://nifi.rocks/whats-in-nifis-first-release-nifi-0-dot-0-1</id>
+    <content type="html"><![CDATA[<p>Apache Nifi just had their first release, <a href="https://nifi.incubator.apache.org/downloads/">0.0.1</a>.  It showed good movement forward with 75 bug fixes, 24 improvements, and 2 new features.  A list of <a href="https://issues.apache.org/jira/secure/ReleaseNote.jspa?projectId=12316020&amp;version=12329078">Release Notes</a> is on their Jira page.  With the release, it gives the users source downloads to start from, which is great, but lets look at the highlights of this release.</p>
+
+<h2>Apache Nifi Release 0.0.1 Highlights</h2>
+
+<ul>
+<li>One of the biggest changes was the directory structure to allow parrallel maven builds.  This took the build time down from 20-30 minutes to 3-7 minutes. <a href="https://issues.apache.org/jira/browse/NIFI-169">Nifi Jira 169</a></li>
+<li>The improvement of the assembly process also allowed for more stream lined packaging. <a href="https://issues.apache.org/jira/browse/NIFI-228">Nifi Jira 228</a></li>
+</ul>
 
 
+<p>Outside of the build process, most of the updates were cleaning up the code base to make it more developer friendly and fixing alot of small bugs;</p>
+
+<ul>
+<li>Updating libraries to their most current version</li>
+<li>Adding documentation/users guides</li>
+<li>Guarantee builds on varying OSes: OSX, Linux, Windows.</li>
+</ul>
 
 
-
-      
-    </aside>
+<p>I&rsquo;m pretty excited to see what&rsquo;s in the next release, but also excited that I don&rsquo;t have to build nifi to use it.  Release binaries are available on the <a href="https://nifi.incubator.apache.org/downloads/">nifi website</a>.</p>
+]]></content>
+  </entry>
   
-</div>
+</feed>
 
     </div>
   </div>

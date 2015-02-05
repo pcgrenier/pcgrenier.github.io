@@ -81,7 +81,7 @@
   <title><![CDATA[Category: how-tos | NiFi.rocks]]></title>
   <link href="http://nifi.rocks/categories/how-tos/atom.xml" rel="self"/>
   <link href="http://nifi.rocks/"/>
-  <updated>2015-01-31T19:12:22+00:00</updated>
+  <updated>2015-02-05T02:43:52+00:00</updated>
   <id>http://nifi.rocks/</id>
   <author>
     <name><![CDATA[]]></name>
@@ -109,7 +109,12 @@
     <link href="http://nifi.rocks/getting-started-with-apache-nifi/"/>
     <updated>2015-01-16T01:08:03+00:00</updated>
     <id>http://nifi.rocks/getting-started-with-apache-nifi</id>
-    <content type="html"><![CDATA[<h1>Install options</h1>
+    <content type="html"><![CDATA[<ul>
+<li>Update Feb. 2nd 2014: The Vagrantfile has been updated to pull the release tag 0.0.1 for stability</li>
+</ul>
+
+
+<h1>Install options</h1>
 
 <p><a href="http://nifi.incubator.apache.org/">Apache NiFi</a> is currently in incubation and so does not have any releases, so to start we have to checkout the project and build the code base.  A users guide is avaialble on the <a href="http://nifi.incubator.apache.org/development/quickstart.html">nifi website</a> with requirements for building and running nifi, mainly java 7 and maven 3.0.5+.  OpendJDK will work but currently the unit tests will not pass.  A quick tldr; can be found below.</p>
 
