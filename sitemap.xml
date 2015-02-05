@@ -1,58 +1,40 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9 http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd" xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
-    <loc>http://nifi.rocks/apache-nifi-processors/</loc>
+    <loc>http://www.nifi.rocks/apache-nifi-processors/</loc>
     <lastmod>2015-02-05T03:00:06+00:00</lastmod>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>http://nifi.rocks/whats-in-nifis-first-release-nifi-0-dot-0-1/</loc>
+    <loc>http://www.nifi.rocks/whats-in-nifis-first-release-nifi-0-dot-0-1/</loc>
     <lastmod>2015-02-04T21:54:57+00:00</lastmod>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>http://nifi.rocks/navigating-apache-nifi/</loc>
+    <loc>http://www.nifi.rocks/navigating-apache-nifi/</loc>
     <lastmod>2015-01-28T03:58:20+00:00</lastmod>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>http://nifi.rocks/getting-started-with-apache-nifi/</loc>
+    <loc>http://www.nifi.rocks/getting-started-with-apache-nifi/</loc>
     <lastmod>2015-01-16T01:08:03+00:00</lastmod>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>http://nifi.rocks/blog/</loc>
-    <lastmod>2015-02-05T04:45:46+00:00</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>http://nifi.rocks/</loc>
-    <lastmod>2015-02-05T04:45:46+00:00</lastmod>
+    <loc>http://www.nifi.rocks/</loc>
+    <lastmod>2015-02-05T21:34:58+00:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
   </url>
   <url>
-    <loc>http://nifi.rocks/blog/archives/</loc>
-    <lastmod>2015-02-05T04:45:46+00:00</lastmod>
+    <loc>http://www.nifi.rocks/archives/</loc>
+    <lastmod>2015-02-05T21:34:58+00:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>http://nifi.rocks/archives/</loc>
-    <lastmod>2015-02-05T04:45:46+00:00</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>http://nifi.rocks/about/</loc>
-    <lastmod>2015-02-05T04:45:46+00:00</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>http://nifi.rocks/index.old.html</loc>
-    <lastmod>2015-02-05T04:45:46+00:00</lastmod>
+    <loc>http://www.nifi.rocks/about/</loc>
+    <lastmod>2015-02-05T21:34:58+00:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
