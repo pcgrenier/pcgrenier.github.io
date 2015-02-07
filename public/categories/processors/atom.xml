@@ -81,7 +81,7 @@
   <title><![CDATA[Category: processors | NiFi.rocks]]></title>
   <link href="http://www.nifi.rocks/categories/processors/atom.xml" rel="self"/>
   <link href="http://www.nifi.rocks/"/>
-  <updated>2015-02-05T21:34:58+00:00</updated>
+  <updated>2015-02-07T04:20:36+00:00</updated>
   <id>http://www.nifi.rocks/</id>
   <author>
     <name><![CDATA[]]></name>
@@ -89,6 +89,166 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Developing A Custom Apache Nifi Processor (JSON)]]></title>
+    <link href="http://www.nifi.rocks/developing-a-custom-apache-nifi-processor-json/"/>
+    <updated>2015-02-07T02:14:33+00:00</updated>
+    <id>http://www.nifi.rocks/developing-a-custom-apache-nifi-processor-json</id>
+    <content type="html"><![CDATA[<p>The list of available Apache Nifi processors is extensive as document in <a href="{{%20site.url%20}}/apache-nifi-processors/">Getting Started with Apache Nifi</a>. There is still a need to develop your own, to pull data from a database, to process an uncommon file format, or many other unique situations. So to get you started we will work through a basic processor that takes a json file as input and a json path as a parameter to place into the contents and an attribute. The full source is hosted on <a href="https://github.com/pcgrenier/nifi-examples">Github</a>.</p>
+
+<!-- more -->
+
+
+<h2>Setup</h2>
+
+<p>Start by creating a simple maven project in your favorite IDE. Then edit the pom.xml.</p>
+
+<p>{% gist f99d27d08c3903f9d50c pom.xml %}</p>
+
+<p>Ok so this includes a single plugin for building a nifi nar, which is similar to a war for nifi, that bundles everything up in a way nifi can unpack. The nifi-api is the only other &ldquo;required&rdquo; dependency. The other nifi dependencies are really use full as you will see.</p>
+
+<p>The next importand piece is telling nifi which classes to load and register. This is done in a single file located at /src/main/resources/META-INF/services/org.apache.nifi.processor.Processor</p>
+
+<p>{% gist f98e563e787c1b73c425 org.apache.nifi.processor.Processor %}</p>
+
+<h2>The JSON Processor</h2>
+
+<p>Ok now that everything is defined and findable by Apache Nifi, lets build a processor. Define a simple java class as defined in the setup process (rocks.nifi.examples.processors.JsonProcessor).</p>
+
+<p>{% codeblock lang:java Apache Nifi Processor Header  <a href="https://github.com/pcgrenier/nifi-examples/blob/master/src/main/java/rocks/nifi/examples/processors/JsonProcessor.java">https://github.com/pcgrenier/nifi-examples/blob/master/src/main/java/rocks/nifi/examples/processors/JsonProcessor.java</a> JsonProcessor.java %}
+@SideEffectFree
+@Tags({&ldquo;JSON&rdquo;, &ldquo;NIFI ROCKS&rdquo;})
+@CapabilityDescription(&ldquo;Fetch value from json path.&rdquo;)
+public class JsonProcessor extends AbstractProcessor {
+{% endcodeblock %}</p>
+
+<p>So tags are useful for finding your processor in the list of processors in the GUI. So in this case in the search box you could just type &lsquo;json&rsquo; and your processor will be found. The capability description is also displayed in the processor selection box. Nifi.rocks will make future posts on documenting your custom processors. Finally most processors will just extend the AbstractProcessor, for more complicated tasks it may be required to go a level deeper for the AbstractSessionFactoryProcessor.</p>
+
+<p>{% codeblock lang:java Variable Declaration <a href="https://github.com/pcgrenier/nifi-examples/blob/master/src/main/java/rocks/nifi/examples/processors/JsonProcessor.java">https://github.com/pcgrenier/nifi-examples/blob/master/src/main/java/rocks/nifi/examples/processors/JsonProcessor.java</a> JsonProcessor.java %}</p>
+
+<p>private List<PropertyDescriptor> properties;
+private Set<Relationship> relationships;</p>
+
+<p>public static final String MATCH_ATTR = &ldquo;match&rdquo;;</p>
+
+<p>public static final PropertyDescriptor JSON_PATH = new PropertyDescriptor.Builder()
+        .name(&ldquo;Json Path&rdquo;)
+        .required(true)
+        .addValidator(StandardValidators.NON_EMPTY_VALIDATOR)
+        .build();</p>
+
+<p>public static final Relationship SUCCESS = new Relationship.Builder()
+        .name(&ldquo;SUCCESS&rdquo;)
+        .description(&ldquo;Succes relationship&rdquo;)
+        .build();
+{% endcodeblock %}</p>
+
+<p>Not really interesting stuff here. Properties will hold all a list of all the available properties tha are exposed to the user. Relationships will hold the relationships the processor will use to direct the flow files. For more details on relationships, properties, and components of an Apache Nifi flow please read the <a href="https://nifi.incubator.apache.org/docs/nifi-docs/developer-guide.html">offical developer guide</a>. There is plenty of room to expand on custom validators, but there is a large selection of validators in nifi-processor-utils package.</p>
+
+<p>{% codeblock lang:java Apache Nifi Init <a href="https://github.com/pcgrenier/nifi-examples/blob/master/src/main/java/rocks/nifi/examples/processors/JsonProcessor.java">https://github.com/pcgrenier/nifi-examples/blob/master/src/main/java/rocks/nifi/examples/processors/JsonProcessor.java</a> JsonProcessor.java %}
+@Override
+public void init(final ProcessorInitializationContext context){
+    List<PropertyDescriptor> properties = new ArrayList&lt;>();
+    properties.add(JSON_PATH);
+    this.properties = Collections.unmodifiableList(properties);</p>
+
+<pre><code>Set&lt;Relationship&gt; relationships = new HashSet&lt;&gt;();
+relationships.add(SUCCESS);
+this.relationships = Collections.unmodifiableSet(relationships);
+</code></pre>
+
+<p>}</p>
+
+<p>@Override
+public Set<Relationship> getRelationships(){
+    return relationships;
+}</p>
+
+<p>@Override
+public List<PropertyDescriptor> getSupportedPropertyDescriptors(){
+    return properties;
+}
+{% endcodeblock %}</p>
+
+<p>The init function is called at the start of Apache Nifi. Remember that this is a highly multi-threaded environment and be careful what you do in this space. This is why both the list of properties and the set of relationships are set with unmodifiable collections. I put the getters for the properties and relationships here as well.</p>
+
+<p>{% codeblock lang:java Apache Nifi OnTrigger <a href="https://github.com/pcgrenier/nifi-examples/blob/master/src/main/java/rocks/nifi/examples/processors/JsonProcessor.java">https://github.com/pcgrenier/nifi-examples/blob/master/src/main/java/rocks/nifi/examples/processors/JsonProcessor.java</a> JsonProcessor.java %}</p>
+
+<p>@Override
+public void onTrigger(ProcessContext context, ProcessSession session) throws ProcessException {
+    final ProcessorLog log = this.getLogger();
+    final AtomicReference<String> value = new AtomicReference&lt;>();</p>
+
+<pre><code>FlowFile flowfile = session.get();
+
+session.read(flowfile, new InputStreamCallback() {
+    @Override
+    public void process(InputStream in) throws IOException {
+        try{
+            String json = IOUtils.toString(in);
+            String result = JsonPath.read(json, "$.hello");
+            value.set(result);
+        }catch(Exception ex){
+            ex.printStackTrace();
+            log.error("Failed to read json string.");
+        }
+    }
+});
+
+// Write the results to an attribute
+String results = value.get();
+if(results != null &amp;&amp; !results.isEmpty()){
+    flowfile = session.putAttribute(flowfile, "match", results);
+}
+
+// To write the results back out ot flow file
+flowfile = session.write(flowfile, new OutputStreamCallback() {
+
+    @Override
+    public void process(OutputStream out) throws IOException {
+        out.write(value.get().getBytes());
+    }
+});
+
+session.transfer(flowfile, SUCCESS);
+</code></pre>
+
+<p>}
+{% endcodeblock %}</p>
+
+<p>The onTrigger method is called when ever a flow file is passed to the processor. For more details on the context and session variables please again refer to the <a href="https://nifi.incubator.apache.org/docs/nifi-docs/developer-guide.html#flowfile">offical developer guide</a>. In general you pull the flow file out of session. Read and write to the flow files and add attributes where needed. To work on flow files nifi provides 3 callback interfaces.</p>
+
+<ul>
+<li>InputStreamCallback: For reading the contents of the flow file through a input stream.</li>
+</ul>
+
+
+<p>{% codeblock lang:java Apache Nifi OnTrigger <a href="https://github.com/pcgrenier/nifi-examples/blob/master/src/main/java/rocks/nifi/examples/processors/JsonProcessor.java">https://github.com/pcgrenier/nifi-examples/blob/master/src/main/java/rocks/nifi/examples/processors/JsonProcessor.java</a> JsonProcessor.java %}
+session.read(flowfile, new InputStreamCallback() {
+    @Override
+    public void process(InputStream in) throws IOException {
+        try{
+            String json = IOUtils.toString(in);
+            String result = JsonPath.read(json, &ldquo;$.hello&rdquo;);
+            value.set(result);
+        }catch(Exception ex){
+            ex.printStackTrace();
+            log.error(&ldquo;Failed to read json string.&rdquo;);
+        }
+    }
+});<br/>
+{% endcodeblock %}</p>
+
+<p>  Using Apache Commons to read the input stream out to a string. Use JsonPath to attempt to read the json and set a value to the pass on. It would normally be best practice in the case of a exception to pass the original flow file to a Error relation point in the case of an exception.</p>
+
+<ul>
+<li>OutputStreamCallback: For writing to a flowfile, this will over write not concatenate.</li>
+<li>StreamCallback: This is for both reading and writing to the same flow file. With both the outputstreamcallback and streamcall back remember to assign it back to a flow file. This processor is not in use in the code and could have been. The choice was deliberate to show a way of moving data out of callbacks and back in.</li>
+</ul>
+
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Apache Nifi: What Processors are there?]]></title>
