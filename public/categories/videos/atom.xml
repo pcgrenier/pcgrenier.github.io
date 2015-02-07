@@ -81,7 +81,7 @@
   <title><![CDATA[Category: videos | NiFi.rocks]]></title>
   <link href="http://www.nifi.rocks/categories/videos/atom.xml" rel="self"/>
   <link href="http://www.nifi.rocks/"/>
-  <updated>2015-02-07T04:20:36+00:00</updated>
+  <updated>2015-02-07T15:10:56+00:00</updated>
   <id>http://www.nifi.rocks/</id>
   <author>
     <name><![CDATA[]]></name>
@@ -97,7 +97,7 @@
     <id>http://www.nifi.rocks/navigating-apache-nifi</id>
     <content type="html"><![CDATA[<p>The main user interface of Apache Nifi is their web ui.  This makes it much more enjoyable to use than a command line interface, but can still be hard to grasp quickly or know where certain things are when you first start using it.  To help reduce the learning curve, we are going through and breaking down the web ui through a video showing how-to navigate Apache Nifi.</p>
 
-<p>Our main points will be the menu bar and building a data flow with some tips and tricks along the way.  The data flow will be based off of our previous post <a href="{{%20site.url%20}}/getting-started-with-apache-nifi/">Getting Started with Apache Nifi</a>.</p>
+<p>Our main points will be the menu bar and building a data flow with some tips and tricks along the way.  The data flow will be based off of our previous post <a href="/getting-started-with-apache-nifi/">Getting Started with Apache Nifi</a>.</p>
 
 <iframe width="560" height="315" src="https://www.youtube.com/embed/FgTGAWLC170" frameborder="0" allowfullscreen></iframe>
 
