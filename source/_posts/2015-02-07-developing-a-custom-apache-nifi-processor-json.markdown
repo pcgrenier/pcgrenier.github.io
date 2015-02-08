@@ -11,7 +11,7 @@ keywords: Apache Nifi, apache nifi, Nifi, Processors, JSON
 categories: [Apache Nifi, Processors]
 ---
 
-The list of available Apache Nifi processors is extensive as document in [Getting Started with Apache Nifi]({{ site.url }}/apache-nifi-processors/). There is still a need to develop your own, to pull data from a database, to process an uncommon file format, or many other unique situations. So to get you started we will work through a basic processor that takes a json file as input and a json path as a parameter to place into the contents and an attribute. The full source is hosted on [Github](https://github.com/pcgrenier/nifi-examples).
+The list of available Apache Nifi processors is extensive as document in [this post]({{ site.url }}/apache-nifi-processors/). There is still a need to develop your own, to pull data from a database, to process an uncommon file format, or many other unique situations. So to get you started we will work through a basic processor that takes a json file as input and a json path as a parameter to place into the contents and an attribute. The full source is hosted on [Github](https://github.com/pcgrenier/nifi-examples).
 
 <!-- more -->
 
@@ -21,9 +21,9 @@ Start by creating a simple maven project in your favorite IDE. Then edit the pom
 
 {% gist f99d27d08c3903f9d50c pom.xml %}
 
-Ok so this includes a single plugin for building a nifi nar, which is similar to a war for nifi, that bundles everything up in a way nifi can unpack. The nifi-api is the only other "required" dependency. The other nifi dependencies are really use full as you will see.
+Ok so this includes a single plug-in for building a nifi nar, which is similar to a war for nifi, that bundles everything up in a way nifi can unpack. The nifi-api is the only other "required" dependency. The other nifi dependencies are really use full as you will see.
 
-The next importand piece is telling nifi which classes to load and register. This is done in a single file located at /src/main/resources/META-INF/services/org.apache.nifi.processor.Processor
+The next important piece is telling nifi which classes to load and register. This is done in a single file located at /src/main/resources/META-INF/services/org.apache.nifi.processor.Processor
 
 {% gist f98e563e787c1b73c425 org.apache.nifi.processor.Processor %}
 
@@ -87,7 +87,7 @@ public List<PropertyDescriptor> getSupportedPropertyDescriptors(){
 }
 {% endcodeblock %}
 
-The onTrigger method is called when ever a flow file is passed to the processor. For more details on the context and session variables please again refer to the [offical developer guide](https://nifi.incubator.apache.org/docs/nifi-docs/developer-guide.html#flowfile).
+The onTrigger method is called when ever a flow file is passed to the processor. For more details on the context and session variables please again refer to the [official developer guide](https://nifi.incubator.apache.org/docs/nifi-docs/developer-guide.html#flowfile).
 
 {% codeblock lang:java Apache Nifi OnTrigger https://github.com/pcgrenier/nifi-examples/blob/master/src/main/java/rocks/nifi/examples/processors/JsonProcessor.java JsonProcessor.java %}
 
@@ -195,4 +195,18 @@ Finally every flow file that is generated needs to be deleted or transfered.
 session.transfer(flowfile, SUCCESS);
 {% endcodeblock %}
 
-Nifi.rocks will follow up with how to generate unit tests and documention for your custom processors soon.
+At this point you should be able to build with a simple
+
+{% codeblock lang:shell-session %}
+mvn clean install
+{% endcodeblock %}
+
+## Deployment
+
+1. Copy the target/examples-1.0-SNAPSHOT.nar to $NIFI_HOME/lib
+2. $NIFI_HOME/bin/nifi.sh stop
+3. $NIFI_HOME/bin/nifi.sh start
+
+After Nifi finishes starting you should be able to add it to your flow.
+
+Nifi.rocks will follow up with how to generate unit tests and documentation for your custom processors soon.
