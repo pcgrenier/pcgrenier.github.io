@@ -81,7 +81,7 @@
   <title><![CDATA[Category: apache nifi | NiFi.rocks]]></title>
   <link href="http://www.nifi.rocks/categories/apache-nifi/atom.xml" rel="self"/>
   <link href="http://www.nifi.rocks/"/>
-  <updated>2015-02-07T15:10:56+00:00</updated>
+  <updated>2015-02-08T02:24:37+00:00</updated>
   <id>http://www.nifi.rocks/</id>
   <author>
     <name><![CDATA[]]></name>
@@ -486,7 +486,7 @@
 </pre></td><td class='code'><pre><code class='java'><span class='line'><span class="n">session</span><span class="o">.</span><span class="na">transfer</span><span class="o">(</span><span class="n">flowfile</span><span class="o">,</span> <span class="n">SUCCESS</span><span class="o">);</span>
 </span></code></pre></td></tr></table></div></figure></p>
 
-<p>Nifi.rocks will follow up with how to generate unit tests for your custom processors soon.</p>
+<p>Nifi.rocks will follow up with how to generate unit tests and documention for your custom processors soon.</p>
 ]]></content>
   </entry>
   

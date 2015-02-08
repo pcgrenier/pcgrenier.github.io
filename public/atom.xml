@@ -81,7 +81,7 @@
   <title><![CDATA[NiFi.rocks]]></title>
   <link href="http://www.nifi.rocks/atom.xml" rel="self"/>
   <link href="http://www.nifi.rocks/"/>
-  <updated>2015-02-07T15:10:56+00:00</updated>
+  <updated>2015-02-08T02:24:37+00:00</updated>
   <id>http://www.nifi.rocks/</id>
   <author>
     <name><![CDATA[]]></name>
@@ -474,7 +474,7 @@
 </span></code></pre></td></tr></table></div></figure>
 
 
-<p>Nifi.rocks will follow up with how to generate unit tests for your custom processors soon.</p>
+<p>Nifi.rocks will follow up with how to generate unit tests and documention for your custom processors soon.</p>
 ]]></content>
     
   </entry>

@@ -195,4 +195,4 @@ Finally every flow file that is generated needs to be deleted or transfered.
 session.transfer(flowfile, SUCCESS);
 {% endcodeblock %}
 
-Nifi.rocks will follow up with how to generate unit tests for your custom processors soon.
+Nifi.rocks will follow up with how to generate unit tests and documention for your custom processors soon.
