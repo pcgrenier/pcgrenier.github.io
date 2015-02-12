@@ -11,7 +11,7 @@ keywords: Apache Nifi, apache nifi, Nifi, Processors, JSON
 categories: [Apache Nifi, Processors]
 ---
 
-The list of available Apache Nifi processors is extensive as document in [this post]({{ site.url }}/apache-nifi-processors/). There is still a need to develop your own, to pull data from a database, to process an uncommon file format, or many other unique situations. So to get you started we will work through a basic processor that takes a json file as input and a json path as a parameter to place into the contents and an attribute. The full source is hosted on [Github](https://github.com/pcgrenier/nifi-examples).
+The list of available Apache Nifi processors is extensive, as documented in [this post]({{ site.url }}/apache-nifi-processors/). There is still a need to develop your own; to pull data from a database, to process an uncommon file format, or many other unique situations. So to get you started, we will work through a basic processor that takes a json file as input and a json path as a parameter to place into the contents and an attribute. The full source is hosted on [Github](https://github.com/pcgrenier/nifi-examples).
 
 <!-- more -->
 
@@ -21,7 +21,7 @@ Start by creating a simple maven project in your favorite IDE. Then edit the pom
 
 {% gist f99d27d08c3903f9d50c pom.xml %}
 
-Ok so this includes a single plug-in for building a nifi nar, which is similar to a war for nifi, that bundles everything up in a way nifi can unpack. The nifi-api is the only other "required" dependency. The other nifi dependencies are really use full as you will see.
+This pom.xml includes a single plug-in for building a nifi nar, which is similar to a war for nifi, that bundles everything up in a way nifi can unpack. The nifi-api is the only other "required" dependency. The other nifi dependencies are really use full as you will see.
 
 The next important piece is telling nifi which classes to load and register. This is done in a single file located at /src/main/resources/META-INF/services/org.apache.nifi.processor.Processor
 
@@ -29,9 +29,9 @@ The next important piece is telling nifi which classes to load and register. Thi
 
 ## The JSON Processor
 
-Ok now that everything is defined and findable by Apache Nifi, lets build a processor. Define a simple java class as defined in the setup process (rocks.nifi.examples.processors.JsonProcessor).
+Now that everything is defined and findable by Apache Nifi, lets build a processor. Define a simple java class as defined in the setup process (rocks.nifi.examples.processors.JsonProcessor).
 
-So tags are useful for finding your processor in the list of processors in the GUI. So in this case in the search box you could just type 'json' and your processor will be found. The capability description is also displayed in the processor selection box. Nifi.rocks will make future posts on documenting your custom processors. Finally most processors will just extend the AbstractProcessor, for more complicated tasks it may be required to go a level deeper for the AbstractSessionFactoryProcessor.
+Tags are useful for finding your processor in the list of processors in the GUI. So in this case in the search box you could just type 'json' and your processor will be found. The capability description is also displayed in the processor selection box. Nifi.rocks will make future posts on documenting your custom processors. Finally most processors will just extend the AbstractProcessor, for more complicated tasks it may be required to go a level deeper for the AbstractSessionFactoryProcessor.
 
 {% codeblock lang:java Apache Nifi Processor Header  https://github.com/pcgrenier/nifi-examples/blob/master/src/main/java/rocks/nifi/examples/processors/JsonProcessor.java JsonProcessor.java %}
 @SideEffectFree

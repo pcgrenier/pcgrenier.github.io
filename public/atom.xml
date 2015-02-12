@@ -81,7 +81,7 @@
   <title><![CDATA[NiFi.rocks]]></title>
   <link href="http://www.nifi.rocks/atom.xml" rel="self"/>
   <link href="http://www.nifi.rocks/"/>
-  <updated>2015-02-08T15:16:23+00:00</updated>
+  <updated>2015-02-12T03:56:11+00:00</updated>
   <id>http://www.nifi.rocks/</id>
   <author>
     <name><![CDATA[]]></name>
@@ -98,7 +98,7 @@
     <updated>2015-02-07T02:14:33+00:00</updated>
     <id>http://www.nifi.rocks/developing-a-custom-apache-nifi-processor-json</id>
     
-    <content type="html"><![CDATA[<p>The list of available Apache Nifi processors is extensive as document in <a href="http://www.nifi.rocks/apache-nifi-processors/">this post</a>. There is still a need to develop your own, to pull data from a database, to process an uncommon file format, or many other unique situations. So to get you started we will work through a basic processor that takes a json file as input and a json path as a parameter to place into the contents and an attribute. The full source is hosted on <a href="https://github.com/pcgrenier/nifi-examples">Github</a>.</p>
+    <content type="html"><![CDATA[<p>The list of available Apache Nifi processors is extensive, as documented in <a href="http://www.nifi.rocks/apache-nifi-processors/">this post</a>. There is still a need to develop your own; to pull data from a database, to process an uncommon file format, or many other unique situations. So to get you started, we will work through a basic processor that takes a json file as input and a json path as a parameter to place into the contents and an attribute. The full source is hosted on <a href="https://github.com/pcgrenier/nifi-examples">Github</a>.</p>
 
 <!-- more -->
 
@@ -181,7 +181,7 @@
 &lt;/project&gt;</code></pre></noscript></div>
 
 
-<p>Ok so this includes a single plug-in for building a nifi nar, which is similar to a war for nifi, that bundles everything up in a way nifi can unpack. The nifi-api is the only other &ldquo;required&rdquo; dependency. The other nifi dependencies are really use full as you will see.</p>
+<p>This pom.xml includes a single plug-in for building a nifi nar, which is similar to a war for nifi, that bundles everything up in a way nifi can unpack. The nifi-api is the only other &ldquo;required&rdquo; dependency. The other nifi dependencies are really use full as you will see.</p>
 
 <p>The next important piece is telling nifi which classes to load and register. This is done in a single file located at /src/main/resources/META-INF/services/org.apache.nifi.processor.Processor</p>
 
@@ -191,9 +191,9 @@
 
 <h2>The JSON Processor</h2>
 
-<p>Ok now that everything is defined and findable by Apache Nifi, lets build a processor. Define a simple java class as defined in the setup process (rocks.nifi.examples.processors.JsonProcessor).</p>
+<p>Now that everything is defined and findable by Apache Nifi, lets build a processor. Define a simple java class as defined in the setup process (rocks.nifi.examples.processors.JsonProcessor).</p>
 
-<p>So tags are useful for finding your processor in the list of processors in the GUI. So in this case in the search box you could just type &lsquo;json&rsquo; and your processor will be found. The capability description is also displayed in the processor selection box. Nifi.rocks will make future posts on documenting your custom processors. Finally most processors will just extend the AbstractProcessor, for more complicated tasks it may be required to go a level deeper for the AbstractSessionFactoryProcessor.</p>
+<p>Tags are useful for finding your processor in the list of processors in the GUI. So in this case in the search box you could just type &lsquo;json&rsquo; and your processor will be found. The capability description is also displayed in the processor selection box. Nifi.rocks will make future posts on documenting your custom processors. Finally most processors will just extend the AbstractProcessor, for more complicated tasks it may be required to go a level deeper for the AbstractSessionFactoryProcessor.</p>
 
 <figure class='code'><figcaption><span>Apache Nifi Processor Header </span><a href='https://github.com/pcgrenier/nifi-examples/blob/master/src/main/java/rocks/nifi/examples/processors/JsonProcessor.java'>JsonProcessor.java </a></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>

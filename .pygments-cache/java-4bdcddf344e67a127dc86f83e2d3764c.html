@@ -1,0 +1,39 @@
+<div class="highlight"><pre><span class="nd">@Override</span>
+<span class="kd">public</span> <span class="kt">void</span> <span class="nf">onTrigger</span><span class="o">(</span><span class="n">ProcessContext</span> <span class="n">context</span><span class="o">,</span> <span class="n">ProcessSession</span> <span class="n">session</span><span class="o">)</span> <span class="kd">throws</span> <span class="n">ProcessException</span> <span class="o">{</span>
+    <span class="kd">final</span> <span class="n">ProcessorLog</span> <span class="n">log</span> <span class="o">=</span> <span class="k">this</span><span class="o">.</span><span class="na">getLogger</span><span class="o">();</span>
+    <span class="kd">final</span> <span class="n">AtomicReference</span><span class="o">&lt;</span><span class="n">String</span><span class="o">&gt;</span> <span class="n">value</span> <span class="o">=</span> <span class="k">new</span> <span class="n">AtomicReference</span><span class="o">&lt;&gt;();</span>
+
+    <span class="n">FlowFile</span> <span class="n">flowfile</span> <span class="o">=</span> <span class="n">session</span><span class="o">.</span><span class="na">get</span><span class="o">();</span>
+
+    <span class="n">session</span><span class="o">.</span><span class="na">read</span><span class="o">(</span><span class="n">flowfile</span><span class="o">,</span> <span class="k">new</span> <span class="nf">InputStreamCallback</span><span class="o">()</span> <span class="o">{</span>
+        <span class="nd">@Override</span>
+        <span class="kd">public</span> <span class="kt">void</span> <span class="nf">process</span><span class="o">(</span><span class="n">InputStream</span> <span class="n">in</span><span class="o">)</span> <span class="kd">throws</span> <span class="n">IOException</span> <span class="o">{</span>
+            <span class="k">try</span><span class="o">{</span>
+                <span class="n">String</span> <span class="n">json</span> <span class="o">=</span> <span class="n">IOUtils</span><span class="o">.</span><span class="na">toString</span><span class="o">(</span><span class="n">in</span><span class="o">);</span>
+                <span class="n">String</span> <span class="n">result</span> <span class="o">=</span> <span class="n">JsonPath</span><span class="o">.</span><span class="na">read</span><span class="o">(</span><span class="n">json</span><span class="o">,</span> <span class="s">&quot;$.hello&quot;</span><span class="o">);</span>
+                <span class="n">value</span><span class="o">.</span><span class="na">set</span><span class="o">(</span><span class="n">result</span><span class="o">);</span>
+            <span class="o">}</span><span class="k">catch</span><span class="o">(</span><span class="n">Exception</span> <span class="n">ex</span><span class="o">){</span>
+                <span class="n">ex</span><span class="o">.</span><span class="na">printStackTrace</span><span class="o">();</span>
+                <span class="n">log</span><span class="o">.</span><span class="na">error</span><span class="o">(</span><span class="s">&quot;Failed to read json string.&quot;</span><span class="o">);</span>
+            <span class="o">}</span>
+        <span class="o">}</span>
+    <span class="o">});</span>
+
+    <span class="c1">// Write the results to an attribute</span>
+    <span class="n">String</span> <span class="n">results</span> <span class="o">=</span> <span class="n">value</span><span class="o">.</span><span class="na">get</span><span class="o">();</span>
+    <span class="k">if</span><span class="o">(</span><span class="n">results</span> <span class="o">!=</span> <span class="kc">null</span> <span class="o">&amp;&amp;</span> <span class="o">!</span><span class="n">results</span><span class="o">.</span><span class="na">isEmpty</span><span class="o">()){</span>
+        <span class="n">flowfile</span> <span class="o">=</span> <span class="n">session</span><span class="o">.</span><span class="na">putAttribute</span><span class="o">(</span><span class="n">flowfile</span><span class="o">,</span> <span class="s">&quot;match&quot;</span><span class="o">,</span> <span class="n">results</span><span class="o">);</span>
+    <span class="o">}</span>
+
+    <span class="c1">// To write the results back out ot flow file</span>
+    <span class="n">flowfile</span> <span class="o">=</span> <span class="n">session</span><span class="o">.</span><span class="na">write</span><span class="o">(</span><span class="n">flowfile</span><span class="o">,</span> <span class="k">new</span> <span class="nf">OutputStreamCallback</span><span class="o">()</span> <span class="o">{</span>
+
+        <span class="nd">@Override</span>
+        <span class="kd">public</span> <span class="kt">void</span> <span class="nf">process</span><span class="o">(</span><span class="n">OutputStream</span> <span class="n">out</span><span class="o">)</span> <span class="kd">throws</span> <span class="n">IOException</span> <span class="o">{</span>
+            <span class="n">out</span><span class="o">.</span><span class="na">write</span><span class="o">(</span><span class="n">value</span><span class="o">.</span><span class="na">get</span><span class="o">().</span><span class="na">getBytes</span><span class="o">());</span>
+        <span class="o">}</span>
+    <span class="o">});</span>
+
+    <span class="n">session</span><span class="o">.</span><span class="na">transfer</span><span class="o">(</span><span class="n">flowfile</span><span class="o">,</span> <span class="n">SUCCESS</span><span class="o">);</span>
+<span class="o">}</span>
+</pre></div>

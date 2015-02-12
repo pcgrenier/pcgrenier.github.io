@@ -1,0 +1,14 @@
+<div class="highlight"><pre><span class="n">session</span><span class="o">.</span><span class="na">read</span><span class="o">(</span><span class="n">flowfile</span><span class="o">,</span> <span class="k">new</span> <span class="nf">InputStreamCallback</span><span class="o">()</span> <span class="o">{</span>
+    <span class="nd">@Override</span>
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">process</span><span class="o">(</span><span class="n">InputStream</span> <span class="n">in</span><span class="o">)</span> <span class="kd">throws</span> <span class="n">IOException</span> <span class="o">{</span>
+        <span class="k">try</span><span class="o">{</span>
+            <span class="n">String</span> <span class="n">json</span> <span class="o">=</span> <span class="n">IOUtils</span><span class="o">.</span><span class="na">toString</span><span class="o">(</span><span class="n">in</span><span class="o">);</span>
+            <span class="n">String</span> <span class="n">result</span> <span class="o">=</span> <span class="n">JsonPath</span><span class="o">.</span><span class="na">read</span><span class="o">(</span><span class="n">json</span><span class="o">,</span> <span class="o">&amp;</span><span class="n">ldquo</span><span class="o">;</span><span class="n">$</span><span class="o">.</span><span class="na">hello</span><span class="o">&amp;</span><span class="n">rdquo</span><span class="o">;);</span>
+            <span class="n">value</span><span class="o">.</span><span class="na">set</span><span class="o">(</span><span class="n">result</span><span class="o">);</span>
+        <span class="o">}</span><span class="k">catch</span><span class="o">(</span><span class="n">Exception</span> <span class="n">ex</span><span class="o">){</span>
+            <span class="n">ex</span><span class="o">.</span><span class="na">printStackTrace</span><span class="o">();</span>
+            <span class="n">log</span><span class="o">.</span><span class="na">error</span><span class="o">(&amp;</span><span class="n">ldquo</span><span class="o">;</span><span class="n">Failed</span> <span class="n">to</span> <span class="n">read</span> <span class="n">json</span> <span class="n">string</span><span class="o">.&amp;</span><span class="n">rdquo</span><span class="o">;);</span>
+        <span class="o">}</span>
+    <span class="o">}</span>
+<span class="o">});&lt;</span><span class="n">br</span><span class="o">/&gt;</span>
+</pre></div>

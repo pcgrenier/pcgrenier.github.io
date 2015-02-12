@@ -1,0 +1,21 @@
+<div class="highlight"><pre><span class="nd">@Override</span>
+<span class="kd">public</span> <span class="kt">void</span> <span class="nf">init</span><span class="o">(</span><span class="kd">final</span> <span class="n">ProcessorInitializationContext</span> <span class="n">context</span><span class="o">){</span>
+    <span class="n">List</span><span class="o">&lt;</span><span class="n">PropertyDescriptor</span><span class="o">&gt;</span> <span class="n">properties</span> <span class="o">=</span> <span class="k">new</span> <span class="n">ArrayList</span><span class="o">&lt;&gt;();</span>
+    <span class="n">properties</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="n">JSON_PATH</span><span class="o">);</span>
+    <span class="k">this</span><span class="o">.</span><span class="na">properties</span> <span class="o">=</span> <span class="n">Collections</span><span class="o">.</span><span class="na">unmodifiableList</span><span class="o">(</span><span class="n">properties</span><span class="o">);</span>
+
+    <span class="n">Set</span><span class="o">&lt;</span><span class="n">Relationship</span><span class="o">&gt;</span> <span class="n">relationships</span> <span class="o">=</span> <span class="k">new</span> <span class="n">HashSet</span><span class="o">&lt;&gt;();</span>
+    <span class="n">relationships</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="n">SUCCESS</span><span class="o">);</span>
+    <span class="k">this</span><span class="o">.</span><span class="na">relationships</span> <span class="o">=</span> <span class="n">Collections</span><span class="o">.</span><span class="na">unmodifiableSet</span><span class="o">(</span><span class="n">relationships</span><span class="o">);</span>
+<span class="o">}</span>
+
+<span class="nd">@Override</span>
+<span class="kd">public</span> <span class="n">Set</span><span class="o">&lt;</span><span class="n">Relationship</span><span class="o">&gt;</span> <span class="nf">getRelationships</span><span class="o">(){</span>
+    <span class="k">return</span> <span class="n">relationships</span><span class="o">;</span>
+<span class="o">}</span>
+
+<span class="nd">@Override</span>
+<span class="kd">public</span> <span class="n">List</span><span class="o">&lt;</span><span class="n">PropertyDescriptor</span><span class="o">&gt;</span> <span class="nf">getSupportedPropertyDescriptors</span><span class="o">(){</span>
+    <span class="k">return</span> <span class="n">properties</span><span class="o">;</span>
+<span class="o">}</span>
+</pre></div>
