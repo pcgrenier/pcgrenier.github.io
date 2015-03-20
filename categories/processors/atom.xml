@@ -81,7 +81,7 @@
   <title><![CDATA[Category: processors | NiFi.rocks]]></title>
   <link href="http://www.nifi.rocks/categories/processors/atom.xml" rel="self"/>
   <link href="http://www.nifi.rocks/"/>
-  <updated>2015-02-12T03:56:11+00:00</updated>
+  <updated>2015-03-20T05:16:45+00:00</updated>
   <id>http://www.nifi.rocks/</id>
   <author>
     <name><![CDATA[]]></name>
@@ -512,7 +512,9 @@
     <link href="http://www.nifi.rocks/apache-nifi-processors/"/>
     <updated>2015-02-05T03:00:06+00:00</updated>
     <id>http://www.nifi.rocks/apache-nifi-processors</id>
-    <content type="html"><![CDATA[<p>I looked around at what can be done with Apache NiFi and didn&rsquo;t notice a list of processors without looking at the code or building the project.  I think a list of available processors, the work horse of Apache Nifi, would greatly help decide if it is right for certain needs.  So, I went into the usage guide in the Apache Nifi UI and pulled a list of processors and a quick description for those who want to know what possibilities there are before getting into nifi itself!</p>
+    <content type="html"><![CDATA[<p><strong> Includes all processors through release 0.0.2 </strong></p>
+
+<p>I looked around at what can be done with Apache NiFi and didn&rsquo;t notice a list of processors without looking at the code or building the project.  I think a list of available processors, the work horse of Apache Nifi, would greatly help decide if it is right for certain needs.  So, I went into the usage guide in the Apache Nifi UI and pulled a list of processors and a quick description for those who want to know what possibilities there are before getting into nifi itself!</p>
 
 <h1>List of processors</h1>
 
@@ -526,13 +528,17 @@
 <li><a href="#CompressContent">CompressContent</a></li>
 <li><a href="#ControlRate">ControlRate</a></li>
 <li><a href="#ConvertCharacterSet">ConvertCharacterSet</a></li>
+<li><a href="#ConvertCSVToAvro">ConvertCSVToAvro</a></li>
+<li><a href="#ConvertJSONToAvro">ConvertJSONToAvro</a></li>
 <li><a href="#CreateHadoopSequenceFile">CreateHadoopSequenceFile</a></li>
 <li><a href="#DetectDuplicate">DetectDuplicate</a></li>
 <li><a href="#DistributeLoad">DistributeLoad</a></li>
 <li><a href="#EncryptContent">EncryptContent</a></li>
+<li><a href="#EvaluateJSONPath">EvaluateJSONPath</a></li>
 <li><a href="#EvaluateRegularExpression">EvaluateRegularExpression</a></li>
 <li><a href="#EvaluateXPath">EvaluateXPath</a></li>
 <li><a href="#EvaluateXQuery">EvaluateXQuery</a></li>
+<li><a href="#ExecuteProcess">ExecuteProcess</a></li>
 <li><a href="#ExecuteStreamCommand">ExecuteStreamCommand</a></li>
 <li><a href="#GenerateFlowFile">GenerateFlowFile</a></li>
 <li><a href="#GetFile">GetFile</a></li>
@@ -544,6 +550,8 @@
 <li><a href="#GetJMSTopic">GetJMSTopic</a></li>
 <li><a href="#GetKafka">GetKafka</a></li>
 <li><a href="#GetSFTP">GetSFTP</a></li>
+<li><a href="#HandleHttpRequest">HandleHttpRequest</a></li>
+<li><a href="#HandleHttpResponse">HandleHttpResponse</a></li>
 <li><a href="#HashAttribute">HashAttribute</a></li>
 <li><a href="#HashContent">HashContent</a></li>
 <li><a href="#IdentifyMimeType">IdentifyMimeType</a></li>
@@ -570,8 +578,10 @@
 <li><a href="#ScanContent">ScanContent</a></li>
 <li><a href="#SegmentContent">SegmentContent</a></li>
 <li><a href="#SplitContent">SplitContent</a></li>
+<li><a href="#SplitJson">SplitJson</a></li>
 <li><a href="#SplitText">SplitText</a></li>
 <li><a href="#SplitXML">SplitXML</a></li>
+<li><a href="#StoreInKiteDataset">StoreInKiteDataset</a></li>
 <li><a href="#TransformXML">TransformXML</a></li>
 <li><a href="#UnpackContent">UnpackContent</a></li>
 <li><a href="#UpdateAttribute">UpdateAttribute</a></li>
@@ -594,6 +604,14 @@
 <h3><a name="ConvertCharacterSet"></a>ConvertCharacterSet</h3>
 
 <p>This processor converts a FlowFile&rsquo;s content from one character set to another.</p>
+
+<h3><a name="ConvertCSVToAvro"></a>ConvertCSVToAvro</h3>
+
+<p>No description is given for this processor.</p>
+
+<h3><a name="ConvertJSONToAvro"></a>ConvertJSONToAvro</h3>
+
+<p>No description is given for this processor.</p>
 
 <h3><a name="CreateHadoopSequenceFile"></a>CreateHadoopSequenceFile</h3>
 
@@ -619,6 +637,10 @@ NOTE: The value portion of a key/value pair is loaded into memory. While there i
 
 <p>This processor encrypts or decrypts FlowFiles.</p>
 
+<h3><a name="EvaluateJsonPath"></a>EvaluateJsonPath</h3>
+
+<p>Evaluates one or more JsonPath expressions against the content of a FlowFile. The results of those expressions are assigned to FlowFile Attributes or are written to the content of the FlowFile itself, depending on configuration of the Processor. JsonPaths are entered by adding user-defined properties; the name of the property maps to the Attribute Name into which the result will be placed (if the Destination is flowfile-attribute; otherwise, the property name is ignored). The value of the property must be a valid JsonPath expression. If the JsonPath evaluates to a JSON array or JSON object and the Return Type is set to &lsquo;scalar&rsquo; the FlowFile will be unmodified and will be routed to failure. A Return Type of JSON can return scalar values if the provided JsonPath evaluates to the specified value and will be routed as a match. If Destination is &lsquo;flowfile-content&rsquo; and the JsonPath does not evaluate to a defined path, the FlowFile will be routed to &lsquo;unmatched&rsquo; without having its contents modified. If Destination is flowfile-attribute and the expression matches nothing, attributes will be created with empty strings as the value, and the FlowFile will always be routed to &lsquo;matched&rsquo;.</p>
+
 <h3><a name="EvaluateRegularExpression"></a>EvaluateRegularExpression</h3>
 
 <p>This processor evaluates one or more Regular Expressions against the content of a FlowFile. The results of those Regular Expressions are assigned to FlowFile Attributes. Regular Expressions are entered by adding user-defined properties; the name of the property maps to the Attribute Name into which the result will be placed. The value of the property must be a valid Regular Expressions with exactly one capturing group. If the Regular Expression matches more than once, only the first match will be used. If any provided Regular Expression matches, the FlowFile(s) will be routed to &lsquo;matched&rsquo;. If no provided Regular Expression matches, the FlowFile will be routed to &lsquo;unmatched&rsquo; and no attributes will be applied to the FlowFile.</p>
@@ -630,6 +652,10 @@ NOTE: The value portion of a key/value pair is loaded into memory. While there i
 <h3><a name="EvaluateXQuery"></a>EvaluateXQuery</h3>
 
 <p>This processor evaluates one or more XQueries against the content of FlowFiles. The results of those XQueries are assigned to FlowFile attributes or are written to the content of the FlowFile itself, depending on how the user configures the Destination property in the processor. One attribute or FlowFile is produced for each XQuery result. Each produced FlowFile will carry the attributes of the input FlowFile. See the &ldquo;Examples&rdquo; section for details on how multiple results can be wrapped or concatenated. XQueries are entered by adding user-defined properties; the name of each user-added property maps to the attribute name into which the result should be placed. The value of the property must be a valid XQuery expression.</p>
+
+<h3><a name="ExecuteProcess"></a>ExecuteProcess</h3>
+
+<p>Runs an operating system command specified by the user and writes the output of that command to a FlowFile. If the command is expected to be long-running, the Processor can output the partial data on a specified interval. When this option is used, the output is expected to be in textual format, as it typically does not make sense to split binary data on arbitrary time-based intervals.</p>
 
 <h3><a name="ExecuteStreamCommand"></a>ExecuteStreamCommand</h3>
 
@@ -678,6 +704,28 @@ NOTE: The value portion of a key/value pair is loaded into memory. While there i
 <h3><a name="GetSFTP"></a>GetSFTP</h3>
 
 <p>This processor pulls files from an SFTP server and creates FlowFiles to encapsulate them.</p>
+
+<h3><a name="HandleHttpRequest"></a>HandleHttpRequest</h3>
+
+<p>This processor starts an HTTP server and creates a FlowFile for each HTTP Request that it receives. The Processor leaves the HTTP Connection open and is intended to be used in conjunction with a HandleHttpResponse Processor.</p>
+
+<p>The pairing of this Processor with a HandleHttpResponse Processor provides the ability to use NiFi to visually construct a web server that can carry out any functionality that is available through the existing Processors. For example, one could construct a Web-based front end to an SFTP Server by constructing a flow such as:</p>
+
+<p>HandleHttpRequest -> PutSFTP -> HandleHttpResponse</p>
+
+<p>The HandleHttpRequest Processor provides several Properties to configure which methods are supported, the paths that are supported, and SSL configuration. The FlowFiles that are generated by this Processor have the following attributes added to them, providing powerful routing capabilities and traceability of all data.</p>
+
+<h3><a name="HandleHttpResponse"></a>HandleHttpResponse</h3>
+
+<p>This processor responds to an HTTP request that was received by the HandleHttpRequest Processor.</p>
+
+<p>The pairing of this Processor with a HandleHttpRequest Processor provides the ability to use NiFi to visually construct a web server that can carry out any functionality that is available through the existing Processors. For example, one could construct a Web-based front end to an SFTP Server by constructing a flow such as:</p>
+
+<p>HandleHttpRequest -> PutSFTP -> HandleHttpResponse</p>
+
+<p>This Processor must be configured with the same <HTTP Context Map> service as the corresponding HandleHttpRequest Processor. Otherwise, all FlowFiles will be routed to the &lsquo;failure&rsquo; relationship.</p>
+
+<p>All FlowFiles must have an attribute named http.context.identifier. The value of this attribute is used to lookup the HTTP Response so that the proper message can be sent back to the requestor. If this attribute is missing, the FlowFile will be routed to &lsquo;failure.&rsquo;</p>
 
 <h3><a name="HashAttribute"></a>HashAttribute</h3>
 
@@ -834,6 +882,12 @@ In this example, all files with filenames that start with ABC will follow the AB
 
 <p>This processor splits incoming FlowFiles by a specified byte sequence.</p>
 
+<h3><a name="SplitJson"></a>SplitJson</h3>
+
+<p>This processor splits a JSON File into multiple, separate FlowFiles for an array element specified by a JsonPath expression. Each generated FlowFile is comprised of an element of the specified array and transferred to relationship &lsquo;split,&rsquo; with the original file transferred to the &lsquo;original&rsquo; relationship. If the specified JsonPath is not found or does not evaluate to an array element, the original file is routed to &lsquo;failure&rsquo; and no files are generated.</p>
+
+<p>Note: The underlying JsonPath library loads the entirety of the streamed content into and performs result evaluations in memory. Accordingly, it is important to consider the anticipated profile of content being evaluated by this processor and the hardware supporting it especially when working against large JSON documents.</p>
+
 <h3><a name="SplitText"></a>SplitText</h3>
 
 <p>This processor splits a text file into multiple smaller text files on line boundaries, each having up to a configured number of lines.</p>
@@ -841,6 +895,10 @@ In this example, all files with filenames that start with ABC will follow the AB
 <h3><a name="SplitXML"></a>SplitXML</h3>
 
 <p>This processor splits an XML file into multiple separate FlowFiles, each comprising a child or descendant of the original root element.</p>
+
+<h3><a name="StoreInKiteDataset"></a>StoreInKiteDataset</h3>
+
+<p>No description is given for this processor.</p>
 
 <h3><a name="TransformXML"></a>TransformXML</h3>
 

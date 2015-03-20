@@ -81,7 +81,7 @@
   <title><![CDATA[Category: apache nifi | NiFi.rocks]]></title>
   <link href="http://www.nifi.rocks/categories/apache-nifi/atom.xml" rel="self"/>
   <link href="http://www.nifi.rocks/"/>
-  <updated>2015-02-12T03:56:11+00:00</updated>
+  <updated>2015-03-20T05:16:45+00:00</updated>
   <id>http://www.nifi.rocks/</id>
   <author>
     <name><![CDATA[]]></name>
@@ -89,6 +89,58 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Apache Nifi Release 0.0.2 Highlights]]></title>
+    <link href="http://www.nifi.rocks/apache-nifi-release-0-dot-0-2-highlights/"/>
+    <updated>2015-03-20T01:45:11+00:00</updated>
+    <id>http://www.nifi.rocks/apache-nifi-release-0-dot-0-2-highlights</id>
+    <content type="html"><![CDATA[<p>Apache Nifi just kicked out their second release, <a href="https://nifi.incubator.apache.org/downloads/">0.0.2</a>.  It doesn&rsquo;t have too many new features in it, hence a patch release according to <a href="http://semver.org">semantic versioning</a>, but it is definitely an improvement over the previous version, with it&rsquo;s bug fixes, improvements, and new features numbers below.</p>
+
+<ul>
+<li><a href="#bugfixes">Bug Fixes</a>:       35</li>
+<li><a href="#improvements">Improvements</a>:        17</li>
+<li><a href="#new-features">New Features</a>:        5</li>
+</ul>
+
+
+<!--more-->
+
+
+<h3><a name="bugfixes"></a>Bug Fixes</h3>
+
+<p>The nifi community came in with some big fixes with this release.  The biggest ones I feel are the ability to now build on Mac OSX and increasing documentation.  There were quite a few other fixes that greatly improved the overall NiFi experience, processors now stop correctly and aren&rsquo;t continued to be scheduled and some clustering issues were resolved for example.</p>
+
+<h3><a name="improvements"></a>Improvements</h3>
+
+<p>The improvements in this release included a few maintanence related tasks and again some over all usability tasks, with most of them falling on the usability side.  The main improvements in Nifi release 0.0.2 were document related and overall usability updates, the cleanup of development documents, and too many to name for the usability.  In this release though, you should expect the following usability improvements:</p>
+
+<ul>
+<li>proxy support for the GetFTP Processor</li>
+<li>Component toolbox improvements</li>
+<li>Dragging/drawing relationships</li>
+<li>Labeling with the same color for multiple items</li>
+</ul>
+
+
+<h3><a name="new-features"></a>New Features</h3>
+
+<p>Now on to the good stuff, new features!  This release only had a few additional features added, but from what I&rsquo;ve read there are quite a few more coming.  The highlights in this category are:</p>
+
+<p>Multiple new processors
+* JSON Processors
+* ExecuteProcess processor
+* StoreInKiteDataset processor</p>
+
+<p>New processors are great and mean more possibilities and use cases for Apache Nifi.  We showed you how to create a JSON processor in a previous post, <a href="/developing-a-custom-apache-nifi-processor-json">Developing a custom Nifi Processor: JSON</a>, and now someone has contributed a JSON processor to Nifi.  For a full list of Nifi Processors, including the newly added ones, see our <a href="/apache-nifi-processors">previous post</a>.</p>
+
+<p>It has been rumored that the next release will contain quite a few changes and be a minor release bumping up to version 0.1.0.  With over 200 tickets open on their JIRA, Nifi could see a great amount of change in the coming months.</p>
+
+<p>The full list of release notes can be found on Apache Nifi&rsquo;s <a href="https://issues.apache.org/jira/secure/ReleaseNote.jspa?projectId=12316020&amp;version=12329373">JIRA page</a> and downloads for all of their releases, source code and binaries, are available from their <a href="http://nifi.incubator.apache.org/downloads/">website</a>.  Nifi is also making thier releases available through maven via apaches <a href="https://repository.apache.org/content/repositories/releases/org/apache/nifi/">maven repository</a>.</p>
+
+<p>As always, check back for how-tos and Apache Nifi related updates.  New videos and posts are coming!!</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Developing A Custom Apache Nifi Processor (JSON)]]></title>
@@ -512,7 +564,9 @@
     <link href="http://www.nifi.rocks/apache-nifi-processors/"/>
     <updated>2015-02-05T03:00:06+00:00</updated>
     <id>http://www.nifi.rocks/apache-nifi-processors</id>
-    <content type="html"><![CDATA[<p>I looked around at what can be done with Apache NiFi and didn&rsquo;t notice a list of processors without looking at the code or building the project.  I think a list of available processors, the work horse of Apache Nifi, would greatly help decide if it is right for certain needs.  So, I went into the usage guide in the Apache Nifi UI and pulled a list of processors and a quick description for those who want to know what possibilities there are before getting into nifi itself!</p>
+    <content type="html"><![CDATA[<p><strong> Includes all processors through release 0.0.2 </strong></p>
+
+<p>I looked around at what can be done with Apache NiFi and didn&rsquo;t notice a list of processors without looking at the code or building the project.  I think a list of available processors, the work horse of Apache Nifi, would greatly help decide if it is right for certain needs.  So, I went into the usage guide in the Apache Nifi UI and pulled a list of processors and a quick description for those who want to know what possibilities there are before getting into nifi itself!</p>
 
 <h1>List of processors</h1>
 
@@ -526,13 +580,17 @@
 <li><a href="#CompressContent">CompressContent</a></li>
 <li><a href="#ControlRate">ControlRate</a></li>
 <li><a href="#ConvertCharacterSet">ConvertCharacterSet</a></li>
+<li><a href="#ConvertCSVToAvro">ConvertCSVToAvro</a></li>
+<li><a href="#ConvertJSONToAvro">ConvertJSONToAvro</a></li>
 <li><a href="#CreateHadoopSequenceFile">CreateHadoopSequenceFile</a></li>
 <li><a href="#DetectDuplicate">DetectDuplicate</a></li>
 <li><a href="#DistributeLoad">DistributeLoad</a></li>
 <li><a href="#EncryptContent">EncryptContent</a></li>
+<li><a href="#EvaluateJSONPath">EvaluateJSONPath</a></li>
 <li><a href="#EvaluateRegularExpression">EvaluateRegularExpression</a></li>
 <li><a href="#EvaluateXPath">EvaluateXPath</a></li>
 <li><a href="#EvaluateXQuery">EvaluateXQuery</a></li>
+<li><a href="#ExecuteProcess">ExecuteProcess</a></li>
 <li><a href="#ExecuteStreamCommand">ExecuteStreamCommand</a></li>
 <li><a href="#GenerateFlowFile">GenerateFlowFile</a></li>
 <li><a href="#GetFile">GetFile</a></li>
@@ -544,6 +602,8 @@
 <li><a href="#GetJMSTopic">GetJMSTopic</a></li>
 <li><a href="#GetKafka">GetKafka</a></li>
 <li><a href="#GetSFTP">GetSFTP</a></li>
+<li><a href="#HandleHttpRequest">HandleHttpRequest</a></li>
+<li><a href="#HandleHttpResponse">HandleHttpResponse</a></li>
 <li><a href="#HashAttribute">HashAttribute</a></li>
 <li><a href="#HashContent">HashContent</a></li>
 <li><a href="#IdentifyMimeType">IdentifyMimeType</a></li>
@@ -570,8 +630,10 @@
 <li><a href="#ScanContent">ScanContent</a></li>
 <li><a href="#SegmentContent">SegmentContent</a></li>
 <li><a href="#SplitContent">SplitContent</a></li>
+<li><a href="#SplitJson">SplitJson</a></li>
 <li><a href="#SplitText">SplitText</a></li>
 <li><a href="#SplitXML">SplitXML</a></li>
+<li><a href="#StoreInKiteDataset">StoreInKiteDataset</a></li>
 <li><a href="#TransformXML">TransformXML</a></li>
 <li><a href="#UnpackContent">UnpackContent</a></li>
 <li><a href="#UpdateAttribute">UpdateAttribute</a></li>
@@ -594,6 +656,14 @@
 <h3><a name="ConvertCharacterSet"></a>ConvertCharacterSet</h3>
 
 <p>This processor converts a FlowFile&rsquo;s content from one character set to another.</p>
+
+<h3><a name="ConvertCSVToAvro"></a>ConvertCSVToAvro</h3>
+
+<p>No description is given for this processor.</p>
+
+<h3><a name="ConvertJSONToAvro"></a>ConvertJSONToAvro</h3>
+
+<p>No description is given for this processor.</p>
 
 <h3><a name="CreateHadoopSequenceFile"></a>CreateHadoopSequenceFile</h3>
 
@@ -619,6 +689,10 @@ NOTE: The value portion of a key/value pair is loaded into memory. While there i
 
 <p>This processor encrypts or decrypts FlowFiles.</p>
 
+<h3><a name="EvaluateJsonPath"></a>EvaluateJsonPath</h3>
+
+<p>Evaluates one or more JsonPath expressions against the content of a FlowFile. The results of those expressions are assigned to FlowFile Attributes or are written to the content of the FlowFile itself, depending on configuration of the Processor. JsonPaths are entered by adding user-defined properties; the name of the property maps to the Attribute Name into which the result will be placed (if the Destination is flowfile-attribute; otherwise, the property name is ignored). The value of the property must be a valid JsonPath expression. If the JsonPath evaluates to a JSON array or JSON object and the Return Type is set to &lsquo;scalar&rsquo; the FlowFile will be unmodified and will be routed to failure. A Return Type of JSON can return scalar values if the provided JsonPath evaluates to the specified value and will be routed as a match. If Destination is &lsquo;flowfile-content&rsquo; and the JsonPath does not evaluate to a defined path, the FlowFile will be routed to &lsquo;unmatched&rsquo; without having its contents modified. If Destination is flowfile-attribute and the expression matches nothing, attributes will be created with empty strings as the value, and the FlowFile will always be routed to &lsquo;matched&rsquo;.</p>
+
 <h3><a name="EvaluateRegularExpression"></a>EvaluateRegularExpression</h3>
 
 <p>This processor evaluates one or more Regular Expressions against the content of a FlowFile. The results of those Regular Expressions are assigned to FlowFile Attributes. Regular Expressions are entered by adding user-defined properties; the name of the property maps to the Attribute Name into which the result will be placed. The value of the property must be a valid Regular Expressions with exactly one capturing group. If the Regular Expression matches more than once, only the first match will be used. If any provided Regular Expression matches, the FlowFile(s) will be routed to &lsquo;matched&rsquo;. If no provided Regular Expression matches, the FlowFile will be routed to &lsquo;unmatched&rsquo; and no attributes will be applied to the FlowFile.</p>
@@ -630,6 +704,10 @@ NOTE: The value portion of a key/value pair is loaded into memory. While there i
 <h3><a name="EvaluateXQuery"></a>EvaluateXQuery</h3>
 
 <p>This processor evaluates one or more XQueries against the content of FlowFiles. The results of those XQueries are assigned to FlowFile attributes or are written to the content of the FlowFile itself, depending on how the user configures the Destination property in the processor. One attribute or FlowFile is produced for each XQuery result. Each produced FlowFile will carry the attributes of the input FlowFile. See the &ldquo;Examples&rdquo; section for details on how multiple results can be wrapped or concatenated. XQueries are entered by adding user-defined properties; the name of each user-added property maps to the attribute name into which the result should be placed. The value of the property must be a valid XQuery expression.</p>
+
+<h3><a name="ExecuteProcess"></a>ExecuteProcess</h3>
+
+<p>Runs an operating system command specified by the user and writes the output of that command to a FlowFile. If the command is expected to be long-running, the Processor can output the partial data on a specified interval. When this option is used, the output is expected to be in textual format, as it typically does not make sense to split binary data on arbitrary time-based intervals.</p>
 
 <h3><a name="ExecuteStreamCommand"></a>ExecuteStreamCommand</h3>
 
@@ -678,6 +756,28 @@ NOTE: The value portion of a key/value pair is loaded into memory. While there i
 <h3><a name="GetSFTP"></a>GetSFTP</h3>
 
 <p>This processor pulls files from an SFTP server and creates FlowFiles to encapsulate them.</p>
+
+<h3><a name="HandleHttpRequest"></a>HandleHttpRequest</h3>
+
+<p>This processor starts an HTTP server and creates a FlowFile for each HTTP Request that it receives. The Processor leaves the HTTP Connection open and is intended to be used in conjunction with a HandleHttpResponse Processor.</p>
+
+<p>The pairing of this Processor with a HandleHttpResponse Processor provides the ability to use NiFi to visually construct a web server that can carry out any functionality that is available through the existing Processors. For example, one could construct a Web-based front end to an SFTP Server by constructing a flow such as:</p>
+
+<p>HandleHttpRequest -> PutSFTP -> HandleHttpResponse</p>
+
+<p>The HandleHttpRequest Processor provides several Properties to configure which methods are supported, the paths that are supported, and SSL configuration. The FlowFiles that are generated by this Processor have the following attributes added to them, providing powerful routing capabilities and traceability of all data.</p>
+
+<h3><a name="HandleHttpResponse"></a>HandleHttpResponse</h3>
+
+<p>This processor responds to an HTTP request that was received by the HandleHttpRequest Processor.</p>
+
+<p>The pairing of this Processor with a HandleHttpRequest Processor provides the ability to use NiFi to visually construct a web server that can carry out any functionality that is available through the existing Processors. For example, one could construct a Web-based front end to an SFTP Server by constructing a flow such as:</p>
+
+<p>HandleHttpRequest -> PutSFTP -> HandleHttpResponse</p>
+
+<p>This Processor must be configured with the same <HTTP Context Map> service as the corresponding HandleHttpRequest Processor. Otherwise, all FlowFiles will be routed to the &lsquo;failure&rsquo; relationship.</p>
+
+<p>All FlowFiles must have an attribute named http.context.identifier. The value of this attribute is used to lookup the HTTP Response so that the proper message can be sent back to the requestor. If this attribute is missing, the FlowFile will be routed to &lsquo;failure.&rsquo;</p>
 
 <h3><a name="HashAttribute"></a>HashAttribute</h3>
 
@@ -834,6 +934,12 @@ In this example, all files with filenames that start with ABC will follow the AB
 
 <p>This processor splits incoming FlowFiles by a specified byte sequence.</p>
 
+<h3><a name="SplitJson"></a>SplitJson</h3>
+
+<p>This processor splits a JSON File into multiple, separate FlowFiles for an array element specified by a JsonPath expression. Each generated FlowFile is comprised of an element of the specified array and transferred to relationship &lsquo;split,&rsquo; with the original file transferred to the &lsquo;original&rsquo; relationship. If the specified JsonPath is not found or does not evaluate to an array element, the original file is routed to &lsquo;failure&rsquo; and no files are generated.</p>
+
+<p>Note: The underlying JsonPath library loads the entirety of the streamed content into and performs result evaluations in memory. Accordingly, it is important to consider the anticipated profile of content being evaluated by this processor and the hardware supporting it especially when working against large JSON documents.</p>
+
 <h3><a name="SplitText"></a>SplitText</h3>
 
 <p>This processor splits a text file into multiple smaller text files on line boundaries, each having up to a configured number of lines.</p>
@@ -841,6 +947,10 @@ In this example, all files with filenames that start with ABC will follow the AB
 <h3><a name="SplitXML"></a>SplitXML</h3>
 
 <p>This processor splits an XML file into multiple separate FlowFiles, each comprising a child or descendant of the original root element.</p>
+
+<h3><a name="StoreInKiteDataset"></a>StoreInKiteDataset</h3>
+
+<p>No description is given for this processor.</p>
 
 <h3><a name="TransformXML"></a>TransformXML</h3>
 
@@ -901,131 +1011,6 @@ In this example, all files with filenames that start with ABC will follow the AB
 
 <iframe width="560" height="315" src="https://www.youtube.com/embed/FgTGAWLC170" frameborder="0" allowfullscreen></iframe>
 
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Getting Started with Apache Nifi]]></title>
-    <link href="http://www.nifi.rocks/getting-started-with-apache-nifi/"/>
-    <updated>2015-01-16T01:08:03+00:00</updated>
-    <id>http://www.nifi.rocks/getting-started-with-apache-nifi</id>
-    <content type="html"><![CDATA[<ul>
-<li>Update Feb. 2nd 2014: The Vagrantfile has been updated to pull the release tag 0.0.1 for stability</li>
-</ul>
-
-
-<h1>Install options</h1>
-
-<p><a href="http://nifi.incubator.apache.org/">Apache NiFi</a> is currently in incubation and so does not have any releases, so to start we have to checkout the project and build the code base.  A users guide is avaialble on the <a href="http://nifi.incubator.apache.org/development/quickstart.html">nifi website</a> with requirements for building and running nifi, mainly java 7 and maven 3.0.5+.  OpendJDK will work but currently the unit tests will not pass.  A quick tldr; can be found below.</p>
-
-<h2>Using Vagrant</h2>
-
-<p>If you like to keep your project dependencies seperate like me, I&rsquo;ve created a <a href="https://gist.github.com/czobrisky/a1ed32d9429600f4e661#file-vagrantfile">Vagrantfile</a> that will get all dependencies and then build the project in the shared /vagrant/ folder.  After building it will start nifi and you can point your browser to localhost:8080/nifi/ and skip to <a href="#building-dataflow">Building a Simple Dataflow</a>.  The provisioning of the VM will take about 10-15 minutes depending on your hardware.</p>
-
-<!-- more -->
-
-
-
-
-<script src="https://gist.github.com/czobrisky/a1ed32d9429600f4e661.js"></script>
-
-
-<p>If you want to build it for yourself it normally takes 2-6 minutes depending on your system, with parrallel builds enabled.
-Clone from Apache Nifi git repo:</p>
-
-<pre><code>git clone http://git-wip-us.apache.org/repos/asf/incubator-nifi.git
-cd incubator-nifi
-git checkout develop
-</code></pre>
-
-<p>Once you have the source, first have to build the nar-maven-plugin.</p>
-
-<pre><code>cd nifi-nar-maven-plugin
-mvn clean install
-</code></pre>
-
-<p>Now build the rest of the source from the root directory.</p>
-
-<pre><code>cd ../nifi
-mvn -T C2.0 clean install
-</code></pre>
-
-<p>NiFi recently updated their build process so it now supports parrallel building of components using the -T maven arg to speed up the build.</p>
-
-<p>The last step is to build the assembly and unpack the created tar.gz.</p>
-
-<pre><code>cp nifi-assembly/target/nifi-*-SNAPSHOT-bin.tar.gz ~/nifi-example/
-tar -zxf nifi-*-SNAPSHOT-bin.tar.gz
-</code></pre>
-
-<p>After unpacking, cd into the directory and start NiFi in the background using the nifi.sh script in the bin directory.</p>
-
-<pre><code>cd nifi-*-SNAPSHOT
-bin/nifi.sh start
-</code></pre>
-
-<p>Now open a browser and point to localhost:8080/nifi to view the NiFi flow UI.</p>
-
-<p><img src="/images/getting-started/nifi-home.png"></p>
-
-<h1><a name="building-dataflow"></a>Building your first Apache Nifi dataflow</h1>
-
-<p>The homepage webpage for Apache NiFi is a grid with some options on the top of the page.  This is where you build your data flows, the configuration of each processor and the relationship between processors.  This is saved as a FlowFile and can be saved for later use or imported into another Apache NiFi instance.  As an example, we&rsquo;ll fetch an XML document from an RSS feed and then based on an attribute and move it to a predefined directory.</p>
-
-<p>To start, drag the processor icon, <img src="/images/getting-started/processor.png"> in the menu bar down to the canvas below.  Select the GetHTTP processor from the list, you can use the search bar on the right side of the Add Processor modal or the Tags on the left to filter the list.
-<img src="/images/getting-started/add-processor-highlight.png"></p>
-
-<p>Right clicking on the processor brings up a dropdown that allows you to configure the processor along with a few other options.
-<img class="right" src="/images/getting-started/processor-dropdown.png"></p>
-
-<p>From this selection a &ldquo;Configure Processor&rdquo; modal opens.  Most default settinsg are fine, you can change the name if you would like to &ldquo;Fetch from XKCD&rdquo;, but look through the tabs just to see what they contain.  Select the properties tab to configure the options of the processor.</p>
-
-<p><img src="/images/getting-started/configure-processor.png"></p>
-
-<p>The URL we are going to grab a file from is <a href="http://xkcd.com">XKCD&rsquo;s</a> rss feed, <a href="http://xkcd.com/rss.xml">rss.xml</a>.  The GetHTTP procesor is simple to configure and just needs the URL property to be set to <a href="http://xkcd.com/rss.xml.">http://xkcd.com/rss.xml.</a>  Click on the value across from the URL property and enter <a href="http://xkcd.com/rss.xml.">http://xkcd.com/rss.xml.</a></p>
-
-<p>Now drag down another processor, EvaluateXPath.  Under the properties for this processor, set the following property-value pairs:</p>
-
-<ul>
-<li>Destination   -   flowfile-attribute</li>
-<li>Return Type   -   auto-detect</li>
-</ul>
-
-
-<p>Now add a new property as follows by clicking the New property symbol in the upper right side of the Configure Processor modal.</p>
-
-<ul>
-<li>pubDate   -   channel/item[2]/pubDate</li>
-<li>title     -   channel/item[2]/title</li>
-<li>link      -   channel/item[2]/link</li>
-</ul>
-
-
-<p><img src="/images/getting-started/config-xpath.png"></p>
-
-<p>After applying the changes, we can now connect the two processors we have.  Click the middle of the GetHTTP processor and then drag to the EvaluateXPath processor.  A new modal will appear to confirm the relationship and click ok.  After connecting the two. <img class="right" src="/images/getting-started/connected-procs.png"></p>
-
-<p>We are almost done, just two more PutFile processors to go.  Before we add the next two processors, we need to create two directories to put matched and unmatched files.  (This is really optional since the PutFile processor will create the directory by default if it does not exist, but it&rsquo;s easier to do in advance knowing the full path.)  If you used the Vagrantfile that I linked to earlier, these directories are already created for you, so you can skip this part.  If you did not, just create a directory called matched and unmatched and remember the full path.</p>
-
-<p>Now add two PutFile Processors and change one name to matched, the other to unmatched.  Both PutFile processors will have auto terminated relationships for failure and success.  These are checked off on the Settings tab when configuring each processor. <img src="/images/getting-started/auto-terminate-hg.png">  For the matched PutFile processor, change the directory property value to the directory you created earlier called matched, with the full path. If you are using the Vagrantfile, the directory is &ldquo;/vagrant/matched/&rdquo;.  For the unmatched PutFile processor, do the same thing for the unmatched directory you created, &ldquo;/vagrant/unmatched/&rdquo; if using the Vagrantfile.</p>
-
-<p>Now wire the last few processors, EvaluateXPath and the two PutFile processors.  Make sure to connect the correct relationships from the EvaluateXPath for the matched and unmatched.  Lastly, wire the failure relationship for the EvaluateXPath back to itself by left clicking on the processor as you normally would to connect processors, pulling away and then back to the original processor and then select failure from the relationship modal.  This allows failures to retry on the processor they failed on, EvaluateXPath in this example.</p>
-
-<p>Your final flow should look similar to this.</p>
-
-<p><img src="/images/getting-started/completed-flow.png"></p>
-
-<p>All processors should be stopped and have a red square in their top left.  If they have an exclaimation mark in a yellow triangle, then there is an issue with the processor.  Hover of the yellow triangle to get more information.  (To see an example, remove one of the auto terminate relationships from a PutFile processor).</p>
-
-<p>Now we can run our flow file and see what happens!  Run the flow by clicking the play button in the flow menu bar.</p>
-
-<p><img src="/images/getting-started/menu-bar-hg.png"></p>
-
-<p>Make sure you don&rsquo;t have a processor selected or it will only start that one processor.  After running, it should pull down the rss.xml file, parse the attributes, and route it to the matched directory via the PutFile processor.  You can view the statistics on each processor from the flow, In and out, and Tasks/Time.  After it grabs the file, it should look similar to below.  You can check the directory you specified in the matched PutFile processor and the file should be there!</p>
-
-<p><img src="/images/getting-started/finished-flow.png"></p>
-
-<p>I hope this simple walk through of creating a flow was helpful and you can start to see the power behind Apache Nifi.  In our next post we will show you how to create a custom processor and add it to your flow.</p>
 ]]></content>
   </entry>
   
