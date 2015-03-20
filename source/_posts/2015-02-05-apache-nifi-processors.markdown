@@ -2,6 +2,7 @@
 layout: post
 title: "Apache Nifi: What Processors are there?"
 date: 2015-02-05 03:00:06 +0000
+updated: 2015-03-20 12:14:00 +0000
 author: Chad Zobrisky
 comments: true
 sharing: true
@@ -10,6 +11,8 @@ description: Apache Nifi processors and processors list.
 keywords: Apache Nifi, apache nifi, Nifi, Processors
 categories: [Apache Nifi, Processors]
 ---
+
+** Includes all processors through release 0.0.2 **
 
 I looked around at what can be done with Apache NiFi and didn't notice a list of processors without looking at the code or building the project.  I think a list of available processors, the work horse of Apache Nifi, would greatly help decide if it is right for certain needs.  So, I went into the usage guide in the Apache Nifi UI and pulled a list of processors and a quick description for those who want to know what possibilities there are before getting into nifi itself!
 
@@ -22,13 +25,17 @@ Here is a list of all 53 processors, listed alphabetically, that are currently i
 * [CompressContent](#CompressContent)
 * [ControlRate](#ControlRate)
 * [ConvertCharacterSet](#ConvertCharacterSet)
+* [ConvertCSVToAvro](#ConvertCSVToAvro)
+* [ConvertJSONToAvro](#ConvertJSONToAvro)
 * [CreateHadoopSequenceFile](#CreateHadoopSequenceFile)
 * [DetectDuplicate](#DetectDuplicate)
 * [DistributeLoad](#DistributeLoad)
 * [EncryptContent](#EncryptContent)
+* [EvaluateJSONPath](#EvaluateJSONPath)
 * [EvaluateRegularExpression](#EvaluateRegularExpression)
 * [EvaluateXPath](#EvaluateXPath)
 * [EvaluateXQuery](#EvaluateXQuery)
+* [ExecuteProcess](#ExecuteProcess)
 * [ExecuteStreamCommand](#ExecuteStreamCommand)
 * [GenerateFlowFile](#GenerateFlowFile)
 * [GetFile](#GetFile)
@@ -40,6 +47,8 @@ Here is a list of all 53 processors, listed alphabetically, that are currently i
 * [GetJMSTopic](#GetJMSTopic)
 * [GetKafka](#GetKafka)
 * [GetSFTP](#GetSFTP)
+* [HandleHttpRequest](#HandleHttpRequest)
+* [HandleHttpResponse](#HandleHttpResponse)
 * [HashAttribute](#HashAttribute)
 * [HashContent](#HashContent)
 * [IdentifyMimeType](#IdentifyMimeType)
@@ -66,8 +75,10 @@ Here is a list of all 53 processors, listed alphabetically, that are currently i
 * [ScanContent](#ScanContent)
 * [SegmentContent](#SegmentContent)
 * [SplitContent](#SplitContent)
+* [SplitJson](#SplitJson)
 * [SplitText](#SplitText)
 * [SplitXML](#SplitXML)
+* [StoreInKiteDataset](#StoreInKiteDataset)
 * [TransformXML](#TransformXML)
 * [UnpackContent](#UnpackContent)
 * [UpdateAttribute](#UpdateAttribute)
@@ -84,6 +95,12 @@ This processor controls the rate at which data is transferred to follow-on proce
 
 ### <a name="ConvertCharacterSet"></a>ConvertCharacterSet
 This processor converts a FlowFile's content from one character set to another.
+
+### <a name="ConvertCSVToAvro"></a>ConvertCSVToAvro
+No description is given for this processor.
+
+### <a name="ConvertJSONToAvro"></a>ConvertJSONToAvro
+No description is given for this processor.
 
 ### <a name="CreateHadoopSequenceFile"></a>CreateHadoopSequenceFile
 This processor is used to create a Hadoop Sequence File, which essentially is a file of key/value pairs. The key will be a file name and the value will be the flow file content. The processor will take either a merged (a.k.a. packaged) flow file or a singular flow file. Historically, this processor handled the merging by type and size or time prior to creating a SequenceFile output; it no longer does this. If creating a SequenceFile that contains multiple files of the same type is desired, precede this processor with a RouteOnAttribute processor to segregate files of the same type and follow that with a MergeContent processor to bundle up files. If the type of files is not important, just use the MergeContent processor. When using the MergeContent processor, the following Merge Formats are supported by this processor:
@@ -105,6 +122,9 @@ This processor distributes FlowFiles to downstream processors based on a distrib
 ### <a name="EncryptContent"></a>EncryptContent
 This processor encrypts or decrypts FlowFiles.
 
+### <a name="EvaluateJsonPath"></a>EvaluateJsonPath
+Evaluates one or more JsonPath expressions against the content of a FlowFile. The results of those expressions are assigned to FlowFile Attributes or are written to the content of the FlowFile itself, depending on configuration of the Processor. JsonPaths are entered by adding user-defined properties; the name of the property maps to the Attribute Name into which the result will be placed (if the Destination is flowfile-attribute; otherwise, the property name is ignored). The value of the property must be a valid JsonPath expression. If the JsonPath evaluates to a JSON array or JSON object and the Return Type is set to 'scalar' the FlowFile will be unmodified and will be routed to failure. A Return Type of JSON can return scalar values if the provided JsonPath evaluates to the specified value and will be routed as a match. If Destination is 'flowfile-content' and the JsonPath does not evaluate to a defined path, the FlowFile will be routed to 'unmatched' without having its contents modified. If Destination is flowfile-attribute and the expression matches nothing, attributes will be created with empty strings as the value, and the FlowFile will always be routed to 'matched'.
+
 ### <a name="EvaluateRegularExpression"></a>EvaluateRegularExpression
 This processor evaluates one or more Regular Expressions against the content of a FlowFile. The results of those Regular Expressions are assigned to FlowFile Attributes. Regular Expressions are entered by adding user-defined properties; the name of the property maps to the Attribute Name into which the result will be placed. The value of the property must be a valid Regular Expressions with exactly one capturing group. If the Regular Expression matches more than once, only the first match will be used. If any provided Regular Expression matches, the FlowFile(s) will be routed to 'matched'. If no provided Regular Expression matches, the FlowFile will be routed to 'unmatched' and no attributes will be applied to the FlowFile.
 
@@ -113,6 +133,9 @@ This processor evaluates one or more XPaths against the content of FlowFiles. Th
 
 ### <a name="EvaluateXQuery"></a>EvaluateXQuery
 This processor evaluates one or more XQueries against the content of FlowFiles. The results of those XQueries are assigned to FlowFile attributes or are written to the content of the FlowFile itself, depending on how the user configures the Destination property in the processor. One attribute or FlowFile is produced for each XQuery result. Each produced FlowFile will carry the attributes of the input FlowFile. See the "Examples" section for details on how multiple results can be wrapped or concatenated. XQueries are entered by adding user-defined properties; the name of each user-added property maps to the attribute name into which the result should be placed. The value of the property must be a valid XQuery expression.
+
+### <a name="ExecuteProcess"></a>ExecuteProcess
+Runs an operating system command specified by the user and writes the output of that command to a FlowFile. If the command is expected to be long-running, the Processor can output the partial data on a specified interval. When this option is used, the output is expected to be in textual format, as it typically does not make sense to split binary data on arbitrary time-based intervals.
 
 ### <a name="ExecuteStreamCommand"></a>ExecuteStreamCommand
 This processor executes an external command on the contents of a FlowFile, and creates a new FlowFile with the results of the command.
@@ -150,6 +173,26 @@ Kafka supports the notion of a Consumer Group when pulling messages in order to 
 
 ### <a name="GetSFTP"></a>GetSFTP
 This processor pulls files from an SFTP server and creates FlowFiles to encapsulate them.
+
+### <a name="HandleHttpRequest"></a>HandleHttpRequest
+This processor starts an HTTP server and creates a FlowFile for each HTTP Request that it receives. The Processor leaves the HTTP Connection open and is intended to be used in conjunction with a HandleHttpResponse Processor.
+
+The pairing of this Processor with a HandleHttpResponse Processor provides the ability to use NiFi to visually construct a web server that can carry out any functionality that is available through the existing Processors. For example, one could construct a Web-based front end to an SFTP Server by constructing a flow such as:
+
+HandleHttpRequest -> PutSFTP -> HandleHttpResponse
+
+The HandleHttpRequest Processor provides several Properties to configure which methods are supported, the paths that are supported, and SSL configuration. The FlowFiles that are generated by this Processor have the following attributes added to them, providing powerful routing capabilities and traceability of all data.
+
+### <a name="HandleHttpResponse"></a>HandleHttpResponse
+This processor responds to an HTTP request that was received by the HandleHttpRequest Processor.
+
+The pairing of this Processor with a HandleHttpRequest Processor provides the ability to use NiFi to visually construct a web server that can carry out any functionality that is available through the existing Processors. For example, one could construct a Web-based front end to an SFTP Server by constructing a flow such as:
+
+HandleHttpRequest -> PutSFTP -> HandleHttpResponse
+
+This Processor must be configured with the same <HTTP Context Map> service as the corresponding HandleHttpRequest Processor. Otherwise, all FlowFiles will be routed to the 'failure' relationship.
+
+All FlowFiles must have an attribute named http.context.identifier. The value of this attribute is used to lookup the HTTP Response so that the proper message can be sent back to the requestor. If this attribute is missing, the FlowFile will be routed to 'failure.'
 
 ### <a name="HashAttribute"></a>HashAttribute
 This processor hashes together the key/value pairs of several FlowFile attributes and adds the hash as a new attribute. The user may add optional properties such that the name of each property is the name of a FlowFile attribute to consider and the value of the property is a regular expression that, if matched by the attribute value, causes that attribute to be used as part of the hash. If the regular expression contains a capturing group, only the value of the capturing group is used.
@@ -277,11 +320,19 @@ This processor segments a FlowFile into multiple smaller segments on byte bounda
 ### <a name="SplitContent"></a>SplitContent
 This processor splits incoming FlowFiles by a specified byte sequence.
 
+### <a name="SplitJson"></a>SplitJson
+This processor splits a JSON File into multiple, separate FlowFiles for an array element specified by a JsonPath expression. Each generated FlowFile is comprised of an element of the specified array and transferred to relationship 'split,' with the original file transferred to the 'original' relationship. If the specified JsonPath is not found or does not evaluate to an array element, the original file is routed to 'failure' and no files are generated.
+
+Note: The underlying JsonPath library loads the entirety of the streamed content into and performs result evaluations in memory. Accordingly, it is important to consider the anticipated profile of content being evaluated by this processor and the hardware supporting it especially when working against large JSON documents.
+
 ### <a name="SplitText"></a>SplitText
 This processor splits a text file into multiple smaller text files on line boundaries, each having up to a configured number of lines.
 
 ### <a name="SplitXML"></a>SplitXML
 This processor splits an XML file into multiple separate FlowFiles, each comprising a child or descendant of the original root element.
+
+### <a name="StoreInKiteDataset"></a>StoreInKiteDataset
+No description is given for this processor.
 
 ### <a name="TransformXML"></a>TransformXML
 This processor transforms the contents of FlowFiles based on a user-specified XSLT stylesheet file. XSL versions 1.0 and 2.0 are supported.
