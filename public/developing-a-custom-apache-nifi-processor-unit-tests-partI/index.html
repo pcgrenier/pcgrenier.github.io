@@ -1,0 +1,367 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>Developing a Custom Apache Nifi Processor-Unit Tests (Part I) - NiFi.rocks</title>
+  <meta name="author" content="">
+
+<meta name="description" content="How to write unit tests in Apache Nifi.">
+<meta name="keywords" content="Apache Nifi, apache nifi, Nifi, Processors, Unit Tests, unit testing">
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://www.nifi.rocks/developing-a-custom-apache-nifi-processor-unit-tests-partI">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/atom.xml" rel="alternate" title="NiFi.rocks" type="application/atom+xml">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  <script>!window.jQuery && document.write(unescape('%3Cscript src="./javascripts/lib/jquery.min.js"%3E%3C/script%3E'))</script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="//fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="//fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href='//fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'>
+<link href='//fonts.googleapis.com/css?family=Fjalla+One' rel='stylesheet' type='text/css'>
+
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-57621921-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body   class="collapse-sidebar sidebar-footer" >
+  <header role="banner">
+	<div class="header-title"><a href="/">NiFi.rocks</a></div>
+
+
+	<br><div class="header-subtitle">Your home for everything Apache NiFi</div>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="https://www.google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:www.nifi.rocks" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">Home</a></li>
+  <li><a href="/archives">Archives</a></li>
+  <li><a href="/about">About</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+  
+    
+      <h1 class="entry-title">Developing a Custom Apache Nifi Processor-Unit Tests (Part I)</h1>
+    
+  
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2015-04-04T16:54:52+00:00'><span class='date'>April  4, 2015</span> <span class='time'></span></time>
+        
+         | <a href="#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><p>The Apache Nifi framework has built in unit testing with Junit using test runners.  They have a few examples in their code base, but learning first hand really helps.  In this post we&rsquo;ll go over adding unit tests to the <a href="http://www.nifi.rocks/developing-a-custom-apache-nifi-processor-json/">JSON Processor</a> that we developed previously.</p>
+
+<p>To start, we&rsquo;ll checkout the JSON Processor code from <a href="https://github.com/pcgrenier/nifi-examples">Github</a> and then open it up in your favorite text editor.  There is already a test package/folder in the project that contains a unit test, <a href="https://github.com/pcgrenier/nifi-examples/blob/master/src/test/java/rocks/nifi/examples/processors/JsonProcessorTest.java">rocks.nifi.examples.processors/JsonProcessorTest.java</a>.</p>
+
+<p>When unit testing in Apache Nifi, there are a few items on top of the normal JUnit annotations that are required.  While you can unit test with just JUnit, using the built in method in Apache Nifi makes it much easier.  In a future post we&rsquo;ll show you how to unit test using Mockito and JUnit to test helper methods where actually invoking a full processor seems excessive, or if you just don&rsquo;t want to use Nifi&rsquo;s test runner.</p>
+
+<!-- more -->
+
+
+<p>The first thing to do to unit test Apache Nifi is grabbing the necessary dependencies from maven.</p>
+
+<figure class='code'><figcaption><span>pom.xml</span><a href='https://github.com/pcgrenier/nifi-examples/blob/master/pom.xml#L42'>link</a></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+</pre></td><td class='code'><pre><code class='xml'><span class='line'>      <span class="nt">&lt;dependency&gt;</span>
+</span><span class='line'>            <span class="nt">&lt;groupId&gt;</span>org.apache.nifi<span class="nt">&lt;/groupId&gt;</span>
+</span><span class='line'>            <span class="nt">&lt;artifactId&gt;</span>nifi-mock<span class="nt">&lt;/artifactId&gt;</span>
+</span><span class='line'>            <span class="nt">&lt;version&gt;</span>${nifi.version}<span class="nt">&lt;/version&gt;</span>
+</span><span class='line'>            <span class="nt">&lt;scope&gt;</span>test<span class="nt">&lt;/scope&gt;</span>
+</span><span class='line'>        <span class="nt">&lt;/dependency&gt;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>After including the nifi-mock dependency, there will be a few includes from the org.apache.nifi.utils package that will be necessary to import; mainly TestRunner, TestRunners and MockFlowFile.</p>
+
+<p>Since we are using JUnit, the usual tags apply for defining a test function inside the class and we&rsquo;ll use the @Test for this one, although the other annotations can be used.  After adding the JUnit tag, there are a few requirements that Nifi puts on you in order to utilize the test runners they have provided.  The first is to create a test runner to use and then to set a flow file or flow file content inorder to run the processor.  In this example, we are using a ByteArrayInputStream as the flow file content, although you could use a JSON file in a resource folder just as well.</p>
+
+<p>Once a test runner is created, you can set flow file properties on it using <code>runner.setProperties()</code> method and can enqueue a file using <code>runner.enqueue(content)</code>.  Then you can run the test runner and make assertions.</p>
+
+<p>Nifi makes it easy to test assertions with some built in assertions for flowfiles.  You can test the flowfile was transfered to the appropriate relationship and get the flowfile to test for expected attributes and content.</p>
+
+<p>Below is how we testing the JSON Processor, with a typical test setup for Apache Nifi.</p>
+
+<figure class='code'><figcaption><span>JSON Processor Unit Test</span><a href='https://github.com/pcgrenier/nifi-examples/blob/master/src/test/java/rocks/nifi/examples/processors/JsonProcessorTest.java'>JsonProcessorTest.java </a></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="nd">@org.junit.Test</span>
+</span><span class='line'>    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">testOnTrigger</span><span class="o">()</span> <span class="kd">throws</span> <span class="n">IOException</span> <span class="o">{</span>
+</span><span class='line'>        <span class="c1">// Content to be mock a json file</span>
+</span><span class='line'>        <span class="n">InputStream</span> <span class="n">content</span> <span class="o">=</span> <span class="k">new</span> <span class="nf">ByteArrayInputStream</span><span class="o">(</span><span class="s">&quot;{\&quot;hello\&quot;:\&quot;nifi rocks\&quot;}&quot;</span><span class="o">.</span><span class="na">getBytes</span><span class="o">());</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="c1">// Generate a test runner to mock a processor in a flow</span>
+</span><span class='line'>        <span class="n">TestRunner</span> <span class="n">runner</span> <span class="o">=</span> <span class="n">TestRunners</span><span class="o">.</span><span class="na">newTestRunner</span><span class="o">(</span><span class="k">new</span> <span class="nf">JsonProcessor</span><span class="o">());</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="c1">// Add properites</span>
+</span><span class='line'>        <span class="n">runner</span><span class="o">.</span><span class="na">setProperty</span><span class="o">(</span><span class="n">JsonProcessor</span><span class="o">.</span><span class="na">JSON_PATH</span><span class="o">,</span> <span class="s">&quot;$.hello&quot;</span><span class="o">);</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="c1">// Add the content to the runner</span>
+</span><span class='line'>        <span class="n">runner</span><span class="o">.</span><span class="na">enqueue</span><span class="o">(</span><span class="n">content</span><span class="o">);</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="c1">// Run the enqueued content, it also takes an int = number of contents queued</span>
+</span><span class='line'>        <span class="n">runner</span><span class="o">.</span><span class="na">run</span><span class="o">(</span><span class="mi">1</span><span class="o">);</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="c1">// All results were processed with out failure</span>
+</span><span class='line'>        <span class="n">runner</span><span class="o">.</span><span class="na">assertQueueEmpty</span><span class="o">();</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="c1">// If you need to read or do aditional tests on results you can access the content</span>
+</span><span class='line'>        <span class="n">List</span><span class="o">&lt;</span><span class="n">MockFlowFile</span><span class="o">&gt;</span> <span class="n">results</span> <span class="o">=</span> <span class="n">runner</span><span class="o">.</span><span class="na">getFlowFilesForRelationship</span><span class="o">(</span><span class="n">JsonProcessor</span><span class="o">.</span><span class="na">SUCCESS</span><span class="o">);</span>
+</span><span class='line'>        <span class="n">assertTrue</span><span class="o">(</span><span class="s">&quot;1 match&quot;</span><span class="o">,</span> <span class="n">results</span><span class="o">.</span><span class="na">size</span><span class="o">()</span> <span class="o">==</span> <span class="mi">1</span><span class="o">);</span>
+</span><span class='line'>        <span class="n">MockFlowFile</span> <span class="n">result</span> <span class="o">=</span> <span class="n">results</span><span class="o">.</span><span class="na">get</span><span class="o">(</span><span class="mi">0</span><span class="o">);</span>
+</span><span class='line'>        <span class="n">String</span> <span class="n">resultValue</span> <span class="o">=</span> <span class="k">new</span> <span class="nf">String</span><span class="o">(</span><span class="n">runner</span><span class="o">.</span><span class="na">getContentAsByteArray</span><span class="o">(</span><span class="n">result</span><span class="o">));</span>
+</span><span class='line'>        <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">&quot;Match: &quot;</span> <span class="o">+</span> <span class="n">IOUtils</span><span class="o">.</span><span class="na">toString</span><span class="o">(</span><span class="n">runner</span><span class="o">.</span><span class="na">getContentAsByteArray</span><span class="o">(</span><span class="n">result</span><span class="o">)));</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="c1">// Test attributes and content</span>
+</span><span class='line'>        <span class="n">result</span><span class="o">.</span><span class="na">assertAttributeEquals</span><span class="o">(</span><span class="n">JsonProcessor</span><span class="o">.</span><span class="na">MATCH_ATTR</span><span class="o">,</span> <span class="s">&quot;nifi rocks&quot;</span><span class="o">);</span>
+</span><span class='line'>        <span class="n">result</span><span class="o">.</span><span class="na">assertContentEquals</span><span class="o">(</span><span class="s">&quot;nifi rocks&quot;</span><span class="o">);</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="o">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Watch for our next post about unit testing Apache Nifi with Mockito and JUnit without using nifi&rsquo;s testrunner class.</p>
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">Chad Zobrisky</span></span>
+
+      
+
+
+
+
+<time class='entry-date' datetime='2015-04-04T16:54:52+00:00'><span class='date'>April  4, 2015</span> <span class='time'></span></time>
+      
+
+<span class="categories">
+  
+    <a class='category' href='/categories/apache-nifi/'>apache nifi</a>, <a class='category' href='/categories/processors/'>processors</a>, <a class='category' href='/categories/unit-tests/'>unit tests</a>
+  
+</span>
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://www.nifi.rocks/developing-a-custom-apache-nifi-processor-unit-tests-partI/" data-via="nifirocks" data-counturl="http://www.nifi.rocks/developing-a-custom-apache-nifi-processor-unit-tests-partI/" >Tweet</a>
+  
+  
+  <div class="g-plusone" data-size="medium"></div>
+  
+  
+    <div class="fb-like" data-send="true" data-width="450" data-show-faces="false"></div>
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/apache-nifi-release-0-dot-0-2-highlights/" title="Previous Post: Apache Nifi Release 0.0.2 Highlights">&laquo; Apache Nifi Release 0.0.2 Highlights</a>
+      
+      
+    </p>
+  </footer>
+</article>
+
+  <section>
+    <h1>Comments</h1>
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+  </section>
+
+</div>
+
+<aside class="sidebar">
+  
+    <section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/developing-a-custom-apache-nifi-processor-unit-tests-partI/">Developing a Custom Apache Nifi Processor-Unit Tests (Part I)</a>
+      </li>
+    
+      <li class="post">
+        <a href="/apache-nifi-release-0-dot-0-2-highlights/">Apache Nifi Release 0.0.2 Highlights</a>
+      </li>
+    
+      <li class="post">
+        <a href="/developing-a-custom-apache-nifi-processor-json/">Developing A Custom Apache Nifi Processor (JSON)</a>
+      </li>
+    
+      <li class="post">
+        <a href="/apache-nifi-processors/">Apache Nifi: What Processors are there?</a>
+      </li>
+    
+      <li class="post">
+        <a href="/whats-in-nifis-first-release-nifi-0-dot-0-1/">What&#8217;s in Nifi&#8217;s first release: Nifi 0.0.1</a>
+      </li>
+    
+  </ul>
+</section>
+
+
+
+
+
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2015 -   <br/>
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a> + <a href="https://github.com/ioveracker/mnml">mnml</a>.
+	  
+  </span>
+</p>
+
+</footer>
+  
+
+<script type="text/javascript">
+      var disqus_shortname = 'nifirocks';
+      
+        
+        // var disqus_developer = 1;
+        var disqus_identifier = 'http://www.nifi.rocks/developing-a-custom-apache-nifi-processor-unit-tests-partI/';
+        var disqus_url = 'http://www.nifi.rocks/developing-a-custom-apache-nifi-processor-unit-tests-partI/';
+        var disqus_script = 'embed.js';
+      
+    (function () {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = 'https://' + disqus_shortname + '.disqus.com/' + disqus_script;
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+
+
+
+<div id="fb-root"></div>
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) {return;}
+  js = d.createElement(s); js.id = id; js.async = true;
+  js.src = "//connect.facebook.net/en_US/all.js#appId=212934732101925&xfbml=1";
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
+
+
+
+  <script type="text/javascript">
+    (function() {
+      var script = document.createElement('script'); script.type = 'text/javascript'; script.async = true;
+      script.src = 'https://apis.google.com/js/plusone.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(script, s);
+    })();
+  </script>
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = 'http://platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+
+
+
+</body>
+</html>

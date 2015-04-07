@@ -84,6 +84,93 @@
   <header>
   
     
+      <h1 class="entry-title"><a href="/developing-a-custom-apache-nifi-processor-unit-tests-partI/">Developing a Custom Apache Nifi Processor-Unit Tests (Part I)</a></h1>
+      
+      
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2015-04-04T16:54:52+00:00'><span class='date'>April  4, 2015</span> <span class='time'></span></time>
+        
+         | <a href="/developing-a-custom-apache-nifi-processor-unit-tests-partI/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>The Apache Nifi framework has built in unit testing with Junit using test runners.  They have a few examples in their code base, but learning first hand really helps.  In this post we&rsquo;ll go over adding unit tests to the <a href="http://www.nifi.rocks/developing-a-custom-apache-nifi-processor-json/">JSON Processor</a> that we developed previously.</p>
+
+<p>To start, we&rsquo;ll checkout the JSON Processor code from <a href="https://github.com/pcgrenier/nifi-examples">Github</a> and then open it up in your favorite text editor.  There is already a test package/folder in the project that contains a unit test, <a href="https://github.com/pcgrenier/nifi-examples/blob/master/src/test/java/rocks/nifi/examples/processors/JsonProcessorTest.java">rocks.nifi.examples.processors/JsonProcessorTest.java</a>.</p>
+
+<p>When unit testing in Apache Nifi, there are a few items on top of the normal JUnit annotations that are required.  While you can unit test with just JUnit, using the built in method in Apache Nifi makes it much easier.  In a future post we&rsquo;ll show you how to unit test using Mockito and JUnit to test helper methods where actually invoking a full processor seems excessive, or if you just don&rsquo;t want to use Nifi&rsquo;s test runner.</p>
+
+</div>
+  
+  
+    <footer>
+      <a rel="full-article" href="/developing-a-custom-apache-nifi-processor-unit-tests-partI/">Read more &rarr;</a>
+    </footer>
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+  
+    
+      <h1 class="entry-title"><a href="/apache-nifi-release-0-dot-0-2-highlights/">Apache Nifi Release 0.0.2 Highlights</a></h1>
+      
+      
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2015-03-20T01:45:11+00:00'><span class='date'>March 20, 2015</span> <span class='time'></span></time>
+        
+         | <a href="/apache-nifi-release-0-dot-0-2-highlights/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>Apache Nifi just kicked out their second release, <a href="https://nifi.incubator.apache.org/downloads/">0.0.2</a>.  It doesn&rsquo;t have too many new features in it, hence a patch release according to <a href="http://semver.org">semantic versioning</a>, but it is definitely an improvement over the previous version, with it&rsquo;s bug fixes, improvements, and new features numbers below.</p>
+
+<ul>
+<li><a href="#bugfixes">Bug Fixes</a>:       35</li>
+<li><a href="#improvements">Improvements</a>:        17</li>
+<li><a href="#new-features">New Features</a>:        5</li>
+</ul>
+
+
+</div>
+  
+  
+    <footer>
+      <a rel="full-article" href="/apache-nifi-release-0-dot-0-2-highlights/">Read more &rarr;</a>
+    </footer>
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+  
+    
       <h1 class="entry-title"><a href="/developing-a-custom-apache-nifi-processor-json/">Developing a Custom Apache Nifi Processor (JSON)</a></h1>
       
       
@@ -141,7 +228,9 @@
   </header>
 
 
-  <div class="entry-content"><p>I looked around at what can be done with Apache NiFi and didn&rsquo;t notice a list of processors without looking at the code or building the project.  I think a list of available processors, the work horse of Apache Nifi, would greatly help decide if it is right for certain needs.  So, I went into the usage guide in the Apache Nifi UI and pulled a list of processors and a quick description for those who want to know what possibilities there are before getting into nifi itself!</p>
+  <div class="entry-content"><p><strong> Includes all processors through release 0.0.2 </strong></p>
+
+<p>I looked around at what can be done with Apache NiFi and didn&rsquo;t notice a list of processors without looking at the code or building the project.  I think a list of available processors, the work horse of Apache Nifi, would greatly help decide if it is right for certain needs.  So, I went into the usage guide in the Apache Nifi UI and pulled a list of processors and a quick description for those who want to know what possibilities there are before getting into nifi itself!</p>
 
 <h1>List of processors</h1>
 
@@ -310,6 +399,14 @@
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/developing-a-custom-apache-nifi-processor-unit-tests-partI/">Developing a Custom Apache Nifi Processor-Unit Tests (Part I)</a>
+      </li>
+    
+      <li class="post">
+        <a href="/apache-nifi-release-0-dot-0-2-highlights/">Apache Nifi Release 0.0.2 Highlights</a>
+      </li>
+    
+      <li class="post">
         <a href="/developing-a-custom-apache-nifi-processor-json/">Developing A Custom Apache Nifi Processor (JSON)</a>
       </li>
     
@@ -319,14 +416,6 @@
     
       <li class="post">
         <a href="/whats-in-nifis-first-release-nifi-0-dot-0-1/">What&#8217;s in Nifi&#8217;s first release: Nifi 0.0.1</a>
-      </li>
-    
-      <li class="post">
-        <a href="/navigating-apache-nifi/">Navigating Apache Nifi</a>
-      </li>
-    
-      <li class="post">
-        <a href="/getting-started-with-apache-nifi/">Getting Started with Apache Nifi</a>
       </li>
     
   </ul>

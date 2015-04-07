@@ -1,0 +1,36 @@
+<div class="highlight"><pre><span class="nd">@org.junit.Test</span>
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">testOnTrigger</span><span class="o">()</span> <span class="kd">throws</span> <span class="n">IOException</span> <span class="o">{</span>
+        <span class="c1">// Content to be mock a json file</span>
+        <span class="n">InputStream</span> <span class="n">content</span> <span class="o">=</span> <span class="k">new</span> <span class="nf">ByteArrayInputStream</span><span class="o">(&amp;</span><span class="n">ldquo</span><span class="o">;{</span><span class="err">\</span><span class="s">&quot;hello\&amp;rdquo;:\&amp;ldquo;nifi rocks\&amp;rdquo;}&amp;ldquo;.getBytes());&lt;/p&gt;</span>
+
+<span class="s">&lt;pre&gt;&lt;code&gt;    // Generate a test runner to mock a processor in a flow</span>
+<span class="s">    TestRunner runner = TestRunners.newTestRunner(new JsonProcessor());</span>
+
+<span class="s">    // Add properites</span>
+<span class="s">    runner.setProperty(JsonProcessor.JSON_PATH, &quot;</span><span class="n">$</span><span class="o">.</span><span class="na">hello</span><span class="s">&quot;);</span>
+
+<span class="s">    // Add the content to the runner</span>
+<span class="s">    runner.enqueue(content);</span>
+
+<span class="s">    // Run the enqueued content, it also takes an int = number of contents queued</span>
+<span class="s">    runner.run(1);</span>
+
+<span class="s">    // All results were processed with out failure</span>
+<span class="s">    runner.assertQueueEmpty();</span>
+
+<span class="s">    // If you need to read or do aditional tests on results you can access the content</span>
+<span class="s">    List&amp;lt;MockFlowFile&amp;gt; results = runner.getFlowFilesForRelationship(JsonProcessor.SUCCESS);</span>
+<span class="s">    assertTrue(&quot;</span><span class="mi">1</span> <span class="n">match</span><span class="s">&quot;, results.size() == 1);</span>
+<span class="s">    MockFlowFile result = results.get(0);</span>
+<span class="s">    String resultValue = new String(runner.getContentAsByteArray(result));</span>
+<span class="s">    System.out.println(&quot;</span><span class="nl">Match:</span> <span class="s">&quot; + IOUtils.toString(runner.getContentAsByteArray(result)));</span>
+
+<span class="s">    // Test attributes and content</span>
+<span class="s">    result.assertAttributeEquals(JsonProcessor.MATCH_ATTR, &quot;</span><span class="n">nifi</span> <span class="n">rocks</span><span class="s">&quot;);</span>
+<span class="s">    result.assertContentEquals(&quot;</span><span class="n">nifi</span> <span class="n">rocks</span><span class="err">&quot;</span><span class="o">);</span>
+
+<span class="o">}</span>
+<span class="o">&lt;/</span><span class="n">code</span><span class="o">&gt;&lt;/</span><span class="n">pre</span><span class="o">&gt;</span>
+
+<span class="o">&lt;</span><span class="n">p</span><span class="o">&gt;</span>
+</pre></div>

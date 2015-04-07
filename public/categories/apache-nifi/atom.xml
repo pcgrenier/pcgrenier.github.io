@@ -81,7 +81,7 @@
   <title><![CDATA[Category: apache nifi | NiFi.rocks]]></title>
   <link href="http://www.nifi.rocks/categories/apache-nifi/atom.xml" rel="self"/>
   <link href="http://www.nifi.rocks/"/>
-  <updated>2015-02-12T03:56:11+00:00</updated>
+  <updated>2015-04-06T20:52:30+00:00</updated>
   <id>http://www.nifi.rocks/</id>
   <author>
     <name><![CDATA[]]></name>
@@ -91,11 +91,140 @@
 
   
   <entry>
+    <title type="html"><![CDATA[Developing a Custom Apache Nifi Processor-Unit Tests (Part I)]]></title>
+    <link href="http://www.nifi.rocks/developing-a-custom-apache-nifi-processor-unit-tests-partI/"/>
+    <updated>2015-04-04T16:54:52+00:00</updated>
+    <id>http://www.nifi.rocks/developing-a-custom-apache-nifi-processor-unit-tests-partI</id>
+    <content type="html"><![CDATA[<p>The Apache Nifi framework has built in unit testing with Junit using test runners.  They have a few examples in their code base, but learning first hand really helps.  In this post we&rsquo;ll go over adding unit tests to the <a href="{{%20site.url%20}}/developing-a-custom-apache-nifi-processor-json/">JSON Processor</a> that we developed previously.</p>
+
+<p>To start, we&rsquo;ll checkout the JSON Processor code from <a href="https://github.com/pcgrenier/nifi-examples">Github</a> and then open it up in your favorite text editor.  There is already a test package/folder in the project that contains a unit test, <a href="https://github.com/pcgrenier/nifi-examples/blob/master/src/test/java/rocks/nifi/examples/processors/JsonProcessorTest.java">rocks.nifi.examples.processors/JsonProcessorTest.java</a>.</p>
+
+<p>When unit testing in Apache Nifi, there are a few items on top of the normal JUnit annotations that are required.  While you can unit test with just JUnit, using the built in method in Apache Nifi makes it much easier.  In a future post we&rsquo;ll show you how to unit test using Mockito and JUnit to test helper methods where actually invoking a full processor seems excessive, or if you just don&rsquo;t want to use Nifi&rsquo;s test runner.</p>
+
+<!-- more -->
+
+
+<p>The first thing to do to unit test Apache Nifi is grabbing the necessary dependencies from maven.</p>
+
+<p>{% codeblock lang:xml pom.xml <a href="https://github.com/pcgrenier/nifi-examples/blob/master/pom.xml#L42">https://github.com/pcgrenier/nifi-examples/blob/master/pom.xml#L42</a> %}
+        <dependency>
+            <groupId>org.apache.nifi</groupId>
+            <artifactId>nifi-mock</artifactId>
+            <version>${nifi.version}</version>
+            <scope>test</scope>
+        </dependency></p>
+
+<p>{% endcodeblock %}</p>
+
+<p>After including the nifi-mock dependency, there will be a few includes from the org.apache.nifi.utils package that will be necessary to import; mainly TestRunner, TestRunners and MockFlowFile.</p>
+
+<p>Since we are using JUnit, the usual tags apply for defining a test function inside the class and we&rsquo;ll use the @Test for this one, although the other annotations can be used.  After adding the JUnit tag, there are a few requirements that Nifi puts on you in order to utilize the test runners they have provided.  The first is to create a test runner to use and then to set a flow file or flow file content inorder to run the processor.  In this example, we are using a ByteArrayInputStream as the flow file content, although you could use a JSON file in a resource folder just as well.</p>
+
+<p>Once a test runner is created, you can set flow file properties on it using <code>runner.setProperties(PropertyDescriptor)</code> method and can enqueue a file using <code>runner.enqueue(content)</code>.  Then you can run the test runner and make assertions.</p>
+
+<p>Nifi makes it easy to test assertions with some built in assertions for flowfiles.  You can test the flowfile was transfered to the appropriate relationship and get the flowfile to test for expected attributes and content.</p>
+
+<p>Below is how we test the JSON Processor, with a typical test setup for Apache Nifi.</p>
+
+<p>{% codeblock lang:java JSON Processor Unit Test <a href="https://github.com/pcgrenier/nifi-examples/blob/master/src/test/java/rocks/nifi/examples/processors/JsonProcessorTest.java">https://github.com/pcgrenier/nifi-examples/blob/master/src/test/java/rocks/nifi/examples/processors/JsonProcessorTest.java</a> JsonProcessorTest.java %}
+@org.junit.Test
+    public void testOnTrigger() throws IOException {
+        // Content to be mock a json file
+        InputStream content = new ByteArrayInputStream(&ldquo;{&#34;hello\&rdquo;:\&ldquo;nifi rocks\&rdquo;}&ldquo;.getBytes());</p>
+
+<pre><code>    // Generate a test runner to mock a processor in a flow
+    TestRunner runner = TestRunners.newTestRunner(new JsonProcessor());
+
+    // Add properites
+    runner.setProperty(JsonProcessor.JSON_PATH, "$.hello");
+
+    // Add the content to the runner
+    runner.enqueue(content);
+
+    // Run the enqueued content, it also takes an int = number of contents queued
+    runner.run(1);
+
+    // All results were processed with out failure
+    runner.assertQueueEmpty();
+
+    // If you need to read or do aditional tests on results you can access the content
+    List&lt;MockFlowFile&gt; results = runner.getFlowFilesForRelationship(JsonProcessor.SUCCESS);
+    assertTrue("1 match", results.size() == 1);
+    MockFlowFile result = results.get(0);
+    String resultValue = new String(runner.getContentAsByteArray(result));
+    System.out.println("Match: " + IOUtils.toString(runner.getContentAsByteArray(result)));
+
+    // Test attributes and content
+    result.assertAttributeEquals(JsonProcessor.MATCH_ATTR, "nifi rocks");
+    result.assertContentEquals("nifi rocks");
+
+}
+</code></pre>
+
+<p>{% endcodeblock %}</p>
+
+<p>Watch for our next post about unit testing Apache Nifi with Mockito and JUnit without using nifi&rsquo;s testrunner class.</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Apache Nifi Release 0.0.2 Highlights]]></title>
+    <link href="http://www.nifi.rocks/apache-nifi-release-0-dot-0-2-highlights/"/>
+    <updated>2015-03-20T01:45:11+00:00</updated>
+    <id>http://www.nifi.rocks/apache-nifi-release-0-dot-0-2-highlights</id>
+    <content type="html"><![CDATA[<p>Apache Nifi just kicked out their second release, <a href="https://nifi.incubator.apache.org/downloads/">0.0.2</a>.  It doesn&rsquo;t have too many new features in it, hence a patch release according to <a href="http://semver.org">semantic versioning</a>, but it is definitely an improvement over the previous version, with it&rsquo;s bug fixes, improvements, and new features numbers below.</p>
+
+<ul>
+<li><a href="#bugfixes">Bug Fixes</a>:       35</li>
+<li><a href="#improvements">Improvements</a>:        17</li>
+<li><a href="#new-features">New Features</a>:        5</li>
+</ul>
+
+
+<!--more-->
+
+
+<h3><a name="bugfixes"></a>Bug Fixes</h3>
+
+<p>The nifi community came in with some big fixes with this release.  The biggest ones I feel are the ability to now build on Mac OSX and increasing documentation.  There were quite a few other fixes that greatly improved the overall NiFi experience, processors now stop correctly and aren&rsquo;t continued to be scheduled and some clustering issues were resolved for example.</p>
+
+<h3><a name="improvements"></a>Improvements</h3>
+
+<p>The improvements in this release included a few maintanence related tasks and again some over all usability tasks, with most of them falling on the usability side.  The main improvements in Nifi release 0.0.2 were document related and overall usability updates, the cleanup of development documents, and too many to name for the usability.  In this release though, you should expect the following usability improvements:</p>
+
+<ul>
+<li>proxy support for the GetFTP Processor</li>
+<li>Component toolbox improvements</li>
+<li>Dragging/drawing relationships</li>
+<li>Labeling with the same color for multiple items</li>
+</ul>
+
+
+<h3><a name="new-features"></a>New Features</h3>
+
+<p>Now on to the good stuff, new features!  This release only had a few additional features added, but from what I&rsquo;ve read there are quite a few more coming.  The highlights in this category are:</p>
+
+<p>Multiple new processors
+* JSON Processors
+* ExecuteProcess processor
+* StoreInKiteDataset processor</p>
+
+<p>New processors are great and mean more possibilities and use cases for Apache Nifi.  We showed you how to create a JSON processor in a previous post, <a href="{{site_url}}/developing-a-custom-apache-nifi-processor-json">Developing a custom Nifi Processor: JSON</a>, and now someone has contributed a JSON processor to Nifi.  For a full list of Nifi Processors, including the newly added ones, see our <a href="{{%20site_url%20}}/apache-nifi-processors">previous post</a>.</p>
+
+<p>It has been rumored that the next release will contain quite a few changes and be a minor release bumping up to version 0.1.0.  With over 200 tickets open on their JIRA, Nifi could see a great amount of change in the coming months.</p>
+
+<p>The full list of release notes can be found on Apache Nifi&rsquo;s <a href="https://issues.apache.org/jira/secure/ReleaseNote.jspa?projectId=12316020&amp;version=12329373">JIRA page</a> and downloads for all of their releases, source code and binaries, are available from their <a href="http://nifi.incubator.apache.org/downloads/">website</a>.  Nifi is also making thier releases available through maven via apaches <a href="https://repository.apache.org/content/repositories/releases/org/apache/nifi/">maven repository</a>.</p>
+
+<p>As always, check back for how-tos and Apache Nifi related updates.  New videos and posts are coming!!</p>
+]]></content>
+  </entry>
+  
+  <entry>
     <title type="html"><![CDATA[Developing A Custom Apache Nifi Processor (JSON)]]></title>
     <link href="http://www.nifi.rocks/developing-a-custom-apache-nifi-processor-json/"/>
     <updated>2015-02-07T02:14:33+00:00</updated>
     <id>http://www.nifi.rocks/developing-a-custom-apache-nifi-processor-json</id>
-    <content type="html"><![CDATA[<p>The list of available Apache Nifi processors is extensive, as documented in <a href="/apache-nifi-processors/">this post</a>. There is still a need to develop your own; to pull data from a database, to process an uncommon file format, or many other unique situations. So to get you started, we will work through a basic processor that takes a json file as input and a json path as a parameter to place into the contents and an attribute. The full source is hosted on <a href="https://github.com/pcgrenier/nifi-examples">Github</a>.</p>
+    <content type="html"><![CDATA[<p>The list of available Apache Nifi processors is extensive, as documented in <a href="{{%20site.url%20}}/apache-nifi-processors/">this post</a>. There is still a need to develop your own; to pull data from a database, to process an uncommon file format, or many other unique situations. So to get you started, we will work through a basic processor that takes a json file as input and a json path as a parameter to place into the contents and an attribute. The full source is hosted on <a href="https://github.com/pcgrenier/nifi-examples">Github</a>.</p>
 
 <!-- more -->
 
@@ -104,87 +233,13 @@
 
 <p>Start by creating a simple maven project in your favorite IDE. Then edit the pom.xml.</p>
 
-<p><div><script src='https://gist.github.com/f99d27d08c3903f9d50c.js?file=pom.xml'></script>
-<noscript><pre><code>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
-&lt;project xmlns=&quot;http://maven.apache.org/POM/4.0.0&quot; xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot; xsi:schemaLocation=&quot;http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd&quot;&gt;
-    &lt;modelVersion&gt;4.0.0&lt;/modelVersion&gt;
-    &lt;groupId&gt;rocks.nifi&lt;/groupId&gt;
-    &lt;artifactId&gt;examples&lt;/artifactId&gt;
-    &lt;version&gt;1.0-SNAPSHOT&lt;/version&gt;
-    &lt;packaging&gt;nar&lt;/packaging&gt;
-    
-    &lt;properties&gt;
-        &lt;project.build.sourceEncoding&gt;UTF-8&lt;/project.build.sourceEncoding&gt;
-        &lt;maven.compiler.source&gt;1.7&lt;/maven.compiler.source&gt;
-        &lt;maven.compiler.target&gt;1.7&lt;/maven.compiler.target&gt;
-        &lt;nifi.version&gt;0.0.1-incubating&lt;/nifi.version&gt;
-    &lt;/properties&gt;
-    
-    &lt;dependencies&gt;
-        &lt;dependency&gt;
-            &lt;groupId&gt;org.apache.nifi&lt;/groupId&gt;
-            &lt;artifactId&gt;nifi-api&lt;/artifactId&gt;
-            &lt;version&gt;${nifi.version}&lt;/version&gt;
-        &lt;/dependency&gt;
-        &lt;dependency&gt;
-            &lt;groupId&gt;org.apache.nifi&lt;/groupId&gt;
-            &lt;artifactId&gt;nifi-utils&lt;/artifactId&gt;
-            &lt;version&gt;${nifi.version}&lt;/version&gt;
-        &lt;/dependency&gt;
-        &lt;dependency&gt;
-            &lt;groupId&gt;org.apache.nifi&lt;/groupId&gt;
-            &lt;artifactId&gt;nifi-processor-utils&lt;/artifactId&gt;
-            &lt;version&gt;${nifi.version}&lt;/version&gt;
-        &lt;/dependency&gt;
-        &lt;dependency&gt;
-            &lt;groupId&gt;org.apache.commons&lt;/groupId&gt;
-            &lt;artifactId&gt;commons-io&lt;/artifactId&gt;
-            &lt;version&gt;1.3.2&lt;/version&gt;
-        &lt;/dependency&gt;
-        &lt;dependency&gt;
-            &lt;groupId&gt;com.jayway.jsonpath&lt;/groupId&gt;
-            &lt;artifactId&gt;json-path&lt;/artifactId&gt;
-            &lt;version&gt;1.2.0&lt;/version&gt;
-        &lt;/dependency&gt;
-        &lt;dependency&gt;
-            &lt;groupId&gt;org.apache.nifi&lt;/groupId&gt;
-            &lt;artifactId&gt;nifi-mock&lt;/artifactId&gt;
-            &lt;version&gt;${nifi.version}&lt;/version&gt;
-            &lt;scope&gt;test&lt;/scope&gt;
-        &lt;/dependency&gt;
-        &lt;dependency&gt;
-            &lt;groupId&gt;junit&lt;/groupId&gt;
-            &lt;artifactId&gt;junit&lt;/artifactId&gt;
-            &lt;version&gt;4.10&lt;/version&gt;
-            &lt;scope&gt;test&lt;/scope&gt;
-        &lt;/dependency&gt;
-    &lt;/dependencies&gt;
-    
-    &lt;build&gt;
-        &lt;plugins&gt;
-            &lt;plugin&gt;
-                &lt;groupId&gt;org.apache.nifi&lt;/groupId&gt;
-                &lt;artifactId&gt;nifi-nar-maven-plugin&lt;/artifactId&gt;
-                &lt;version&gt;1.0.0-incubating&lt;/version&gt;
-                &lt;extensions&gt;true&lt;/extensions&gt;
-            &lt;/plugin&gt;
-            &lt;plugin&gt;
-                &lt;groupId&gt;org.apache.maven.plugins&lt;/groupId&gt;
-                &lt;artifactId&gt;maven-surefire-plugin&lt;/artifactId&gt;
-                &lt;version&gt;2.15&lt;/version&gt;
-            &lt;/plugin&gt;
-        &lt;/plugins&gt;
-    &lt;/build&gt;
-&lt;/project&gt;</code></pre></noscript></div>
-</p>
+<p>{% gist f99d27d08c3903f9d50c pom.xml %}</p>
 
 <p>This pom.xml includes a single plug-in for building a nifi nar, which is similar to a war for nifi, that bundles everything up in a way nifi can unpack. The nifi-api is the only other &ldquo;required&rdquo; dependency. The other nifi dependencies are really use full as you will see.</p>
 
 <p>The next important piece is telling nifi which classes to load and register. This is done in a single file located at /src/main/resources/META-INF/services/org.apache.nifi.processor.Processor</p>
 
-<p><div><script src='https://gist.github.com/f98e563e787c1b73c425.js?file=org.apache.nifi.processor.Processor'></script>
-<noscript><pre><code>rocks.nifi.examples.processors.JsonProcessor</code></pre></noscript></div>
-</p>
+<p>{% gist f98e563e787c1b73c425 org.apache.nifi.processor.Processor %}</p>
 
 <h2>The JSON Processor</h2>
 
@@ -192,193 +247,106 @@
 
 <p>Tags are useful for finding your processor in the list of processors in the GUI. So in this case in the search box you could just type &lsquo;json&rsquo; and your processor will be found. The capability description is also displayed in the processor selection box. Nifi.rocks will make future posts on documenting your custom processors. Finally most processors will just extend the AbstractProcessor, for more complicated tasks it may be required to go a level deeper for the AbstractSessionFactoryProcessor.</p>
 
-<p><figure class='code'><figcaption><span>Apache Nifi Processor Header  <a href="https://github.com/pcgrenier/nifi-examples/blob/master/src/main/java/rocks/nifi/examples/processors/JsonProcessor.java">https://github.com/pcgrenier/nifi-examples/blob/master/src/main/java/rocks/nifi/examples/processors/JsonProcessor.java</a> JsonProcessor.java </span></figcaption>
-<div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="nd">@SideEffectFree</span>
-</span><span class='line'><span class="nd">@Tags</span><span class="o">({&amp;</span><span class="n">ldquo</span><span class="o">;</span><span class="n">JSON</span><span class="o">&amp;</span><span class="n">rdquo</span><span class="o">;,</span> <span class="o">&amp;</span><span class="n">ldquo</span><span class="o">;</span><span class="n">NIFI</span> <span class="n">ROCKS</span><span class="o">&amp;</span><span class="n">rdquo</span><span class="o">;})</span>
-</span><span class='line'><span class="nd">@CapabilityDescription</span><span class="o">(&amp;</span><span class="n">ldquo</span><span class="o">;</span><span class="n">Fetch</span> <span class="n">value</span> <span class="n">from</span> <span class="n">json</span> <span class="n">path</span><span class="o">.&amp;</span><span class="n">rdquo</span><span class="o">;)</span>
-</span><span class='line'><span class="kd">public</span> <span class="kd">class</span> <span class="nc">JsonProcessor</span> <span class="kd">extends</span> <span class="n">AbstractProcessor</span> <span class="o">{</span>
-</span></code></pre></td></tr></table></div></figure></p>
+<p>{% codeblock lang:java Apache Nifi Processor Header  <a href="https://github.com/pcgrenier/nifi-examples/blob/master/src/main/java/rocks/nifi/examples/processors/JsonProcessor.java">https://github.com/pcgrenier/nifi-examples/blob/master/src/main/java/rocks/nifi/examples/processors/JsonProcessor.java</a> JsonProcessor.java %}
+@SideEffectFree
+@Tags({&ldquo;JSON&rdquo;, &ldquo;NIFI ROCKS&rdquo;})
+@CapabilityDescription(&ldquo;Fetch value from json path.&rdquo;)
+public class JsonProcessor extends AbstractProcessor {
+{% endcodeblock %}</p>
 
 <p>Not really interesting stuff here. Properties will hold all a list of all the available properties tha are exposed to the user. Relationships will hold the relationships the processor will use to direct the flow files. For more details on relationships, properties, and components of an Apache Nifi flow please read the <a href="https://nifi.incubator.apache.org/docs/nifi-docs/developer-guide.html">offical developer guide</a>. There is plenty of room to expand on custom validators, but there is a large selection of validators in nifi-processor-utils package.</p>
 
-<p><figure class='code'><figcaption><span>Variable Declaration <a href="https://github.com/pcgrenier/nifi-examples/blob/master/src/main/java/rocks/nifi/examples/processors/JsonProcessor.java">https://github.com/pcgrenier/nifi-examples/blob/master/src/main/java/rocks/nifi/examples/processors/JsonProcessor.java</a> JsonProcessor.java </span></figcaption>
-<div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="o">&lt;/</span><span class="n">p</span><span class="o">&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="o">&lt;</span><span class="n">p</span><span class="o">&gt;</span><span class="kd">private</span> <span class="n">List</span><span class="o">&lt;</span><span class="n">PropertyDescriptor</span><span class="o">&gt;</span> <span class="n">properties</span><span class="o">;</span>
-</span><span class='line'><span class="kd">private</span> <span class="n">Set</span><span class="o">&lt;</span><span class="n">Relationship</span><span class="o">&gt;</span> <span class="n">relationships</span><span class="o">;&lt;/</span><span class="n">p</span><span class="o">&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="o">&lt;</span><span class="n">p</span><span class="o">&gt;</span><span class="kd">public</span> <span class="kd">static</span> <span class="kd">final</span> <span class="n">String</span> <span class="n">MATCH_ATTR</span> <span class="o">=</span> <span class="o">&amp;</span><span class="n">ldquo</span><span class="o">;</span><span class="n">match</span><span class="o">&amp;</span><span class="n">rdquo</span><span class="o">;;&lt;/</span><span class="n">p</span><span class="o">&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="o">&lt;</span><span class="n">p</span><span class="o">&gt;</span><span class="kd">public</span> <span class="kd">static</span> <span class="kd">final</span> <span class="n">PropertyDescriptor</span> <span class="n">JSON_PATH</span> <span class="o">=</span> <span class="k">new</span> <span class="n">PropertyDescriptor</span><span class="o">.</span><span class="na">Builder</span><span class="o">()</span>
-</span><span class='line'>        <span class="o">.</span><span class="na">name</span><span class="o">(&amp;</span><span class="n">ldquo</span><span class="o">;</span><span class="n">Json</span> <span class="n">Path</span><span class="o">&amp;</span><span class="n">rdquo</span><span class="o">;)</span>
-</span><span class='line'>        <span class="o">.</span><span class="na">required</span><span class="o">(</span><span class="kc">true</span><span class="o">)</span>
-</span><span class='line'>        <span class="o">.</span><span class="na">addValidator</span><span class="o">(</span><span class="n">StandardValidators</span><span class="o">.</span><span class="na">NON_EMPTY_VALIDATOR</span><span class="o">)</span>
-</span><span class='line'>        <span class="o">.</span><span class="na">build</span><span class="o">();&lt;/</span><span class="n">p</span><span class="o">&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="o">&lt;</span><span class="n">p</span><span class="o">&gt;</span><span class="kd">public</span> <span class="kd">static</span> <span class="kd">final</span> <span class="n">Relationship</span> <span class="n">SUCCESS</span> <span class="o">=</span> <span class="k">new</span> <span class="n">Relationship</span><span class="o">.</span><span class="na">Builder</span><span class="o">()</span>
-</span><span class='line'>        <span class="o">.</span><span class="na">name</span><span class="o">(&amp;</span><span class="n">ldquo</span><span class="o">;</span><span class="n">SUCCESS</span><span class="o">&amp;</span><span class="n">rdquo</span><span class="o">;)</span>
-</span><span class='line'>        <span class="o">.</span><span class="na">description</span><span class="o">(&amp;</span><span class="n">ldquo</span><span class="o">;</span><span class="n">Succes</span> <span class="n">relationship</span><span class="o">&amp;</span><span class="n">rdquo</span><span class="o">;)</span>
-</span><span class='line'>        <span class="o">.</span><span class="na">build</span><span class="o">();</span>
-</span></code></pre></td></tr></table></div></figure></p>
+<p>{% codeblock lang:java Variable Declaration <a href="https://github.com/pcgrenier/nifi-examples/blob/master/src/main/java/rocks/nifi/examples/processors/JsonProcessor.java">https://github.com/pcgrenier/nifi-examples/blob/master/src/main/java/rocks/nifi/examples/processors/JsonProcessor.java</a> JsonProcessor.java %}</p>
+
+<p>private List<PropertyDescriptor> properties;
+private Set<Relationship> relationships;</p>
+
+<p>public static final String MATCH_ATTR = &ldquo;match&rdquo;;</p>
+
+<p>public static final PropertyDescriptor JSON_PATH = new PropertyDescriptor.Builder()
+        .name(&ldquo;Json Path&rdquo;)
+        .required(true)
+        .addValidator(StandardValidators.NON_EMPTY_VALIDATOR)
+        .build();</p>
+
+<p>public static final Relationship SUCCESS = new Relationship.Builder()
+        .name(&ldquo;SUCCESS&rdquo;)
+        .description(&ldquo;Succes relationship&rdquo;)
+        .build();
+{% endcodeblock %}</p>
 
 <p>The init function is called at the start of Apache Nifi. Remember that this is a highly multi-threaded environment and be careful what you do in this space. This is why both the list of properties and the set of relationships are set with unmodifiable collections. I put the getters for the properties and relationships here as well.</p>
 
-<p><figure class='code'><figcaption><span>Apache Nifi Init <a href="https://github.com/pcgrenier/nifi-examples/blob/master/src/main/java/rocks/nifi/examples/processors/JsonProcessor.java">https://github.com/pcgrenier/nifi-examples/blob/master/src/main/java/rocks/nifi/examples/processors/JsonProcessor.java</a> JsonProcessor.java </span></figcaption>
-<div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-<span class='line-number'>18</span>
-<span class='line-number'>19</span>
-<span class='line-number'>20</span>
-<span class='line-number'>21</span>
-<span class='line-number'>22</span>
-</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="nd">@Override</span>
-</span><span class='line'><span class="kd">public</span> <span class="kt">void</span> <span class="nf">init</span><span class="o">(</span><span class="kd">final</span> <span class="n">ProcessorInitializationContext</span> <span class="n">context</span><span class="o">){</span>
-</span><span class='line'>    <span class="n">List</span><span class="o">&lt;</span><span class="n">PropertyDescriptor</span><span class="o">&gt;</span> <span class="n">properties</span> <span class="o">=</span> <span class="k">new</span> <span class="n">ArrayList</span><span class="o">&amp;</span><span class="n">lt</span><span class="o">;&gt;();</span>
-</span><span class='line'>    <span class="n">properties</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="n">JSON_PATH</span><span class="o">);</span>
-</span><span class='line'>    <span class="k">this</span><span class="o">.</span><span class="na">properties</span> <span class="o">=</span> <span class="n">Collections</span><span class="o">.</span><span class="na">unmodifiableList</span><span class="o">(</span><span class="n">properties</span><span class="o">);&lt;/</span><span class="n">p</span><span class="o">&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="o">&lt;</span><span class="n">pre</span><span class="o">&gt;&lt;</span><span class="n">code</span><span class="o">&gt;</span><span class="n">Set</span><span class="o">&amp;</span><span class="n">lt</span><span class="o">;</span><span class="n">Relationship</span><span class="o">&amp;</span><span class="n">gt</span><span class="o">;</span> <span class="n">relationships</span> <span class="o">=</span> <span class="k">new</span> <span class="n">HashSet</span><span class="o">&amp;</span><span class="n">lt</span><span class="o">;&amp;</span><span class="n">gt</span><span class="o">;();</span>
-</span><span class='line'><span class="n">relationships</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="n">SUCCESS</span><span class="o">);</span>
-</span><span class='line'><span class="k">this</span><span class="o">.</span><span class="na">relationships</span> <span class="o">=</span> <span class="n">Collections</span><span class="o">.</span><span class="na">unmodifiableSet</span><span class="o">(</span><span class="n">relationships</span><span class="o">);</span>
-</span><span class='line'><span class="o">&lt;/</span><span class="n">code</span><span class="o">&gt;&lt;/</span><span class="n">pre</span><span class="o">&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="o">&lt;</span><span class="n">p</span><span class="o">&gt;}&lt;/</span><span class="n">p</span><span class="o">&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="o">&lt;</span><span class="n">p</span><span class="o">&gt;</span><span class="nd">@Override</span>
-</span><span class='line'><span class="kd">public</span> <span class="n">Set</span><span class="o">&lt;</span><span class="n">Relationship</span><span class="o">&gt;</span> <span class="nf">getRelationships</span><span class="o">(){</span>
-</span><span class='line'>    <span class="k">return</span> <span class="n">relationships</span><span class="o">;</span>
-</span><span class='line'><span class="o">}&lt;/</span><span class="n">p</span><span class="o">&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="o">&lt;</span><span class="n">p</span><span class="o">&gt;</span><span class="nd">@Override</span>
-</span><span class='line'><span class="kd">public</span> <span class="n">List</span><span class="o">&lt;</span><span class="n">PropertyDescriptor</span><span class="o">&gt;</span> <span class="nf">getSupportedPropertyDescriptors</span><span class="o">(){</span>
-</span><span class='line'>    <span class="k">return</span> <span class="n">properties</span><span class="o">;</span>
-</span><span class='line'><span class="o">}</span>
-</span></code></pre></td></tr></table></div></figure></p>
+<p>{% codeblock lang:java Apache Nifi Init <a href="https://github.com/pcgrenier/nifi-examples/blob/master/src/main/java/rocks/nifi/examples/processors/JsonProcessor.java">https://github.com/pcgrenier/nifi-examples/blob/master/src/main/java/rocks/nifi/examples/processors/JsonProcessor.java</a> JsonProcessor.java %}
+@Override
+public void init(final ProcessorInitializationContext context){
+    List<PropertyDescriptor> properties = new ArrayList&lt;>();
+    properties.add(JSON_PATH);
+    this.properties = Collections.unmodifiableList(properties);</p>
+
+<pre><code>Set&lt;Relationship&gt; relationships = new HashSet&lt;&gt;();
+relationships.add(SUCCESS);
+this.relationships = Collections.unmodifiableSet(relationships);
+</code></pre>
+
+<p>}</p>
+
+<p>@Override
+public Set<Relationship> getRelationships(){
+    return relationships;
+}</p>
+
+<p>@Override
+public List<PropertyDescriptor> getSupportedPropertyDescriptors(){
+    return properties;
+}
+{% endcodeblock %}</p>
 
 <p>The onTrigger method is called when ever a flow file is passed to the processor. For more details on the context and session variables please again refer to the <a href="https://nifi.incubator.apache.org/docs/nifi-docs/developer-guide.html#flowfile">official developer guide</a>.</p>
 
-<p><figure class='code'><figcaption><span>Apache Nifi OnTrigger <a href="https://github.com/pcgrenier/nifi-examples/blob/master/src/main/java/rocks/nifi/examples/processors/JsonProcessor.java">https://github.com/pcgrenier/nifi-examples/blob/master/src/main/java/rocks/nifi/examples/processors/JsonProcessor.java</a> JsonProcessor.java </span></figcaption>
-<div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-<span class='line-number'>18</span>
-<span class='line-number'>19</span>
-<span class='line-number'>20</span>
-<span class='line-number'>21</span>
-<span class='line-number'>22</span>
-<span class='line-number'>23</span>
-<span class='line-number'>24</span>
-<span class='line-number'>25</span>
-<span class='line-number'>26</span>
-<span class='line-number'>27</span>
-<span class='line-number'>28</span>
-<span class='line-number'>29</span>
-<span class='line-number'>30</span>
-<span class='line-number'>31</span>
-<span class='line-number'>32</span>
-<span class='line-number'>33</span>
-<span class='line-number'>34</span>
-<span class='line-number'>35</span>
-<span class='line-number'>36</span>
-<span class='line-number'>37</span>
-<span class='line-number'>38</span>
-<span class='line-number'>39</span>
-<span class='line-number'>40</span>
-<span class='line-number'>41</span>
-<span class='line-number'>42</span>
-</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="o">&lt;/</span><span class="n">p</span><span class="o">&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="o">&lt;</span><span class="n">p</span><span class="o">&gt;</span><span class="nd">@Override</span>
-</span><span class='line'><span class="kd">public</span> <span class="kt">void</span> <span class="nf">onTrigger</span><span class="o">(</span><span class="n">ProcessContext</span> <span class="n">context</span><span class="o">,</span> <span class="n">ProcessSession</span> <span class="n">session</span><span class="o">)</span> <span class="kd">throws</span> <span class="n">ProcessException</span> <span class="o">{</span>
-</span><span class='line'>    <span class="kd">final</span> <span class="n">ProcessorLog</span> <span class="n">log</span> <span class="o">=</span> <span class="k">this</span><span class="o">.</span><span class="na">getLogger</span><span class="o">();</span>
-</span><span class='line'>    <span class="kd">final</span> <span class="n">AtomicReference</span><span class="o">&lt;</span><span class="n">String</span><span class="o">&gt;</span> <span class="n">value</span> <span class="o">=</span> <span class="k">new</span> <span class="n">AtomicReference</span><span class="o">&amp;</span><span class="n">lt</span><span class="o">;&gt;();&lt;/</span><span class="n">p</span><span class="o">&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="o">&lt;</span><span class="n">pre</span><span class="o">&gt;&lt;</span><span class="n">code</span><span class="o">&gt;</span><span class="n">FlowFile</span> <span class="n">flowfile</span> <span class="o">=</span> <span class="n">session</span><span class="o">.</span><span class="na">get</span><span class="o">();</span>
-</span><span class='line'>
-</span><span class='line'><span class="n">session</span><span class="o">.</span><span class="na">read</span><span class="o">(</span><span class="n">flowfile</span><span class="o">,</span> <span class="k">new</span> <span class="nf">InputStreamCallback</span><span class="o">()</span> <span class="o">{</span>
-</span><span class='line'>    <span class="nd">@Override</span>
-</span><span class='line'>    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">process</span><span class="o">(</span><span class="n">InputStream</span> <span class="n">in</span><span class="o">)</span> <span class="kd">throws</span> <span class="n">IOException</span> <span class="o">{</span>
-</span><span class='line'>        <span class="k">try</span><span class="o">{</span>
-</span><span class='line'>            <span class="n">String</span> <span class="n">json</span> <span class="o">=</span> <span class="n">IOUtils</span><span class="o">.</span><span class="na">toString</span><span class="o">(</span><span class="n">in</span><span class="o">);</span>
-</span><span class='line'>            <span class="n">String</span> <span class="n">result</span> <span class="o">=</span> <span class="n">JsonPath</span><span class="o">.</span><span class="na">read</span><span class="o">(</span><span class="n">json</span><span class="o">,</span> <span class="s">&quot;$.hello&quot;</span><span class="o">);</span>
-</span><span class='line'>            <span class="n">value</span><span class="o">.</span><span class="na">set</span><span class="o">(</span><span class="n">result</span><span class="o">);</span>
-</span><span class='line'>        <span class="o">}</span><span class="k">catch</span><span class="o">(</span><span class="n">Exception</span> <span class="n">ex</span><span class="o">){</span>
-</span><span class='line'>            <span class="n">ex</span><span class="o">.</span><span class="na">printStackTrace</span><span class="o">();</span>
-</span><span class='line'>            <span class="n">log</span><span class="o">.</span><span class="na">error</span><span class="o">(</span><span class="s">&quot;Failed to read json string.&quot;</span><span class="o">);</span>
-</span><span class='line'>        <span class="o">}</span>
-</span><span class='line'>    <span class="o">}</span>
-</span><span class='line'><span class="o">});</span>
-</span><span class='line'>
-</span><span class='line'><span class="c1">// Write the results to an attribute</span>
-</span><span class='line'><span class="n">String</span> <span class="n">results</span> <span class="o">=</span> <span class="n">value</span><span class="o">.</span><span class="na">get</span><span class="o">();</span>
-</span><span class='line'><span class="k">if</span><span class="o">(</span><span class="n">results</span> <span class="o">!=</span> <span class="kc">null</span> <span class="o">&amp;</span><span class="n">amp</span><span class="o">;&amp;</span><span class="n">amp</span><span class="o">;</span> <span class="o">!</span><span class="n">results</span><span class="o">.</span><span class="na">isEmpty</span><span class="o">()){</span>
-</span><span class='line'>    <span class="n">flowfile</span> <span class="o">=</span> <span class="n">session</span><span class="o">.</span><span class="na">putAttribute</span><span class="o">(</span><span class="n">flowfile</span><span class="o">,</span> <span class="s">&quot;match&quot;</span><span class="o">,</span> <span class="n">results</span><span class="o">);</span>
-</span><span class='line'><span class="o">}</span>
-</span><span class='line'>
-</span><span class='line'><span class="c1">// To write the results back out ot flow file</span>
-</span><span class='line'><span class="n">flowfile</span> <span class="o">=</span> <span class="n">session</span><span class="o">.</span><span class="na">write</span><span class="o">(</span><span class="n">flowfile</span><span class="o">,</span> <span class="k">new</span> <span class="nf">OutputStreamCallback</span><span class="o">()</span> <span class="o">{</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="nd">@Override</span>
-</span><span class='line'>    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">process</span><span class="o">(</span><span class="n">OutputStream</span> <span class="n">out</span><span class="o">)</span> <span class="kd">throws</span> <span class="n">IOException</span> <span class="o">{</span>
-</span><span class='line'>        <span class="n">out</span><span class="o">.</span><span class="na">write</span><span class="o">(</span><span class="n">value</span><span class="o">.</span><span class="na">get</span><span class="o">().</span><span class="na">getBytes</span><span class="o">());</span>
-</span><span class='line'>    <span class="o">}</span>
-</span><span class='line'><span class="o">});</span>
-</span><span class='line'>
-</span><span class='line'><span class="n">session</span><span class="o">.</span><span class="na">transfer</span><span class="o">(</span><span class="n">flowfile</span><span class="o">,</span> <span class="n">SUCCESS</span><span class="o">);</span>
-</span><span class='line'><span class="o">&lt;/</span><span class="n">code</span><span class="o">&gt;&lt;/</span><span class="n">pre</span><span class="o">&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="o">&lt;</span><span class="n">p</span><span class="o">&gt;}</span>
-</span></code></pre></td></tr></table></div></figure></p>
+<p>{% codeblock lang:java Apache Nifi OnTrigger <a href="https://github.com/pcgrenier/nifi-examples/blob/master/src/main/java/rocks/nifi/examples/processors/JsonProcessor.java">https://github.com/pcgrenier/nifi-examples/blob/master/src/main/java/rocks/nifi/examples/processors/JsonProcessor.java</a> JsonProcessor.java %}</p>
+
+<p>@Override
+public void onTrigger(ProcessContext context, ProcessSession session) throws ProcessException {
+    final ProcessorLog log = this.getLogger();
+    final AtomicReference<String> value = new AtomicReference&lt;>();</p>
+
+<pre><code>FlowFile flowfile = session.get();
+
+session.read(flowfile, new InputStreamCallback() {
+    @Override
+    public void process(InputStream in) throws IOException {
+        try{
+            String json = IOUtils.toString(in);
+            String result = JsonPath.read(json, "$.hello");
+            value.set(result);
+        }catch(Exception ex){
+            ex.printStackTrace();
+            log.error("Failed to read json string.");
+        }
+    }
+});
+
+// Write the results to an attribute
+String results = value.get();
+if(results != null &amp;&amp; !results.isEmpty()){
+    flowfile = session.putAttribute(flowfile, "match", results);
+}
+
+// To write the results back out ot flow file
+flowfile = session.write(flowfile, new OutputStreamCallback() {
+
+    @Override
+    public void process(OutputStream out) throws IOException {
+        out.write(value.get().getBytes());
+    }
+});
+
+session.transfer(flowfile, SUCCESS);
+</code></pre>
+
+<p>}
+{% endcodeblock %}</p>
 
 <p>In general you pull the flow file out of session. Read and write to the flow files and add attributes where needed. To work on flow files nifi provides 3 callback interfaces.</p>
 
@@ -389,34 +357,21 @@
 </ul>
 
 
-<p><figure class='code'><figcaption><span>Apache Nifi InputStreamCallback <a href="https://github.com/pcgrenier/nifi-examples/blob/master/src/main/java/rocks/nifi/examples/processors/JsonProcessor.java">https://github.com/pcgrenier/nifi-examples/blob/master/src/main/java/rocks/nifi/examples/processors/JsonProcessor.java</a> JsonProcessor.java </span></figcaption>
-<div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="n">session</span><span class="o">.</span><span class="na">read</span><span class="o">(</span><span class="n">flowfile</span><span class="o">,</span> <span class="k">new</span> <span class="nf">InputStreamCallback</span><span class="o">()</span> <span class="o">{</span>
-</span><span class='line'>    <span class="nd">@Override</span>
-</span><span class='line'>    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">process</span><span class="o">(</span><span class="n">InputStream</span> <span class="n">in</span><span class="o">)</span> <span class="kd">throws</span> <span class="n">IOException</span> <span class="o">{</span>
-</span><span class='line'>        <span class="k">try</span><span class="o">{</span>
-</span><span class='line'>            <span class="n">String</span> <span class="n">json</span> <span class="o">=</span> <span class="n">IOUtils</span><span class="o">.</span><span class="na">toString</span><span class="o">(</span><span class="n">in</span><span class="o">);</span>
-</span><span class='line'>            <span class="n">String</span> <span class="n">result</span> <span class="o">=</span> <span class="n">JsonPath</span><span class="o">.</span><span class="na">read</span><span class="o">(</span><span class="n">json</span><span class="o">,</span> <span class="o">&amp;</span><span class="n">ldquo</span><span class="o">;</span><span class="n">$</span><span class="o">.</span><span class="na">hello</span><span class="o">&amp;</span><span class="n">rdquo</span><span class="o">;);</span>
-</span><span class='line'>            <span class="n">value</span><span class="o">.</span><span class="na">set</span><span class="o">(</span><span class="n">result</span><span class="o">);</span>
-</span><span class='line'>        <span class="o">}</span><span class="k">catch</span><span class="o">(</span><span class="n">Exception</span> <span class="n">ex</span><span class="o">){</span>
-</span><span class='line'>            <span class="n">ex</span><span class="o">.</span><span class="na">printStackTrace</span><span class="o">();</span>
-</span><span class='line'>            <span class="n">log</span><span class="o">.</span><span class="na">error</span><span class="o">(&amp;</span><span class="n">ldquo</span><span class="o">;</span><span class="n">Failed</span> <span class="n">to</span> <span class="n">read</span> <span class="n">json</span> <span class="n">string</span><span class="o">.&amp;</span><span class="n">rdquo</span><span class="o">;);</span>
-</span><span class='line'>        <span class="o">}</span>
-</span><span class='line'>    <span class="o">}</span>
-</span><span class='line'><span class="o">});&lt;</span><span class="n">br</span><span class="o">/&gt;</span>
-</span></code></pre></td></tr></table></div></figure></p>
+<p>{% codeblock lang:java Apache Nifi InputStreamCallback <a href="https://github.com/pcgrenier/nifi-examples/blob/master/src/main/java/rocks/nifi/examples/processors/JsonProcessor.java">https://github.com/pcgrenier/nifi-examples/blob/master/src/main/java/rocks/nifi/examples/processors/JsonProcessor.java</a> JsonProcessor.java %}
+session.read(flowfile, new InputStreamCallback() {
+    @Override
+    public void process(InputStream in) throws IOException {
+        try{
+            String json = IOUtils.toString(in);
+            String result = JsonPath.read(json, &ldquo;$.hello&rdquo;);
+            value.set(result);
+        }catch(Exception ex){
+            ex.printStackTrace();
+            log.error(&ldquo;Failed to read json string.&rdquo;);
+        }
+    }
+});<br/>
+{% endcodeblock %}</p>
 
 <ul>
 <li><p>OutputStreamCallback: For writing to a flowfile, this will over write not concatenate.</p>
@@ -425,72 +380,52 @@
 </ul>
 
 
-<p><figure class='code'><figcaption><span>Apache Nifi OutputStreamCallback <a href="https://github.com/pcgrenier/nifi-examples/blob/master/src/main/java/rocks/nifi/examples/processors/JsonProcessor.java">https://github.com/pcgrenier/nifi-examples/blob/master/src/main/java/rocks/nifi/examples/processors/JsonProcessor.java</a> JsonProcessor.java </span></figcaption>
-<div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="n">flowfile</span> <span class="o">=</span> <span class="n">session</span><span class="o">.</span><span class="na">write</span><span class="o">(</span><span class="n">flowfile</span><span class="o">,</span> <span class="k">new</span> <span class="nf">OutputStreamCallback</span><span class="o">()</span> <span class="o">{</span>
-</span><span class='line'>    <span class="nd">@Override</span>
-</span><span class='line'>    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">process</span><span class="o">(</span><span class="n">OutputStream</span> <span class="n">out</span><span class="o">)</span> <span class="kd">throws</span> <span class="n">IOException</span> <span class="o">{</span>
-</span><span class='line'>        <span class="n">out</span><span class="o">.</span><span class="na">write</span><span class="o">(</span><span class="n">value</span><span class="o">.</span><span class="na">get</span><span class="o">().</span><span class="na">getBytes</span><span class="o">());</span>
-</span><span class='line'>    <span class="o">}</span>
-</span><span class='line'><span class="o">});</span>
-</span></code></pre></td></tr></table></div></figure></p>
+<p>{% codeblock lang:java Apache Nifi OutputStreamCallback <a href="https://github.com/pcgrenier/nifi-examples/blob/master/src/main/java/rocks/nifi/examples/processors/JsonProcessor.java">https://github.com/pcgrenier/nifi-examples/blob/master/src/main/java/rocks/nifi/examples/processors/JsonProcessor.java</a> JsonProcessor.java %}
+flowfile = session.write(flowfile, new OutputStreamCallback() {
+    @Override
+    public void process(OutputStream out) throws IOException {
+        out.write(value.get().getBytes());
+    }
+});
+{% endcodeblock %}</p>
 
 <ul>
 <li>StreamCallback: This is for both reading and writing to the same flow file. With both the outputstreamcallback and streamcall back remember to assign it back to a flow file. This processor is not in use in the code and could have been. The choice was deliberate to show a way of moving data out of callbacks and back in.</li>
 </ul>
 
 
-<p><figure class='code'><figcaption><span>Apache Nifi StreamCallback </span></figcaption>
-<div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="n">flowfile</span> <span class="o">=</span> <span class="n">session</span><span class="o">.</span><span class="na">write</span><span class="o">(</span><span class="n">flowfile</span><span class="o">,</span> <span class="k">new</span> <span class="nf">StreamCallback</span><span class="o">()</span> <span class="o">{</span>
-</span><span class='line'>    <span class="nd">@Override</span>
-</span><span class='line'>    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">process</span><span class="o">(</span><span class="n">InputStream</span> <span class="n">in</span><span class="o">,</span> <span class="n">OutputStream</span> <span class="n">out</span><span class="o">)</span> <span class="kd">throws</span> <span class="n">IOException</span> <span class="o">{</span>
-</span><span class='line'>        <span class="n">String</span> <span class="n">json</span> <span class="o">=</span> <span class="n">IOUtils</span><span class="o">.</span><span class="na">toString</span><span class="o">(</span><span class="n">in</span><span class="o">);</span>
-</span><span class='line'>        <span class="n">String</span> <span class="n">result</span> <span class="o">=</span> <span class="n">JsonPath</span><span class="o">.</span><span class="na">read</span><span class="o">(</span><span class="n">json</span><span class="o">,</span> <span class="o">&amp;</span><span class="n">ldquo</span><span class="o">;</span><span class="n">$</span><span class="o">.</span><span class="na">hello</span><span class="o">&amp;</span><span class="n">rdquo</span><span class="o">;);</span>
-</span><span class='line'>        <span class="n">out</span><span class="o">.</span><span class="na">write</span><span class="o">(</span><span class="n">result</span><span class="o">.</span><span class="na">getBytes</span><span class="o">());</span>
-</span><span class='line'>    <span class="o">}</span>
-</span><span class='line'><span class="o">});</span>
-</span></code></pre></td></tr></table></div></figure></p>
+<p>{% codeblock lang:java Apache Nifi StreamCallback %}
+flowfile = session.write(flowfile, new StreamCallback() {
+    @Override
+    public void process(InputStream in, OutputStream out) throws IOException {
+        String json = IOUtils.toString(in);
+        String result = JsonPath.read(json, &ldquo;$.hello&rdquo;);
+        out.write(result.getBytes());
+    }
+});
+{% endcodeblock %}</p>
 
 <p>Flow files can also contain meta data in attributes to push between processors.</p>
 
-<p><figure class='code'><figcaption><span>Setting low file attributes <a href="https://github.com/pcgrenier/nifi-examples/blob/master/src/main/java/rocks/nifi/examples/processors/JsonProcessor.java">https://github.com/pcgrenier/nifi-examples/blob/master/src/main/java/rocks/nifi/examples/processors/JsonProcessor.java</a> JsonProcessor.java </span></figcaption>
-<div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="c1">// Write the results to an attribute</span>
-</span><span class='line'><span class="n">String</span> <span class="n">results</span> <span class="o">=</span> <span class="n">value</span><span class="o">.</span><span class="na">get</span><span class="o">();</span>
-</span><span class='line'><span class="k">if</span><span class="o">(</span><span class="n">results</span> <span class="o">!=</span> <span class="kc">null</span> <span class="o">&amp;</span><span class="n">amp</span><span class="o">;&amp;</span><span class="n">amp</span><span class="o">;</span> <span class="o">!</span><span class="n">results</span><span class="o">.</span><span class="na">isEmpty</span><span class="o">()){</span>
-</span><span class='line'>    <span class="n">flowfile</span> <span class="o">=</span> <span class="n">session</span><span class="o">.</span><span class="na">putAttribute</span><span class="o">(</span><span class="n">flowfile</span><span class="o">,</span> <span class="o">&amp;</span><span class="n">ldquo</span><span class="o">;</span><span class="n">match</span><span class="o">&amp;</span><span class="n">rdquo</span><span class="o">;,</span> <span class="n">results</span><span class="o">);</span>
-</span><span class='line'><span class="o">}</span>
-</span></code></pre></td></tr></table></div></figure></p>
+<p>{% codeblock lang:java Setting low file attributes <a href="https://github.com/pcgrenier/nifi-examples/blob/master/src/main/java/rocks/nifi/examples/processors/JsonProcessor.java">https://github.com/pcgrenier/nifi-examples/blob/master/src/main/java/rocks/nifi/examples/processors/JsonProcessor.java</a> JsonProcessor.java %}
+// Write the results to an attribute
+String results = value.get();
+if(results != null &amp;&amp; !results.isEmpty()){
+    flowfile = session.putAttribute(flowfile, &ldquo;match&rdquo;, results);
+}
+{% endcodeblock %}</p>
 
 <p>Finally every flow file that is generated needs to be deleted or transfered.</p>
 
-<p><figure class='code'><figcaption><span>Session Transfer <a href="https://github.com/pcgrenier/nifi-examples/blob/master/src/main/java/rocks/nifi/examples/processors/JsonProcessor.java">https://github.com/pcgrenier/nifi-examples/blob/master/src/main/java/rocks/nifi/examples/processors/JsonProcessor.java</a> JsonProcessor.java </span></figcaption>
-<div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="n">session</span><span class="o">.</span><span class="na">transfer</span><span class="o">(</span><span class="n">flowfile</span><span class="o">,</span> <span class="n">SUCCESS</span><span class="o">);</span>
-</span></code></pre></td></tr></table></div></figure></p>
+<p>{% codeblock lang:java Session Transfer <a href="https://github.com/pcgrenier/nifi-examples/blob/master/src/main/java/rocks/nifi/examples/processors/JsonProcessor.java">https://github.com/pcgrenier/nifi-examples/blob/master/src/main/java/rocks/nifi/examples/processors/JsonProcessor.java</a> JsonProcessor.java %}
+session.transfer(flowfile, SUCCESS);
+{% endcodeblock %}</p>
 
 <p>At this point you should be able to build with a simple</p>
 
-<p><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='shell-session'><span class='line'><span class="go">mvn clean install</span>
-</span></code></pre></td></tr></table></div></figure></p>
+<p>{% codeblock lang:shell-session %}
+mvn clean install
+{% endcodeblock %}</p>
 
 <h2>Deployment</h2>
 
@@ -512,7 +447,9 @@
     <link href="http://www.nifi.rocks/apache-nifi-processors/"/>
     <updated>2015-02-05T03:00:06+00:00</updated>
     <id>http://www.nifi.rocks/apache-nifi-processors</id>
-    <content type="html"><![CDATA[<p>I looked around at what can be done with Apache NiFi and didn&rsquo;t notice a list of processors without looking at the code or building the project.  I think a list of available processors, the work horse of Apache Nifi, would greatly help decide if it is right for certain needs.  So, I went into the usage guide in the Apache Nifi UI and pulled a list of processors and a quick description for those who want to know what possibilities there are before getting into nifi itself!</p>
+    <content type="html"><![CDATA[<p><strong> Includes all processors through release 0.0.2 </strong></p>
+
+<p>I looked around at what can be done with Apache NiFi and didn&rsquo;t notice a list of processors without looking at the code or building the project.  I think a list of available processors, the work horse of Apache Nifi, would greatly help decide if it is right for certain needs.  So, I went into the usage guide in the Apache Nifi UI and pulled a list of processors and a quick description for those who want to know what possibilities there are before getting into nifi itself!</p>
 
 <h1>List of processors</h1>
 
@@ -526,13 +463,17 @@
 <li><a href="#CompressContent">CompressContent</a></li>
 <li><a href="#ControlRate">ControlRate</a></li>
 <li><a href="#ConvertCharacterSet">ConvertCharacterSet</a></li>
+<li><a href="#ConvertCSVToAvro">ConvertCSVToAvro</a></li>
+<li><a href="#ConvertJSONToAvro">ConvertJSONToAvro</a></li>
 <li><a href="#CreateHadoopSequenceFile">CreateHadoopSequenceFile</a></li>
 <li><a href="#DetectDuplicate">DetectDuplicate</a></li>
 <li><a href="#DistributeLoad">DistributeLoad</a></li>
 <li><a href="#EncryptContent">EncryptContent</a></li>
+<li><a href="#EvaluateJSONPath">EvaluateJSONPath</a></li>
 <li><a href="#EvaluateRegularExpression">EvaluateRegularExpression</a></li>
 <li><a href="#EvaluateXPath">EvaluateXPath</a></li>
 <li><a href="#EvaluateXQuery">EvaluateXQuery</a></li>
+<li><a href="#ExecuteProcess">ExecuteProcess</a></li>
 <li><a href="#ExecuteStreamCommand">ExecuteStreamCommand</a></li>
 <li><a href="#GenerateFlowFile">GenerateFlowFile</a></li>
 <li><a href="#GetFile">GetFile</a></li>
@@ -544,6 +485,8 @@
 <li><a href="#GetJMSTopic">GetJMSTopic</a></li>
 <li><a href="#GetKafka">GetKafka</a></li>
 <li><a href="#GetSFTP">GetSFTP</a></li>
+<li><a href="#HandleHttpRequest">HandleHttpRequest</a></li>
+<li><a href="#HandleHttpResponse">HandleHttpResponse</a></li>
 <li><a href="#HashAttribute">HashAttribute</a></li>
 <li><a href="#HashContent">HashContent</a></li>
 <li><a href="#IdentifyMimeType">IdentifyMimeType</a></li>
@@ -570,8 +513,10 @@
 <li><a href="#ScanContent">ScanContent</a></li>
 <li><a href="#SegmentContent">SegmentContent</a></li>
 <li><a href="#SplitContent">SplitContent</a></li>
+<li><a href="#SplitJson">SplitJson</a></li>
 <li><a href="#SplitText">SplitText</a></li>
 <li><a href="#SplitXML">SplitXML</a></li>
+<li><a href="#StoreInKiteDataset">StoreInKiteDataset</a></li>
 <li><a href="#TransformXML">TransformXML</a></li>
 <li><a href="#UnpackContent">UnpackContent</a></li>
 <li><a href="#UpdateAttribute">UpdateAttribute</a></li>
@@ -594,6 +539,14 @@
 <h3><a name="ConvertCharacterSet"></a>ConvertCharacterSet</h3>
 
 <p>This processor converts a FlowFile&rsquo;s content from one character set to another.</p>
+
+<h3><a name="ConvertCSVToAvro"></a>ConvertCSVToAvro</h3>
+
+<p>No description is given for this processor.</p>
+
+<h3><a name="ConvertJSONToAvro"></a>ConvertJSONToAvro</h3>
+
+<p>No description is given for this processor.</p>
 
 <h3><a name="CreateHadoopSequenceFile"></a>CreateHadoopSequenceFile</h3>
 
@@ -619,6 +572,10 @@ NOTE: The value portion of a key/value pair is loaded into memory. While there i
 
 <p>This processor encrypts or decrypts FlowFiles.</p>
 
+<h3><a name="EvaluateJsonPath"></a>EvaluateJsonPath</h3>
+
+<p>Evaluates one or more JsonPath expressions against the content of a FlowFile. The results of those expressions are assigned to FlowFile Attributes or are written to the content of the FlowFile itself, depending on configuration of the Processor. JsonPaths are entered by adding user-defined properties; the name of the property maps to the Attribute Name into which the result will be placed (if the Destination is flowfile-attribute; otherwise, the property name is ignored). The value of the property must be a valid JsonPath expression. If the JsonPath evaluates to a JSON array or JSON object and the Return Type is set to &lsquo;scalar&rsquo; the FlowFile will be unmodified and will be routed to failure. A Return Type of JSON can return scalar values if the provided JsonPath evaluates to the specified value and will be routed as a match. If Destination is &lsquo;flowfile-content&rsquo; and the JsonPath does not evaluate to a defined path, the FlowFile will be routed to &lsquo;unmatched&rsquo; without having its contents modified. If Destination is flowfile-attribute and the expression matches nothing, attributes will be created with empty strings as the value, and the FlowFile will always be routed to &lsquo;matched&rsquo;.</p>
+
 <h3><a name="EvaluateRegularExpression"></a>EvaluateRegularExpression</h3>
 
 <p>This processor evaluates one or more Regular Expressions against the content of a FlowFile. The results of those Regular Expressions are assigned to FlowFile Attributes. Regular Expressions are entered by adding user-defined properties; the name of the property maps to the Attribute Name into which the result will be placed. The value of the property must be a valid Regular Expressions with exactly one capturing group. If the Regular Expression matches more than once, only the first match will be used. If any provided Regular Expression matches, the FlowFile(s) will be routed to &lsquo;matched&rsquo;. If no provided Regular Expression matches, the FlowFile will be routed to &lsquo;unmatched&rsquo; and no attributes will be applied to the FlowFile.</p>
@@ -630,6 +587,10 @@ NOTE: The value portion of a key/value pair is loaded into memory. While there i
 <h3><a name="EvaluateXQuery"></a>EvaluateXQuery</h3>
 
 <p>This processor evaluates one or more XQueries against the content of FlowFiles. The results of those XQueries are assigned to FlowFile attributes or are written to the content of the FlowFile itself, depending on how the user configures the Destination property in the processor. One attribute or FlowFile is produced for each XQuery result. Each produced FlowFile will carry the attributes of the input FlowFile. See the &ldquo;Examples&rdquo; section for details on how multiple results can be wrapped or concatenated. XQueries are entered by adding user-defined properties; the name of each user-added property maps to the attribute name into which the result should be placed. The value of the property must be a valid XQuery expression.</p>
+
+<h3><a name="ExecuteProcess"></a>ExecuteProcess</h3>
+
+<p>Runs an operating system command specified by the user and writes the output of that command to a FlowFile. If the command is expected to be long-running, the Processor can output the partial data on a specified interval. When this option is used, the output is expected to be in textual format, as it typically does not make sense to split binary data on arbitrary time-based intervals.</p>
 
 <h3><a name="ExecuteStreamCommand"></a>ExecuteStreamCommand</h3>
 
@@ -678,6 +639,28 @@ NOTE: The value portion of a key/value pair is loaded into memory. While there i
 <h3><a name="GetSFTP"></a>GetSFTP</h3>
 
 <p>This processor pulls files from an SFTP server and creates FlowFiles to encapsulate them.</p>
+
+<h3><a name="HandleHttpRequest"></a>HandleHttpRequest</h3>
+
+<p>This processor starts an HTTP server and creates a FlowFile for each HTTP Request that it receives. The Processor leaves the HTTP Connection open and is intended to be used in conjunction with a HandleHttpResponse Processor.</p>
+
+<p>The pairing of this Processor with a HandleHttpResponse Processor provides the ability to use NiFi to visually construct a web server that can carry out any functionality that is available through the existing Processors. For example, one could construct a Web-based front end to an SFTP Server by constructing a flow such as:</p>
+
+<p>HandleHttpRequest -> PutSFTP -> HandleHttpResponse</p>
+
+<p>The HandleHttpRequest Processor provides several Properties to configure which methods are supported, the paths that are supported, and SSL configuration. The FlowFiles that are generated by this Processor have the following attributes added to them, providing powerful routing capabilities and traceability of all data.</p>
+
+<h3><a name="HandleHttpResponse"></a>HandleHttpResponse</h3>
+
+<p>This processor responds to an HTTP request that was received by the HandleHttpRequest Processor.</p>
+
+<p>The pairing of this Processor with a HandleHttpRequest Processor provides the ability to use NiFi to visually construct a web server that can carry out any functionality that is available through the existing Processors. For example, one could construct a Web-based front end to an SFTP Server by constructing a flow such as:</p>
+
+<p>HandleHttpRequest -> PutSFTP -> HandleHttpResponse</p>
+
+<p>This Processor must be configured with the same <HTTP Context Map> service as the corresponding HandleHttpRequest Processor. Otherwise, all FlowFiles will be routed to the &lsquo;failure&rsquo; relationship.</p>
+
+<p>All FlowFiles must have an attribute named http.context.identifier. The value of this attribute is used to lookup the HTTP Response so that the proper message can be sent back to the requestor. If this attribute is missing, the FlowFile will be routed to &lsquo;failure.&rsquo;</p>
 
 <h3><a name="HashAttribute"></a>HashAttribute</h3>
 
@@ -834,6 +817,12 @@ In this example, all files with filenames that start with ABC will follow the AB
 
 <p>This processor splits incoming FlowFiles by a specified byte sequence.</p>
 
+<h3><a name="SplitJson"></a>SplitJson</h3>
+
+<p>This processor splits a JSON File into multiple, separate FlowFiles for an array element specified by a JsonPath expression. Each generated FlowFile is comprised of an element of the specified array and transferred to relationship &lsquo;split,&rsquo; with the original file transferred to the &lsquo;original&rsquo; relationship. If the specified JsonPath is not found or does not evaluate to an array element, the original file is routed to &lsquo;failure&rsquo; and no files are generated.</p>
+
+<p>Note: The underlying JsonPath library loads the entirety of the streamed content into and performs result evaluations in memory. Accordingly, it is important to consider the anticipated profile of content being evaluated by this processor and the hardware supporting it especially when working against large JSON documents.</p>
+
 <h3><a name="SplitText"></a>SplitText</h3>
 
 <p>This processor splits a text file into multiple smaller text files on line boundaries, each having up to a configured number of lines.</p>
@@ -841,6 +830,10 @@ In this example, all files with filenames that start with ABC will follow the AB
 <h3><a name="SplitXML"></a>SplitXML</h3>
 
 <p>This processor splits an XML file into multiple separate FlowFiles, each comprising a child or descendant of the original root element.</p>
+
+<h3><a name="StoreInKiteDataset"></a>StoreInKiteDataset</h3>
+
+<p>No description is given for this processor.</p>
 
 <h3><a name="TransformXML"></a>TransformXML</h3>
 
@@ -887,145 +880,6 @@ In this example, all files with filenames that start with ABC will follow the AB
 
 
 <p>I&rsquo;m pretty excited to see what&rsquo;s in the next release, but also excited that I don&rsquo;t have to build nifi to use it.  Release binaries are available on the <a href="https://nifi.incubator.apache.org/downloads/">nifi website</a>.</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Navigating Apache Nifi]]></title>
-    <link href="http://www.nifi.rocks/navigating-apache-nifi/"/>
-    <updated>2015-01-28T03:58:20+00:00</updated>
-    <id>http://www.nifi.rocks/navigating-apache-nifi</id>
-    <content type="html"><![CDATA[<p>The main user interface of Apache Nifi is their web ui.  This makes it much more enjoyable to use than a command line interface, but can still be hard to grasp quickly or know where certain things are when you first start using it.  To help reduce the learning curve, we are going through and breaking down the web ui through a video showing how-to navigate Apache Nifi.</p>
-
-<p>Our main points will be the menu bar and building a data flow with some tips and tricks along the way.  The data flow will be based off of our previous post <a href="/getting-started-with-apache-nifi/">Getting Started with Apache Nifi</a>.</p>
-
-<iframe width="560" height="315" src="https://www.youtube.com/embed/FgTGAWLC170" frameborder="0" allowfullscreen></iframe>
-
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Getting Started with Apache Nifi]]></title>
-    <link href="http://www.nifi.rocks/getting-started-with-apache-nifi/"/>
-    <updated>2015-01-16T01:08:03+00:00</updated>
-    <id>http://www.nifi.rocks/getting-started-with-apache-nifi</id>
-    <content type="html"><![CDATA[<ul>
-<li>Update Feb. 2nd 2014: The Vagrantfile has been updated to pull the release tag 0.0.1 for stability</li>
-</ul>
-
-
-<h1>Install options</h1>
-
-<p><a href="http://nifi.incubator.apache.org/">Apache NiFi</a> is currently in incubation and so does not have any releases, so to start we have to checkout the project and build the code base.  A users guide is avaialble on the <a href="http://nifi.incubator.apache.org/development/quickstart.html">nifi website</a> with requirements for building and running nifi, mainly java 7 and maven 3.0.5+.  OpendJDK will work but currently the unit tests will not pass.  A quick tldr; can be found below.</p>
-
-<h2>Using Vagrant</h2>
-
-<p>If you like to keep your project dependencies seperate like me, I&rsquo;ve created a <a href="https://gist.github.com/czobrisky/a1ed32d9429600f4e661#file-vagrantfile">Vagrantfile</a> that will get all dependencies and then build the project in the shared /vagrant/ folder.  After building it will start nifi and you can point your browser to localhost:8080/nifi/ and skip to <a href="#building-dataflow">Building a Simple Dataflow</a>.  The provisioning of the VM will take about 10-15 minutes depending on your hardware.</p>
-
-<!-- more -->
-
-
-
-
-<script src="https://gist.github.com/czobrisky/a1ed32d9429600f4e661.js"></script>
-
-
-<p>If you want to build it for yourself it normally takes 2-6 minutes depending on your system, with parrallel builds enabled.
-Clone from Apache Nifi git repo:</p>
-
-<pre><code>git clone http://git-wip-us.apache.org/repos/asf/incubator-nifi.git
-cd incubator-nifi
-git checkout develop
-</code></pre>
-
-<p>Once you have the source, first have to build the nar-maven-plugin.</p>
-
-<pre><code>cd nifi-nar-maven-plugin
-mvn clean install
-</code></pre>
-
-<p>Now build the rest of the source from the root directory.</p>
-
-<pre><code>cd ../nifi
-mvn -T C2.0 clean install
-</code></pre>
-
-<p>NiFi recently updated their build process so it now supports parrallel building of components using the -T maven arg to speed up the build.</p>
-
-<p>The last step is to build the assembly and unpack the created tar.gz.</p>
-
-<pre><code>cp nifi-assembly/target/nifi-*-SNAPSHOT-bin.tar.gz ~/nifi-example/
-tar -zxf nifi-*-SNAPSHOT-bin.tar.gz
-</code></pre>
-
-<p>After unpacking, cd into the directory and start NiFi in the background using the nifi.sh script in the bin directory.</p>
-
-<pre><code>cd nifi-*-SNAPSHOT
-bin/nifi.sh start
-</code></pre>
-
-<p>Now open a browser and point to localhost:8080/nifi to view the NiFi flow UI.</p>
-
-<p><img src="/images/getting-started/nifi-home.png"></p>
-
-<h1><a name="building-dataflow"></a>Building your first Apache Nifi dataflow</h1>
-
-<p>The homepage webpage for Apache NiFi is a grid with some options on the top of the page.  This is where you build your data flows, the configuration of each processor and the relationship between processors.  This is saved as a FlowFile and can be saved for later use or imported into another Apache NiFi instance.  As an example, we&rsquo;ll fetch an XML document from an RSS feed and then based on an attribute and move it to a predefined directory.</p>
-
-<p>To start, drag the processor icon, <img src="/images/getting-started/processor.png"> in the menu bar down to the canvas below.  Select the GetHTTP processor from the list, you can use the search bar on the right side of the Add Processor modal or the Tags on the left to filter the list.
-<img src="/images/getting-started/add-processor-highlight.png"></p>
-
-<p>Right clicking on the processor brings up a dropdown that allows you to configure the processor along with a few other options.
-<img class="right" src="/images/getting-started/processor-dropdown.png"></p>
-
-<p>From this selection a &ldquo;Configure Processor&rdquo; modal opens.  Most default settinsg are fine, you can change the name if you would like to &ldquo;Fetch from XKCD&rdquo;, but look through the tabs just to see what they contain.  Select the properties tab to configure the options of the processor.</p>
-
-<p><img src="/images/getting-started/configure-processor.png"></p>
-
-<p>The URL we are going to grab a file from is <a href="http://xkcd.com">XKCD&rsquo;s</a> rss feed, <a href="http://xkcd.com/rss.xml">rss.xml</a>.  The GetHTTP procesor is simple to configure and just needs the URL property to be set to <a href="http://xkcd.com/rss.xml.">http://xkcd.com/rss.xml.</a>  Click on the value across from the URL property and enter <a href="http://xkcd.com/rss.xml.">http://xkcd.com/rss.xml.</a></p>
-
-<p>Now drag down another processor, EvaluateXPath.  Under the properties for this processor, set the following property-value pairs:</p>
-
-<ul>
-<li>Destination   -   flowfile-attribute</li>
-<li>Return Type   -   auto-detect</li>
-</ul>
-
-
-<p>Now add a new property as follows by clicking the New property symbol in the upper right side of the Configure Processor modal.</p>
-
-<ul>
-<li>pubDate   -   channel/item[2]/pubDate</li>
-<li>title     -   channel/item[2]/title</li>
-<li>link      -   channel/item[2]/link</li>
-</ul>
-
-
-<p><img src="/images/getting-started/config-xpath.png"></p>
-
-<p>After applying the changes, we can now connect the two processors we have.  Click the middle of the GetHTTP processor and then drag to the EvaluateXPath processor.  A new modal will appear to confirm the relationship and click ok.  After connecting the two. <img class="right" src="/images/getting-started/connected-procs.png"></p>
-
-<p>We are almost done, just two more PutFile processors to go.  Before we add the next two processors, we need to create two directories to put matched and unmatched files.  (This is really optional since the PutFile processor will create the directory by default if it does not exist, but it&rsquo;s easier to do in advance knowing the full path.)  If you used the Vagrantfile that I linked to earlier, these directories are already created for you, so you can skip this part.  If you did not, just create a directory called matched and unmatched and remember the full path.</p>
-
-<p>Now add two PutFile Processors and change one name to matched, the other to unmatched.  Both PutFile processors will have auto terminated relationships for failure and success.  These are checked off on the Settings tab when configuring each processor. <img src="/images/getting-started/auto-terminate-hg.png">  For the matched PutFile processor, change the directory property value to the directory you created earlier called matched, with the full path. If you are using the Vagrantfile, the directory is &ldquo;/vagrant/matched/&rdquo;.  For the unmatched PutFile processor, do the same thing for the unmatched directory you created, &ldquo;/vagrant/unmatched/&rdquo; if using the Vagrantfile.</p>
-
-<p>Now wire the last few processors, EvaluateXPath and the two PutFile processors.  Make sure to connect the correct relationships from the EvaluateXPath for the matched and unmatched.  Lastly, wire the failure relationship for the EvaluateXPath back to itself by left clicking on the processor as you normally would to connect processors, pulling away and then back to the original processor and then select failure from the relationship modal.  This allows failures to retry on the processor they failed on, EvaluateXPath in this example.</p>
-
-<p>Your final flow should look similar to this.</p>
-
-<p><img src="/images/getting-started/completed-flow.png"></p>
-
-<p>All processors should be stopped and have a red square in their top left.  If they have an exclaimation mark in a yellow triangle, then there is an issue with the processor.  Hover of the yellow triangle to get more information.  (To see an example, remove one of the auto terminate relationships from a PutFile processor).</p>
-
-<p>Now we can run our flow file and see what happens!  Run the flow by clicking the play button in the flow menu bar.</p>
-
-<p><img src="/images/getting-started/menu-bar-hg.png"></p>
-
-<p>Make sure you don&rsquo;t have a processor selected or it will only start that one processor.  After running, it should pull down the rss.xml file, parse the attributes, and route it to the matched directory via the PutFile processor.  You can view the statistics on each processor from the flow, In and out, and Tasks/Time.  After it grabs the file, it should look similar to below.  You can check the directory you specified in the matched PutFile processor and the file should be there!</p>
-
-<p><img src="/images/getting-started/finished-flow.png"></p>
-
-<p>I hope this simple walk through of creating a flow was helpful and you can start to see the power behind Apache Nifi.  In our next post we will show you how to create a custom processor and add it to your flow.</p>
 ]]></content>
   </entry>
   
