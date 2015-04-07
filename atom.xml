@@ -81,7 +81,7 @@
   <title><![CDATA[NiFi.rocks]]></title>
   <link href="http://www.nifi.rocks/atom.xml" rel="self"/>
   <link href="http://www.nifi.rocks/"/>
-  <updated>2015-03-20T05:16:45+00:00</updated>
+  <updated>2015-04-05T01:47:30+00:00</updated>
   <id>http://www.nifi.rocks/</id>
   <author>
     <name><![CDATA[]]></name>
@@ -89,6 +89,122 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    
+    <title type="html"><![CDATA[Developing a Custom Apache Nifi Processor-Unit Tests (Part I)]]></title>
+    <link href="http://www.nifi.rocks/developing-a-custom-apache-nifi-processor-unit-tests-partI/"/>
+    
+    <updated>2015-04-04T16:54:52+00:00</updated>
+    <id>http://www.nifi.rocks/developing-a-custom-apache-nifi-processor-unit-tests-partI</id>
+    
+    <content type="html"><![CDATA[<p>The Apache Nifi framework has built in unit testing with Junit using test runners.  They have a few examples in their code base, but learning first hand really helps.  In this post we&rsquo;ll go over adding unit tests to the <a href="http://www.nifi.rocks/developing-a-custom-apache-nifi-processor-json/">JSON Processor</a> that we developed previously.</p>
+
+<p>To start, we&rsquo;ll checkout the JSON Processor code from <a href="https://github.com/pcgrenier/nifi-examples">Github</a> and then open it up in your favorite text editor.  There is already a test package/folder in the project that contains a unit test, <a href="https://github.com/pcgrenier/nifi-examples/blob/master/src/test/java/rocks/nifi/examples/processors/JsonProcessorTest.java">rocks.nifi.examples.processors/JsonProcessorTest.java</a>.</p>
+
+<p>When unit testing in Apache Nifi, there are a few items on top of the normal JUnit annotations that are required.  While you can unit test with just JUnit, using the built in method in Apache Nifi makes it much easier.  In a future post we&rsquo;ll show you how to unit test using Mockito and JUnit to test helper methods where actually invoking a full processor seems excessive, or if you just don&rsquo;t want to use Nifi&rsquo;s test runner.</p>
+
+<!-- more -->
+
+
+<p>The first thing to do to unit test Apache Nifi is grabbing the necessary dependencies from maven.</p>
+
+<figure class='code'><figcaption><span>pom.xml</span><a href='https://github.com/pcgrenier/nifi-examples/blob/master/pom.xml#L42'>link</a></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+</pre></td><td class='code'><pre><code class='xml'><span class='line'>      <span class="nt">&lt;dependency&gt;</span>
+</span><span class='line'>            <span class="nt">&lt;groupId&gt;</span>org.apache.nifi<span class="nt">&lt;/groupId&gt;</span>
+</span><span class='line'>            <span class="nt">&lt;artifactId&gt;</span>nifi-mock<span class="nt">&lt;/artifactId&gt;</span>
+</span><span class='line'>            <span class="nt">&lt;version&gt;</span>${nifi.version}<span class="nt">&lt;/version&gt;</span>
+</span><span class='line'>            <span class="nt">&lt;scope&gt;</span>test<span class="nt">&lt;/scope&gt;</span>
+</span><span class='line'>        <span class="nt">&lt;/dependency&gt;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>After including the nifi-mock dependency, there will be a few includes from the org.apache.nifi.utils package that will be necessary to import; mainly TestRunner, TestRunners and MockFlowFile.</p>
+
+<p>Since we are using JUnit, the usual tags apply for defining a test function inside the class and we&rsquo;ll use the @Test for this one, although the other annotations can be used.  After adding the JUnit tag, there are a few requirements that Nifi puts on you in order to utilize the test runners they have provided.  The first is to create a test runner to use and then to set a flow file or flow file content inorder to run the processor.  In this example, we are using a ByteArrayInputStream as the flow file content, although you could use a JSON file in a resource folder just as well.</p>
+
+<p>Once a test runner is created, you can set flow file properties on it using <code>runner.setProperties()</code> method and can enqueue a file using <code>runner.enqueue(content)</code>.  Then you can run the test runner and make assertions.</p>
+
+<p>Nifi makes it easy to test assertions with some built in assertions for flowfiles.  You can test the flowfile was transfered to the appropriate relationship and get the flowfile to test for expected attributes and content.</p>
+
+<p>Below is how we testing the JSON Processor, with a typical test setup for Apache Nifi.</p>
+
+<figure class='code'><figcaption><span>JSON Processor Unit Test</span><a href='https://github.com/pcgrenier/nifi-examples/blob/master/src/test/java/rocks/nifi/examples/processors/JsonProcessorTest.java'>JsonProcessorTest.java </a></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="nd">@org.junit.Test</span>
+</span><span class='line'>    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">testOnTrigger</span><span class="o">()</span> <span class="kd">throws</span> <span class="n">IOException</span> <span class="o">{</span>
+</span><span class='line'>        <span class="c1">// Content to be mock a json file</span>
+</span><span class='line'>        <span class="n">InputStream</span> <span class="n">content</span> <span class="o">=</span> <span class="k">new</span> <span class="nf">ByteArrayInputStream</span><span class="o">(</span><span class="s">&quot;{\&quot;hello\&quot;:\&quot;nifi rocks\&quot;}&quot;</span><span class="o">.</span><span class="na">getBytes</span><span class="o">());</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="c1">// Generate a test runner to mock a processor in a flow</span>
+</span><span class='line'>        <span class="n">TestRunner</span> <span class="n">runner</span> <span class="o">=</span> <span class="n">TestRunners</span><span class="o">.</span><span class="na">newTestRunner</span><span class="o">(</span><span class="k">new</span> <span class="nf">JsonProcessor</span><span class="o">());</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="c1">// Add properites</span>
+</span><span class='line'>        <span class="n">runner</span><span class="o">.</span><span class="na">setProperty</span><span class="o">(</span><span class="n">JsonProcessor</span><span class="o">.</span><span class="na">JSON_PATH</span><span class="o">,</span> <span class="s">&quot;$.hello&quot;</span><span class="o">);</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="c1">// Add the content to the runner</span>
+</span><span class='line'>        <span class="n">runner</span><span class="o">.</span><span class="na">enqueue</span><span class="o">(</span><span class="n">content</span><span class="o">);</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="c1">// Run the enqueued content, it also takes an int = number of contents queued</span>
+</span><span class='line'>        <span class="n">runner</span><span class="o">.</span><span class="na">run</span><span class="o">(</span><span class="mi">1</span><span class="o">);</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="c1">// All results were processed with out failure</span>
+</span><span class='line'>        <span class="n">runner</span><span class="o">.</span><span class="na">assertQueueEmpty</span><span class="o">();</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="c1">// If you need to read or do aditional tests on results you can access the content</span>
+</span><span class='line'>        <span class="n">List</span><span class="o">&lt;</span><span class="n">MockFlowFile</span><span class="o">&gt;</span> <span class="n">results</span> <span class="o">=</span> <span class="n">runner</span><span class="o">.</span><span class="na">getFlowFilesForRelationship</span><span class="o">(</span><span class="n">JsonProcessor</span><span class="o">.</span><span class="na">SUCCESS</span><span class="o">);</span>
+</span><span class='line'>        <span class="n">assertTrue</span><span class="o">(</span><span class="s">&quot;1 match&quot;</span><span class="o">,</span> <span class="n">results</span><span class="o">.</span><span class="na">size</span><span class="o">()</span> <span class="o">==</span> <span class="mi">1</span><span class="o">);</span>
+</span><span class='line'>        <span class="n">MockFlowFile</span> <span class="n">result</span> <span class="o">=</span> <span class="n">results</span><span class="o">.</span><span class="na">get</span><span class="o">(</span><span class="mi">0</span><span class="o">);</span>
+</span><span class='line'>        <span class="n">String</span> <span class="n">resultValue</span> <span class="o">=</span> <span class="k">new</span> <span class="nf">String</span><span class="o">(</span><span class="n">runner</span><span class="o">.</span><span class="na">getContentAsByteArray</span><span class="o">(</span><span class="n">result</span><span class="o">));</span>
+</span><span class='line'>        <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">&quot;Match: &quot;</span> <span class="o">+</span> <span class="n">IOUtils</span><span class="o">.</span><span class="na">toString</span><span class="o">(</span><span class="n">runner</span><span class="o">.</span><span class="na">getContentAsByteArray</span><span class="o">(</span><span class="n">result</span><span class="o">)));</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="c1">// Test attributes and content</span>
+</span><span class='line'>        <span class="n">result</span><span class="o">.</span><span class="na">assertAttributeEquals</span><span class="o">(</span><span class="n">JsonProcessor</span><span class="o">.</span><span class="na">MATCH_ATTR</span><span class="o">,</span> <span class="s">&quot;nifi rocks&quot;</span><span class="o">);</span>
+</span><span class='line'>        <span class="n">result</span><span class="o">.</span><span class="na">assertContentEquals</span><span class="o">(</span><span class="s">&quot;nifi rocks&quot;</span><span class="o">);</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="o">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Watch for our next post about unit testing Apache Nifi with Mockito and JUnit without using nifi&rsquo;s testrunner class.</p>
+]]></content>
+    
+  </entry>
   
   <entry>
     
