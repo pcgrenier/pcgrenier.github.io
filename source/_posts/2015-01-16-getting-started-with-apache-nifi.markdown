@@ -11,7 +11,7 @@ keywords: Apache Nifi, apache nifi, Nifi, Dataflow, data flow, Nifi dataflow
 categories: [Apache Nifi, How-Tos]
 ---
 
-* Update Feb. 2nd 2014: The Vagrantfile has been updated to pull the release tag 0.0.1 for stability
+* Update April 8th 2015: The Vagrantfile has been updated to pull the release tag 0.0.2 for stability
 
 # Install options
 

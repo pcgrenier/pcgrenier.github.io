@@ -81,7 +81,7 @@
   <title><![CDATA[Category: how-tos | NiFi.rocks]]></title>
   <link href="http://www.nifi.rocks/categories/how-tos/atom.xml" rel="self"/>
   <link href="http://www.nifi.rocks/"/>
-  <updated>2015-04-06T20:52:30+00:00</updated>
+  <updated>2015-04-09T02:51:22+00:00</updated>
   <id>http://www.nifi.rocks/</id>
   <author>
     <name><![CDATA[]]></name>
@@ -110,7 +110,7 @@
     <updated>2015-01-16T01:08:03+00:00</updated>
     <id>http://www.nifi.rocks/getting-started-with-apache-nifi</id>
     <content type="html"><![CDATA[<ul>
-<li>Update Feb. 2nd 2014: The Vagrantfile has been updated to pull the release tag 0.0.1 for stability</li>
+<li>Update April 8th 2015: The Vagrantfile has been updated to pull the release tag 0.0.2 for stability</li>
 </ul>
 
 
