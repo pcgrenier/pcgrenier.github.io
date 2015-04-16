@@ -5,18 +5,18 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>Category: apache nifi - NiFi.rocks</title>
+  <title>Apache Nifi: What Processors are there? - NiFi.rocks</title>
   <meta name="author" content="">
 
-<meta name="description" content="Category: apache nifi">
-<meta name="keywords" content="Apache Nifi, Nifi, nifi, nifi rocks">
+<meta name="description" content="Apache Nifi processors and processors list.">
+<meta name="keywords" content="Apache Nifi, apache nifi, Nifi, Processors">
   <!-- http://t.co/dKP3o1e -->
   <meta name="HandheldFriendly" content="True">
   <meta name="MobileOptimized" content="320">
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <link rel="canonical" href="http://www.nifi.rocks/categories/apache-nifi/atom.xml">
+  <link rel="canonical" href="http://www.nifi.rocks/apache-nifi-processors">
   <link href="/favicon.png" rel="icon">
   <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
   <link href="/atom.xml" rel="alternate" title="NiFi.rocks" type="application/atom+xml">
@@ -54,10 +54,7 @@
 	<br><div class="header-subtitle">Your home for everything Apache NiFi</div>
 
 </header>
-  <nav role="navigation"><ul class="subscription" data-subscription="rss">
-  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
-  
-</ul>
+  <nav role="navigation">
   
 <form action="https://www.google.com/search" method="get">
   <fieldset role="search">
@@ -75,379 +72,32 @@
 </nav>
   <div id="main">
     <div id="content">
-      <?xml version="1.0" encoding="utf-8"?>
-<feed xmlns="http://www.w3.org/2005/Atom">
-
-  <title><![CDATA[Category: apache nifi | NiFi.rocks]]></title>
-  <link href="http://www.nifi.rocks/categories/apache-nifi/atom.xml" rel="self"/>
-  <link href="http://www.nifi.rocks/"/>
-  <updated>2015-04-09T02:51:22+00:00</updated>
-  <id>http://www.nifi.rocks/</id>
-  <author>
-    <name><![CDATA[]]></name>
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+  
     
-  </author>
-  <generator uri="http://octopress.org/">Octopress</generator>
-
+      <h1 class="entry-title">Apache Nifi: What Processors Are There?</h1>
+    
   
-  <entry>
-    <title type="html"><![CDATA[Developing a Custom Apache Nifi Processor-Unit Tests (Part I)]]></title>
-    <link href="http://www.nifi.rocks/developing-a-custom-apache-nifi-processor-unit-tests-partI/"/>
-    <updated>2015-04-04T16:54:52+00:00</updated>
-    <id>http://www.nifi.rocks/developing-a-custom-apache-nifi-processor-unit-tests-partI</id>
-    <content type="html"><![CDATA[<p>The Apache Nifi framework has built in unit testing with Junit using test runners.  They have a few examples in their code base, but learning first hand really helps.  In this post we&rsquo;ll go over adding unit tests to the <a href="{{%20site.url%20}}/developing-a-custom-apache-nifi-processor-json/">JSON Processor</a> that we developed previously.</p>
+    
+      <p class="meta">
+        
 
-<p>To start, we&rsquo;ll checkout the JSON Processor code from <a href="https://github.com/pcgrenier/nifi-examples">Github</a> and then open it up in your favorite text editor.  There is already a test package/folder in the project that contains a unit test, <a href="https://github.com/pcgrenier/nifi-examples/blob/master/src/test/java/rocks/nifi/examples/processors/JsonProcessorTest.java">rocks.nifi.examples.processors/JsonProcessorTest.java</a>.</p>
 
-<p>When unit testing in Apache Nifi, there are a few items on top of the normal JUnit annotations that are required.  While you can unit test with just JUnit, using the built in method in Apache Nifi makes it much easier.  In a future post we&rsquo;ll show you how to unit test using Mockito and JUnit to test helper methods where actually invoking a full processor seems excessive, or if you just don&rsquo;t want to use Nifi&rsquo;s test runner.</p>
 
-<!-- more -->
 
+<time class='entry-date' datetime='2015-02-05T03:00:06+00:00'><span class='date'>February  5, 2015</span> <span class='time'></span></time>
+        
+         | <a href="#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
 
-<p>The first thing to do to unit test Apache Nifi is grabbing the necessary dependencies from maven.</p>
 
-<p>{% codeblock lang:xml pom.xml <a href="https://github.com/pcgrenier/nifi-examples/blob/master/pom.xml#L42">https://github.com/pcgrenier/nifi-examples/blob/master/pom.xml#L42</a> %}
-        <dependency>
-            <groupId>org.apache.nifi</groupId>
-            <artifactId>nifi-mock</artifactId>
-            <version>${nifi.version}</version>
-            <scope>test</scope>
-        </dependency></p>
-
-<p>{% endcodeblock %}</p>
-
-<p>After including the nifi-mock dependency, there will be a few includes from the org.apache.nifi.utils package that will be necessary to import; mainly TestRunner, TestRunners and MockFlowFile.</p>
-
-<p>Since we are using JUnit, the usual tags apply for defining a test function inside the class and we&rsquo;ll use the @Test for this one, although the other annotations can be used.  After adding the JUnit tag, there are a few requirements that Nifi puts on you in order to utilize the test runners they have provided.  The first is to create a test runner to use and then to set a flow file or flow file content inorder to run the processor.  In this example, we are using a ByteArrayInputStream as the flow file content, although you could use a JSON file in a resource folder just as well.</p>
-
-<p>Once a test runner is created, you can set flow file properties on it using <code>runner.setProperties(PropertyDescriptor)</code> method and can enqueue a file using <code>runner.enqueue(content)</code>.  Then you can run the test runner and make assertions.</p>
-
-<p>Nifi makes it easy to test assertions with some built in assertions for flowfiles.  You can test the flowfile was transfered to the appropriate relationship and get the flowfile to test for expected attributes and content.</p>
-
-<p>Below is how we test the JSON Processor, with a typical test setup for Apache Nifi.</p>
-
-<p>{% codeblock lang:java JSON Processor Unit Test <a href="https://github.com/pcgrenier/nifi-examples/blob/master/src/test/java/rocks/nifi/examples/processors/JsonProcessorTest.java">https://github.com/pcgrenier/nifi-examples/blob/master/src/test/java/rocks/nifi/examples/processors/JsonProcessorTest.java</a> JsonProcessorTest.java %}
-@org.junit.Test
-    public void testOnTrigger() throws IOException {
-        // Content to be mock a json file
-        InputStream content = new ByteArrayInputStream(&ldquo;{&#34;hello\&rdquo;:\&ldquo;nifi rocks\&rdquo;}&ldquo;.getBytes());</p>
-
-<pre><code>    // Generate a test runner to mock a processor in a flow
-    TestRunner runner = TestRunners.newTestRunner(new JsonProcessor());
-
-    // Add properites
-    runner.setProperty(JsonProcessor.JSON_PATH, "$.hello");
-
-    // Add the content to the runner
-    runner.enqueue(content);
-
-    // Run the enqueued content, it also takes an int = number of contents queued
-    runner.run(1);
-
-    // All results were processed with out failure
-    runner.assertQueueEmpty();
-
-    // If you need to read or do aditional tests on results you can access the content
-    List&lt;MockFlowFile&gt; results = runner.getFlowFilesForRelationship(JsonProcessor.SUCCESS);
-    assertTrue("1 match", results.size() == 1);
-    MockFlowFile result = results.get(0);
-    String resultValue = new String(runner.getContentAsByteArray(result));
-    System.out.println("Match: " + IOUtils.toString(runner.getContentAsByteArray(result)));
-
-    // Test attributes and content
-    result.assertAttributeEquals(JsonProcessor.MATCH_ATTR, "nifi rocks");
-    result.assertContentEquals("nifi rocks");
-
-}
-</code></pre>
-
-<p>{% endcodeblock %}</p>
-
-<p>Watch for our next post about unit testing Apache Nifi with Mockito and JUnit without using nifi&rsquo;s testrunner class.</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Apache Nifi Release 0.0.2 Highlights]]></title>
-    <link href="http://www.nifi.rocks/apache-nifi-release-0-dot-0-2-highlights/"/>
-    <updated>2015-03-20T01:45:11+00:00</updated>
-    <id>http://www.nifi.rocks/apache-nifi-release-0-dot-0-2-highlights</id>
-    <content type="html"><![CDATA[<p>Apache Nifi just kicked out their second release, <a href="https://nifi.incubator.apache.org/downloads/">0.0.2</a>.  It doesn&rsquo;t have too many new features in it, hence a patch release according to <a href="http://semver.org">semantic versioning</a>, but it is definitely an improvement over the previous version, with it&rsquo;s bug fixes, improvements, and new features numbers below.</p>
-
-<ul>
-<li><a href="#bugfixes">Bug Fixes</a>:       35</li>
-<li><a href="#improvements">Improvements</a>:        17</li>
-<li><a href="#new-features">New Features</a>:        5</li>
-</ul>
-
-
-<!--more-->
-
-
-<h3><a name="bugfixes"></a>Bug Fixes</h3>
-
-<p>The nifi community came in with some big fixes with this release.  The biggest ones I feel are the ability to now build on Mac OSX and increasing documentation.  There were quite a few other fixes that greatly improved the overall NiFi experience, processors now stop correctly and aren&rsquo;t continued to be scheduled and some clustering issues were resolved for example.</p>
-
-<h3><a name="improvements"></a>Improvements</h3>
-
-<p>The improvements in this release included a few maintanence related tasks and again some over all usability tasks, with most of them falling on the usability side.  The main improvements in Nifi release 0.0.2 were document related and overall usability updates, the cleanup of development documents, and too many to name for the usability.  In this release though, you should expect the following usability improvements:</p>
-
-<ul>
-<li>proxy support for the GetFTP Processor</li>
-<li>Component toolbox improvements</li>
-<li>Dragging/drawing relationships</li>
-<li>Labeling with the same color for multiple items</li>
-</ul>
-
-
-<h3><a name="new-features"></a>New Features</h3>
-
-<p>Now on to the good stuff, new features!  This release only had a few additional features added, but from what I&rsquo;ve read there are quite a few more coming.  The highlights in this category are:</p>
-
-<p>Multiple new processors
-* JSON Processors
-* ExecuteProcess processor
-* StoreInKiteDataset processor</p>
-
-<p>New processors are great and mean more possibilities and use cases for Apache Nifi.  We showed you how to create a JSON processor in a previous post, <a href="{{site_url}}/developing-a-custom-apache-nifi-processor-json">Developing a custom Nifi Processor: JSON</a>, and now someone has contributed a JSON processor to Nifi.  For a full list of Nifi Processors, including the newly added ones, see our <a href="{{%20site_url%20}}/apache-nifi-processors">previous post</a>.</p>
-
-<p>It has been rumored that the next release will contain quite a few changes and be a minor release bumping up to version 0.1.0.  With over 200 tickets open on their JIRA, Nifi could see a great amount of change in the coming months.</p>
-
-<p>The full list of release notes can be found on Apache Nifi&rsquo;s <a href="https://issues.apache.org/jira/secure/ReleaseNote.jspa?projectId=12316020&amp;version=12329373">JIRA page</a> and downloads for all of their releases, source code and binaries, are available from their <a href="http://nifi.incubator.apache.org/downloads/">website</a>.  Nifi is also making thier releases available through maven via apaches <a href="https://repository.apache.org/content/repositories/releases/org/apache/nifi/">maven repository</a>.</p>
-
-<p>As always, check back for how-tos and Apache Nifi related updates.  New videos and posts are coming!!</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Developing A Custom Apache Nifi Processor (JSON)]]></title>
-    <link href="http://www.nifi.rocks/developing-a-custom-apache-nifi-processor-json/"/>
-    <updated>2015-02-07T02:14:33+00:00</updated>
-    <id>http://www.nifi.rocks/developing-a-custom-apache-nifi-processor-json</id>
-    <content type="html"><![CDATA[<p>The list of available Apache Nifi processors is extensive, as documented in <a href="{{%20site.url%20}}/apache-nifi-processors/">this post</a>. There is still a need to develop your own; to pull data from a database, to process an uncommon file format, or many other unique situations. So to get you started, we will work through a basic processor that takes a json file as input and a json path as a parameter to place into the contents and an attribute. The full source is hosted on <a href="https://github.com/pcgrenier/nifi-examples">Github</a>.</p>
-
-<!-- more -->
-
-
-<h2>Setup</h2>
-
-<p>Start by creating a simple maven project in your favorite IDE. Then edit the pom.xml.</p>
-
-<p>{% gist f99d27d08c3903f9d50c pom.xml %}</p>
-
-<p>This pom.xml includes a single plug-in for building a nifi nar, which is similar to a war for nifi, that bundles everything up in a way nifi can unpack. The nifi-api is the only other &ldquo;required&rdquo; dependency. The other nifi dependencies are really use full as you will see.</p>
-
-<p>The next important piece is telling nifi which classes to load and register. This is done in a single file located at /src/main/resources/META-INF/services/org.apache.nifi.processor.Processor</p>
-
-<p>{% gist f98e563e787c1b73c425 org.apache.nifi.processor.Processor %}</p>
-
-<h2>The JSON Processor</h2>
-
-<p>Now that everything is defined and findable by Apache Nifi, lets build a processor. Define a simple java class as defined in the setup process (rocks.nifi.examples.processors.JsonProcessor).</p>
-
-<p>Tags are useful for finding your processor in the list of processors in the GUI. So in this case in the search box you could just type &lsquo;json&rsquo; and your processor will be found. The capability description is also displayed in the processor selection box. Nifi.rocks will make future posts on documenting your custom processors. Finally most processors will just extend the AbstractProcessor, for more complicated tasks it may be required to go a level deeper for the AbstractSessionFactoryProcessor.</p>
-
-<p>{% codeblock lang:java Apache Nifi Processor Header  <a href="https://github.com/pcgrenier/nifi-examples/blob/master/src/main/java/rocks/nifi/examples/processors/JsonProcessor.java">https://github.com/pcgrenier/nifi-examples/blob/master/src/main/java/rocks/nifi/examples/processors/JsonProcessor.java</a> JsonProcessor.java %}
-@SideEffectFree
-@Tags({&ldquo;JSON&rdquo;, &ldquo;NIFI ROCKS&rdquo;})
-@CapabilityDescription(&ldquo;Fetch value from json path.&rdquo;)
-public class JsonProcessor extends AbstractProcessor {
-{% endcodeblock %}</p>
-
-<p>Not really interesting stuff here. Properties will hold all a list of all the available properties tha are exposed to the user. Relationships will hold the relationships the processor will use to direct the flow files. For more details on relationships, properties, and components of an Apache Nifi flow please read the <a href="https://nifi.incubator.apache.org/docs/nifi-docs/developer-guide.html">offical developer guide</a>. There is plenty of room to expand on custom validators, but there is a large selection of validators in nifi-processor-utils package.</p>
-
-<p>{% codeblock lang:java Variable Declaration <a href="https://github.com/pcgrenier/nifi-examples/blob/master/src/main/java/rocks/nifi/examples/processors/JsonProcessor.java">https://github.com/pcgrenier/nifi-examples/blob/master/src/main/java/rocks/nifi/examples/processors/JsonProcessor.java</a> JsonProcessor.java %}</p>
-
-<p>private List<PropertyDescriptor> properties;
-private Set<Relationship> relationships;</p>
-
-<p>public static final String MATCH_ATTR = &ldquo;match&rdquo;;</p>
-
-<p>public static final PropertyDescriptor JSON_PATH = new PropertyDescriptor.Builder()
-        .name(&ldquo;Json Path&rdquo;)
-        .required(true)
-        .addValidator(StandardValidators.NON_EMPTY_VALIDATOR)
-        .build();</p>
-
-<p>public static final Relationship SUCCESS = new Relationship.Builder()
-        .name(&ldquo;SUCCESS&rdquo;)
-        .description(&ldquo;Succes relationship&rdquo;)
-        .build();
-{% endcodeblock %}</p>
-
-<p>The init function is called at the start of Apache Nifi. Remember that this is a highly multi-threaded environment and be careful what you do in this space. This is why both the list of properties and the set of relationships are set with unmodifiable collections. I put the getters for the properties and relationships here as well.</p>
-
-<p>{% codeblock lang:java Apache Nifi Init <a href="https://github.com/pcgrenier/nifi-examples/blob/master/src/main/java/rocks/nifi/examples/processors/JsonProcessor.java">https://github.com/pcgrenier/nifi-examples/blob/master/src/main/java/rocks/nifi/examples/processors/JsonProcessor.java</a> JsonProcessor.java %}
-@Override
-public void init(final ProcessorInitializationContext context){
-    List<PropertyDescriptor> properties = new ArrayList&lt;>();
-    properties.add(JSON_PATH);
-    this.properties = Collections.unmodifiableList(properties);</p>
-
-<pre><code>Set&lt;Relationship&gt; relationships = new HashSet&lt;&gt;();
-relationships.add(SUCCESS);
-this.relationships = Collections.unmodifiableSet(relationships);
-</code></pre>
-
-<p>}</p>
-
-<p>@Override
-public Set<Relationship> getRelationships(){
-    return relationships;
-}</p>
-
-<p>@Override
-public List<PropertyDescriptor> getSupportedPropertyDescriptors(){
-    return properties;
-}
-{% endcodeblock %}</p>
-
-<p>The onTrigger method is called when ever a flow file is passed to the processor. For more details on the context and session variables please again refer to the <a href="https://nifi.incubator.apache.org/docs/nifi-docs/developer-guide.html#flowfile">official developer guide</a>.</p>
-
-<p>{% codeblock lang:java Apache Nifi OnTrigger <a href="https://github.com/pcgrenier/nifi-examples/blob/master/src/main/java/rocks/nifi/examples/processors/JsonProcessor.java">https://github.com/pcgrenier/nifi-examples/blob/master/src/main/java/rocks/nifi/examples/processors/JsonProcessor.java</a> JsonProcessor.java %}</p>
-
-<p>@Override
-public void onTrigger(ProcessContext context, ProcessSession session) throws ProcessException {
-    final ProcessorLog log = this.getLogger();
-    final AtomicReference<String> value = new AtomicReference&lt;>();</p>
-
-<pre><code>FlowFile flowfile = session.get();
-
-session.read(flowfile, new InputStreamCallback() {
-    @Override
-    public void process(InputStream in) throws IOException {
-        try{
-            String json = IOUtils.toString(in);
-            String result = JsonPath.read(json, "$.hello");
-            value.set(result);
-        }catch(Exception ex){
-            ex.printStackTrace();
-            log.error("Failed to read json string.");
-        }
-    }
-});
-
-// Write the results to an attribute
-String results = value.get();
-if(results != null &amp;&amp; !results.isEmpty()){
-    flowfile = session.putAttribute(flowfile, "match", results);
-}
-
-// To write the results back out ot flow file
-flowfile = session.write(flowfile, new OutputStreamCallback() {
-
-    @Override
-    public void process(OutputStream out) throws IOException {
-        out.write(value.get().getBytes());
-    }
-});
-
-session.transfer(flowfile, SUCCESS);
-</code></pre>
-
-<p>}
-{% endcodeblock %}</p>
-
-<p>In general you pull the flow file out of session. Read and write to the flow files and add attributes where needed. To work on flow files nifi provides 3 callback interfaces.</p>
-
-<ul>
-<li><p>InputStreamCallback: For reading the contents of the flow file through a input stream.</p>
-
-<p>Using Apache Commons to read the input stream out to a string. Use JsonPath to attempt to read the json and set a value to the pass on. It would normally be best practice in the case of a exception to pass the original flow file to a Error relation point in the case of an exception.</p></li>
-</ul>
-
-
-<p>{% codeblock lang:java Apache Nifi InputStreamCallback <a href="https://github.com/pcgrenier/nifi-examples/blob/master/src/main/java/rocks/nifi/examples/processors/JsonProcessor.java">https://github.com/pcgrenier/nifi-examples/blob/master/src/main/java/rocks/nifi/examples/processors/JsonProcessor.java</a> JsonProcessor.java %}
-session.read(flowfile, new InputStreamCallback() {
-    @Override
-    public void process(InputStream in) throws IOException {
-        try{
-            String json = IOUtils.toString(in);
-            String result = JsonPath.read(json, &ldquo;$.hello&rdquo;);
-            value.set(result);
-        }catch(Exception ex){
-            ex.printStackTrace();
-            log.error(&ldquo;Failed to read json string.&rdquo;);
-        }
-    }
-});<br/>
-{% endcodeblock %}</p>
-
-<ul>
-<li><p>OutputStreamCallback: For writing to a flowfile, this will over write not concatenate.</p>
-
-<p>We simply write out the value we recieved in the InputStreamCallback</p></li>
-</ul>
-
-
-<p>{% codeblock lang:java Apache Nifi OutputStreamCallback <a href="https://github.com/pcgrenier/nifi-examples/blob/master/src/main/java/rocks/nifi/examples/processors/JsonProcessor.java">https://github.com/pcgrenier/nifi-examples/blob/master/src/main/java/rocks/nifi/examples/processors/JsonProcessor.java</a> JsonProcessor.java %}
-flowfile = session.write(flowfile, new OutputStreamCallback() {
-    @Override
-    public void process(OutputStream out) throws IOException {
-        out.write(value.get().getBytes());
-    }
-});
-{% endcodeblock %}</p>
-
-<ul>
-<li>StreamCallback: This is for both reading and writing to the same flow file. With both the outputstreamcallback and streamcall back remember to assign it back to a flow file. This processor is not in use in the code and could have been. The choice was deliberate to show a way of moving data out of callbacks and back in.</li>
-</ul>
-
-
-<p>{% codeblock lang:java Apache Nifi StreamCallback %}
-flowfile = session.write(flowfile, new StreamCallback() {
-    @Override
-    public void process(InputStream in, OutputStream out) throws IOException {
-        String json = IOUtils.toString(in);
-        String result = JsonPath.read(json, &ldquo;$.hello&rdquo;);
-        out.write(result.getBytes());
-    }
-});
-{% endcodeblock %}</p>
-
-<p>Flow files can also contain meta data in attributes to push between processors.</p>
-
-<p>{% codeblock lang:java Setting low file attributes <a href="https://github.com/pcgrenier/nifi-examples/blob/master/src/main/java/rocks/nifi/examples/processors/JsonProcessor.java">https://github.com/pcgrenier/nifi-examples/blob/master/src/main/java/rocks/nifi/examples/processors/JsonProcessor.java</a> JsonProcessor.java %}
-// Write the results to an attribute
-String results = value.get();
-if(results != null &amp;&amp; !results.isEmpty()){
-    flowfile = session.putAttribute(flowfile, &ldquo;match&rdquo;, results);
-}
-{% endcodeblock %}</p>
-
-<p>Finally every flow file that is generated needs to be deleted or transfered.</p>
-
-<p>{% codeblock lang:java Session Transfer <a href="https://github.com/pcgrenier/nifi-examples/blob/master/src/main/java/rocks/nifi/examples/processors/JsonProcessor.java">https://github.com/pcgrenier/nifi-examples/blob/master/src/main/java/rocks/nifi/examples/processors/JsonProcessor.java</a> JsonProcessor.java %}
-session.transfer(flowfile, SUCCESS);
-{% endcodeblock %}</p>
-
-<p>At this point you should be able to build with a simple</p>
-
-<p>{% codeblock lang:shell-session %}
-mvn clean install
-{% endcodeblock %}</p>
-
-<h2>Deployment</h2>
-
-<ol>
-<li>Copy the target/examples-1.0-SNAPSHOT.nar to $NIFI_HOME/lib</li>
-<li>$NIFI_HOME/bin/nifi.sh stop</li>
-<li>$NIFI_HOME/bin/nifi.sh start</li>
-</ol>
-
-
-<p>After Nifi finishes starting you should be able to add it to your flow.</p>
-
-<p>Nifi.rocks will follow up with how to generate unit tests and documentation for your custom processors soon.</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Apache Nifi: What Processors are there?]]></title>
-    <link href="http://www.nifi.rocks/apache-nifi-processors/"/>
-    <updated>2015-02-05T03:00:06+00:00</updated>
-    <id>http://www.nifi.rocks/apache-nifi-processors</id>
-    <content type="html"><![CDATA[<p><strong> Includes all processors through release 0.0.2 </strong></p>
+<div class="entry-content"><p><strong> Includes all processors through release 0.0.2 </strong></p>
 
 <p>I looked around at what can be done with Apache NiFi and didn&rsquo;t notice a list of processors without looking at the code or building the project.  I think a list of available processors, the work horse of Apache Nifi, would greatly help decide if it is right for certain needs.  So, I went into the usage guide in the Apache Nifi UI and pulled a list of processors and a quick description for those who want to know what possibilities there are before getting into nifi itself!</p>
 
@@ -852,38 +502,101 @@ In this example, all files with filenames that start with ABC will follow the AB
 <p>This processor validates the contents of FlowFiles against a user-specified XML schema file.</p>
 
 <p>If you have questions about a processor, I&rsquo;d encourage you to download the binaries and start up Apache Nifi.  If you really want more information, let me know and I&rsquo;ll try to compile a more complete post about each and every processor.</p>
-]]></content>
-  </entry>
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
   
-  <entry>
-    <title type="html"><![CDATA[What's in Nifi's first release: Nifi 0.0.1]]></title>
-    <link href="http://www.nifi.rocks/whats-in-nifis-first-release-nifi-0-dot-0-1/"/>
-    <updated>2015-02-04T21:54:57+00:00</updated>
-    <id>http://www.nifi.rocks/whats-in-nifis-first-release-nifi-0-dot-0-1</id>
-    <content type="html"><![CDATA[<p>Apache Nifi just had their first release, <a href="https://nifi.incubator.apache.org/downloads/">0.0.1</a>.  It showed good movement forward with 75 bug fixes, 24 improvements, and 2 new features.  A list of <a href="https://issues.apache.org/jira/secure/ReleaseNote.jspa?projectId=12316020&amp;version=12329078">Release Notes</a> is on their Jira page.  With the release, it gives the users source downloads to start from, which is great, but lets look at the highlights of this release.</p>
 
-<h2>Apache Nifi Release 0.0.1 Highlights</h2>
+<span class="byline author vcard">Posted by <span class="fn">Chad Zobrisky</span></span>
 
-<ul>
-<li>One of the biggest changes was the directory structure to allow parrallel maven builds.  This took the build time down from 20-30 minutes to 3-7 minutes. <a href="https://issues.apache.org/jira/browse/NIFI-169">Nifi Jira 169</a></li>
-<li>The improvement of the assembly process also allowed for more stream lined packaging. <a href="https://issues.apache.org/jira/browse/NIFI-228">Nifi Jira 228</a></li>
-</ul>
+      
 
 
-<p>Outside of the build process, most of the updates were cleaning up the code base to make it more developer friendly and fixing alot of small bugs;</p>
-
-<ul>
-<li>Updating libraries to their most current version</li>
-<li>Adding documentation/users guides</li>
-<li>Guarantee builds on varying OSes: OSX, Linux, Windows.</li>
-</ul>
 
 
-<p>I&rsquo;m pretty excited to see what&rsquo;s in the next release, but also excited that I don&rsquo;t have to build nifi to use it.  Release binaries are available on the <a href="https://nifi.incubator.apache.org/downloads/">nifi website</a>.</p>
-]]></content>
-  </entry>
+<time class='updated' datetime='2015-03-20T12:14:00+00:00'><span class='date'>March 20, 2015</span> <span class='time'></span></time>
+      
+
+<span class="categories">
   
-</feed>
+    <a class='category' href='/categories/apache-nifi/'>apache nifi</a>, <a class='category' href='/categories/processors/'>processors</a>
+  
+</span>
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://www.nifi.rocks/apache-nifi-processors/" data-via="nifirocks" data-counturl="http://www.nifi.rocks/apache-nifi-processors/" >Tweet</a>
+  
+  
+  <div class="g-plusone" data-size="medium"></div>
+  
+  
+    <div class="fb-like" data-send="true" data-width="450" data-show-faces="false"></div>
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/whats-in-nifis-first-release-nifi-0-dot-0-1/" title="Previous Post: What's in Nifi's first release: Nifi 0.0.1">&laquo; What&#8217;s in Nifi&#8217;s first release: Nifi 0.0.1</a>
+      
+      
+        <a class="basic-alignment right" href="/developing-a-custom-apache-nifi-processor-json/" title="Next Post: Developing A Custom Apache Nifi Processor (JSON)">Developing A Custom Apache Nifi Processor (JSON) &raquo;</a>
+      
+    </p>
+  </footer>
+</article>
+
+  <section>
+    <h1>Comments</h1>
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+  </section>
+
+</div>
+
+<aside class="sidebar">
+  
+    <section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/developing-a-custom-apache-nifi-processor-unit-tests-partI/">Developing a Custom Apache Nifi Processor-Unit Tests (Part I)</a>
+      </li>
+    
+      <li class="post">
+        <a href="/apache-nifi-release-0-dot-0-2-highlights/">Apache Nifi Release 0.0.2 Highlights</a>
+      </li>
+    
+      <li class="post">
+        <a href="/developing-a-custom-apache-nifi-processor-json/">Developing A Custom Apache Nifi Processor (JSON)</a>
+      </li>
+    
+      <li class="post">
+        <a href="/apache-nifi-processors/">Apache Nifi: What Processors are there?</a>
+      </li>
+    
+      <li class="post">
+        <a href="/whats-in-nifis-first-release-nifi-0-dot-0-1/">What&#8217;s in Nifi&#8217;s first release: Nifi 0.0.1</a>
+      </li>
+    
+  </ul>
+</section>
+
+
+
+
+
+  
+</aside>
+
 
     </div>
   </div>
@@ -901,7 +614,10 @@ In this example, all files with filenames that start with ABC will follow the AB
       var disqus_shortname = 'nifirocks';
       
         
-        var disqus_script = 'count.js';
+        // var disqus_developer = 1;
+        var disqus_identifier = 'http://www.nifi.rocks/apache-nifi-processors/';
+        var disqus_url = 'http://www.nifi.rocks/apache-nifi-processors/';
+        var disqus_script = 'embed.js';
       
     (function () {
       var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
