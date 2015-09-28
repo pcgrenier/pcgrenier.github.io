@@ -78,7 +78,7 @@
   <title><![CDATA[NiFi.rocks]]></title>
   <link href="http://www.nifi.rocks/atom.xml" rel="self"/>
   <link href="http://www.nifi.rocks/"/>
-  <updated>2015-04-16T02:21:39+00:00</updated>
+  <updated>2015-09-28T05:42:44+00:00</updated>
   <id>http://www.nifi.rocks/</id>
   <author>
     <name><![CDATA[]]></name>
@@ -211,7 +211,7 @@
     <updated>2015-03-20T01:45:11+00:00</updated>
     <id>http://www.nifi.rocks/apache-nifi-release-0-dot-0-2-highlights</id>
     
-    <content type="html"><![CDATA[<p>Apache Nifi just kicked out their second release, <a href="https://nifi.incubator.apache.org/downloads/">0.0.2</a>.  It doesn&rsquo;t have too many new features in it, hence a patch release according to <a href="http://semver.org">semantic versioning</a>, but it is definitely an improvement over the previous version, with it&rsquo;s bug fixes, improvements, and new features numbers below.</p>
+    <content type="html"><![CDATA[<p>Apache Nifi just kicked out their second release, <a href="https://nifi.apache.org/download.html">0.0.2</a>.  It doesn&rsquo;t have too many new features in it, hence a patch release according to <a href="http://semver.org">semantic versioning</a>, but it is definitely an improvement over the previous version, with it&rsquo;s bug fixes, improvements, and new features numbers below.</p>
 
 <ul>
 <li><a href="#bugfixes">Bug Fixes</a>:       35</li>
@@ -252,7 +252,7 @@
 
 <p>It has been rumored that the next release will contain quite a few changes and be a minor release bumping up to version 0.1.0.  With over 200 tickets open on their JIRA, Nifi could see a great amount of change in the coming months.</p>
 
-<p>The full list of release notes can be found on Apache Nifi&rsquo;s <a href="https://issues.apache.org/jira/secure/ReleaseNote.jspa?projectId=12316020&amp;version=12329373">JIRA page</a> and downloads for all of their releases, source code and binaries, are available from their <a href="http://nifi.incubator.apache.org/downloads/">website</a>.  Nifi is also making thier releases available through maven via apaches <a href="https://repository.apache.org/content/repositories/releases/org/apache/nifi/">maven repository</a>.</p>
+<p>The full list of release notes can be found on Apache Nifi&rsquo;s <a href="https://issues.apache.org/jira/secure/ReleaseNote.jspa?projectId=12316020&amp;version=12329373">JIRA page</a> and downloads for all of their releases, source code and binaries, are available from their <a href="https://nifi.apache.org/download.html">website</a>.  Nifi is also making thier releases available through maven via apaches <a href="https://repository.apache.org/content/repositories/releases/org/apache/nifi/">maven repository</a>.</p>
 
 <p>As always, check back for how-tos and Apache Nifi related updates.  New videos and posts are coming!!</p>
 ]]></content>
@@ -375,7 +375,7 @@
 </span></code></pre></td></tr></table></div></figure>
 
 
-<p>Not really interesting stuff here. Properties will hold all a list of all the available properties tha are exposed to the user. Relationships will hold the relationships the processor will use to direct the flow files. For more details on relationships, properties, and components of an Apache Nifi flow please read the <a href="https://nifi.incubator.apache.org/docs/nifi-docs/developer-guide.html">offical developer guide</a>. There is plenty of room to expand on custom validators, but there is a large selection of validators in nifi-processor-utils package.</p>
+<p>Not really interesting stuff here. Properties will hold all a list of all the available properties tha are exposed to the user. Relationships will hold the relationships the processor will use to direct the flow files. For more details on relationships, properties, and components of an Apache Nifi flow please read the <a href="https://nifi.apache.org/developer-guide.html">offical developer guide</a>. There is plenty of room to expand on custom validators, but there is a large selection of validators in nifi-processor-utils package.</p>
 
 <figure class='code'><figcaption><span>Variable Declaration</span><a href='https://github.com/pcgrenier/nifi-examples/blob/master/src/main/java/rocks/nifi/examples/processors/JsonProcessor.java'>JsonProcessor.java </a></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
@@ -455,7 +455,7 @@
 </span></code></pre></td></tr></table></div></figure>
 
 
-<p>The onTrigger method is called when ever a flow file is passed to the processor. For more details on the context and session variables please again refer to the <a href="https://nifi.incubator.apache.org/docs/nifi-docs/developer-guide.html#flowfile">official developer guide</a>.</p>
+<p>The onTrigger method is called when ever a flow file is passed to the processor. For more details on the context and session variables please again refer to the <a href="https://nifi.apache.org/developer-guide.html#flowfile">official developer guide</a>.</p>
 
 <figure class='code'><figcaption><span>Apache Nifi OnTrigger</span><a href='https://github.com/pcgrenier/nifi-examples/blob/master/src/main/java/rocks/nifi/examples/processors/JsonProcessor.java'>JsonProcessor.java </a></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
@@ -1091,7 +1091,7 @@ In this example, all files with filenames that start with ABC will follow the AB
     <updated>2015-02-04T21:54:57+00:00</updated>
     <id>http://www.nifi.rocks/whats-in-nifis-first-release-nifi-0-dot-0-1</id>
     
-    <content type="html"><![CDATA[<p>Apache Nifi just had their first release, <a href="https://nifi.incubator.apache.org/downloads/">0.0.1</a>.  It showed good movement forward with 75 bug fixes, 24 improvements, and 2 new features.  A list of <a href="https://issues.apache.org/jira/secure/ReleaseNote.jspa?projectId=12316020&amp;version=12329078">Release Notes</a> is on their Jira page.  With the release, it gives the users source downloads to start from, which is great, but lets look at the highlights of this release.</p>
+    <content type="html"><![CDATA[<p>Apache Nifi just had their first release, <a href="https://nifi.apache.org/download.html">0.0.1</a>.  It showed good movement forward with 75 bug fixes, 24 improvements, and 2 new features.  A list of <a href="https://issues.apache.org/jira/secure/ReleaseNote.jspa?projectId=12316020&amp;version=12329078">Release Notes</a> is on their Jira page.  With the release, it gives the users source downloads to start from, which is great, but lets look at the highlights of this release.</p>
 
 <h2>Apache Nifi Release 0.0.1 Highlights</h2>
 
@@ -1110,7 +1110,7 @@ In this example, all files with filenames that start with ABC will follow the AB
 </ul>
 
 
-<p>I&rsquo;m pretty excited to see what&rsquo;s in the next release, but also excited that I don&rsquo;t have to build nifi to use it.  Release binaries are available on the <a href="https://nifi.incubator.apache.org/downloads/">nifi website</a>.</p>
+<p>I&rsquo;m pretty excited to see what&rsquo;s in the next release, but also excited that I don&rsquo;t have to build nifi to use it.  Release binaries are available on the <a href="https://nifi.apache.org/download.html">nifi website</a>.</p>
 ]]></content>
     
   </entry>
@@ -1148,7 +1148,7 @@ In this example, all files with filenames that start with ABC will follow the AB
 
 <h1>Install options</h1>
 
-<p><a href="http://nifi.incubator.apache.org/">Apache NiFi</a> is currently in incubation and so does not have any releases, so to start we have to checkout the project and build the code base.  A users guide is avaialble on the <a href="http://nifi.incubator.apache.org/development/quickstart.html">nifi website</a> with requirements for building and running nifi, mainly java 7 and maven 3.0.5+.  OpendJDK will work but currently the unit tests will not pass.  A quick tldr; can be found below.</p>
+<p><a href="https://nifi.apache.org">Apache NiFi</a> is currently in incubation and so does not have any releases, so to start we have to checkout the project and build the code base.  A users guide is avaialble on the <a href="https://nifi.apache.org/quickstart.html">nifi website</a> with requirements for building and running nifi, mainly java 7 and maven 3.0.5+.  OpendJDK will work but currently the unit tests will not pass.  A quick tldr; can be found below.</p>
 
 <h2>Using Vagrant</h2>
 
@@ -1165,9 +1165,8 @@ In this example, all files with filenames that start with ABC will follow the AB
 <p>If you want to build it for yourself it normally takes 2-6 minutes depending on your system, with parrallel builds enabled.
 Clone from Apache Nifi git repo:</p>
 
-<pre><code>git clone http://git-wip-us.apache.org/repos/asf/incubator-nifi.git
-cd incubator-nifi
-git checkout develop
+<pre><code>git git clone http://git-wip-us.apache.org/repos/asf/nifi.git
+cd nifi
 </code></pre>
 
 <p>Once you have the source, first have to build the nar-maven-plugin.</p>
