@@ -11,7 +11,7 @@ keywords: Apache Nifi, apache nifi, Nifi, Release, Nifi Release 0.0.2 Highlights
 categories: [Apache Nifi, Release]
 ---
 
-Apache Nifi just kicked out their second release, [0.0.2](https://nifi.incubator.apache.org/downloads/).  It doesn't have too many new features in it, hence a patch release according to [semantic versioning](http://semver.org), but it is definitely an improvement over the previous version, with it's bug fixes, improvements, and new features numbers below.
+Apache Nifi just kicked out their second release, [0.0.2](https://nifi.apache.org/download.html).  It doesn't have too many new features in it, hence a patch release according to [semantic versioning](http://semver.org), but it is definitely an improvement over the previous version, with it's bug fixes, improvements, and new features numbers below.
 
 * [Bug Fixes](#bugfixes):		35
 * [Improvements](#improvements):		17
@@ -41,6 +41,6 @@ New processors are great and mean more possibilities and use cases for Apache Ni
 
 It has been rumored that the next release will contain quite a few changes and be a minor release bumping up to version 0.1.0.  With over 200 tickets open on their JIRA, Nifi could see a great amount of change in the coming months.
 
-The full list of release notes can be found on Apache Nifi's [JIRA page](https://issues.apache.org/jira/secure/ReleaseNote.jspa?projectId=12316020&version=12329373) and downloads for all of their releases, source code and binaries, are available from their [website](http://nifi.incubator.apache.org/downloads/).  Nifi is also making thier releases available through maven via apaches [maven repository](https://repository.apache.org/content/repositories/releases/org/apache/nifi/).
+The full list of release notes can be found on Apache Nifi's [JIRA page](https://issues.apache.org/jira/secure/ReleaseNote.jspa?projectId=12316020&version=12329373) and downloads for all of their releases, source code and binaries, are available from their [website](https://nifi.apache.org/download.html).  Nifi is also making thier releases available through maven via apaches [maven repository](https://repository.apache.org/content/repositories/releases/org/apache/nifi/).
 
 As always, check back for how-tos and Apache Nifi related updates.  New videos and posts are coming!!

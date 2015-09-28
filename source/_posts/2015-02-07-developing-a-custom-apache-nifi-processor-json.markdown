@@ -40,7 +40,7 @@ Tags are useful for finding your processor in the list of processors in the GUI.
 public class JsonProcessor extends AbstractProcessor {
 {% endcodeblock %}
 
-Not really interesting stuff here. Properties will hold all a list of all the available properties tha are exposed to the user. Relationships will hold the relationships the processor will use to direct the flow files. For more details on relationships, properties, and components of an Apache Nifi flow please read the [offical developer guide](https://nifi.incubator.apache.org/docs/nifi-docs/developer-guide.html). There is plenty of room to expand on custom validators, but there is a large selection of validators in nifi-processor-utils package.
+Not really interesting stuff here. Properties will hold all a list of all the available properties tha are exposed to the user. Relationships will hold the relationships the processor will use to direct the flow files. For more details on relationships, properties, and components of an Apache Nifi flow please read the [offical developer guide](https://nifi.apache.org/developer-guide.html). There is plenty of room to expand on custom validators, but there is a large selection of validators in nifi-processor-utils package.
 
 
 {% codeblock lang:java Variable Declaration https://github.com/pcgrenier/nifi-examples/blob/master/src/main/java/rocks/nifi/examples/processors/JsonProcessor.java JsonProcessor.java %}
@@ -87,7 +87,7 @@ public List<PropertyDescriptor> getSupportedPropertyDescriptors(){
 }
 {% endcodeblock %}
 
-The onTrigger method is called when ever a flow file is passed to the processor. For more details on the context and session variables please again refer to the [official developer guide](https://nifi.incubator.apache.org/docs/nifi-docs/developer-guide.html#flowfile).
+The onTrigger method is called when ever a flow file is passed to the processor. For more details on the context and session variables please again refer to the [official developer guide](https://nifi.apache.org/developer-guide.html#flowfile).
 
 {% codeblock lang:java Apache Nifi OnTrigger https://github.com/pcgrenier/nifi-examples/blob/master/src/main/java/rocks/nifi/examples/processors/JsonProcessor.java JsonProcessor.java %}
 

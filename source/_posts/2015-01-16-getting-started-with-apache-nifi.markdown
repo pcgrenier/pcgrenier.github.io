@@ -15,7 +15,7 @@ categories: [Apache Nifi, How-Tos]
 
 # Install options
 
-[Apache NiFi](http://nifi.incubator.apache.org/) is currently in incubation and so does not have any releases, so to start we have to checkout the project and build the code base.  A users guide is avaialble on the [nifi website](http://nifi.incubator.apache.org/development/quickstart.html) with requirements for building and running nifi, mainly java 7 and maven 3.0.5+.  OpendJDK will work but currently the unit tests will not pass.  A quick tldr; can be found below.
+[Apache NiFi](https://nifi.apache.org) is currently in incubation and so does not have any releases, so to start we have to checkout the project and build the code base.  A users guide is avaialble on the [nifi website](https://nifi.apache.org/quickstart.html) with requirements for building and running nifi, mainly java 7 and maven 3.0.5+.  OpendJDK will work but currently the unit tests will not pass.  A quick tldr; can be found below.
 
 ## Using Vagrant
 
@@ -28,10 +28,9 @@ If you like to keep your project dependencies seperate like me, I've created a [
 If you want to build it for yourself it normally takes 2-6 minutes depending on your system, with parrallel builds enabled.
 Clone from Apache Nifi git repo:
 
-	git clone http://git-wip-us.apache.org/repos/asf/incubator-nifi.git
-	cd incubator-nifi
-	git checkout develop
-
+	git git clone http://git-wip-us.apache.org/repos/asf/nifi.git
+	cd nifi
+		
 Once you have the source, first have to build the nar-maven-plugin.
 
 	cd nifi-nar-maven-plugin
