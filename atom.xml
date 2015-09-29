@@ -78,7 +78,7 @@
   <title><![CDATA[NiFi.rocks]]></title>
   <link href="http://www.nifi.rocks/atom.xml" rel="self"/>
   <link href="http://www.nifi.rocks/"/>
-  <updated>2015-09-28T05:42:44+00:00</updated>
+  <updated>2015-09-29T02:45:10+00:00</updated>
   <id>http://www.nifi.rocks/</id>
   <author>
     <name><![CDATA[]]></name>
@@ -86,6 +86,94 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    
+    <title type="html"><![CDATA[Apache Nifi Release 0.3.0 highlights]]></title>
+    <link href="http://www.nifi.rocks/apache-nifi-release-0-dot-3-0-highlights/"/>
+    
+    <updated>2015-09-29T01:17:47+00:00</updated>
+    <id>http://www.nifi.rocks/apache-nifi-release-0-dot-3-0-highlights</id>
+    
+    <content type="html"><![CDATA[<p>Apache Nifi released their third release, <a href="https://nifi.apache.org/download.html">0.3.0</a> since graduating to a TLP.  It was a minor release but still included a descent number of changes.</p>
+
+<ul>
+<li><a href="#bugfixes">Bug Fixes</a>:           56</li>
+<li><a href="#improvements">Improvements</a>:    20</li>
+<li><a href="#newfeatures">New Features</a>:     5</li>
+</ul>
+
+
+<p>Release Highlights according to nifi can be found on their <a href="https://cwiki.apache.org/confluence/display/NIFI/Release+Notes#ReleaseNotes-Version0.3.0">confluence page</a>, but are also listed below.</p>
+
+<ul>
+<li>Performance improvements in handling large volumes of small files.</li>
+<li>Performance improvements in Provenance repositories.</li>
+<li>Added Reporting Task for ApacheTM AmbariTM.</li>
+<li>Improved stability of nifi bootstrap.</li>
+<li>Added Processors for working with images.</li>
+<li>Support for interacting with Kerberos enabled Hadoop clusters</li>
+<li>Added additional Avro capabilities - merging datafiles &amp; converting to json</li>
+<li>Added processors for performing INSERT, UPDATE, DELETE statements against relational databases</li>
+</ul>
+
+
+<!--more-->
+
+
+<h3><a name="bugfixes"></a>Bug Fixes</h3>
+
+<p>The bug fixes in this version are plenty.  Quite a few were related to the management of a nifi instance, the starting and stopping and how the nifi.sh script works.  It&rsquo;s good to see that all parts of the code are getting worked on and not just the core nifi framework.  There were also quite a few fixes dealing with some of the current processors, most notably GetSFTP, GetFTP, GetKafka, GetTwitter, EncryptContent, ExecuteSQL, ExecuteFlumeSource, and the Nifi Spark Receiver.  Processor fixes are great since they are the major part of the flow!</p>
+
+<h3><a name="improvements"></a>Improvements</h3>
+
+<p>The 20 improvements is a gain substantial considering the quick turn around between release 0.2.1 and 0.3.0.  Documentation was updated which is always good, both the admin guide and user guide.</p>
+
+<h3><a name="new-features"></a>New Features</h3>
+
+<p>New features are always the exciting stuff that you&rsquo;ve been waiting for, and if you were waiting for Apache Flume support, this might just be the release for you!  The 5 new features are listed below:</p>
+
+<ul>
+<li>Add processors that can run Apache Flume sources/sinks</li>
+<li>Create reporting task to deliver metrics to Apach Ambari</li>
+<li>Add location bounding box filter to twitter processor</li>
+<li>Create a NAR for handling images</li>
+<li>Kerberos support for Hadoop processors</li>
+</ul>
+
+
+<p>As always, new features are warmly welcomed.  It&rsquo;s great to see the incorporation of more Apache projects into Apache Nifi processors, with both Flume and Ambari processors being included in this release.</p>
+
+<p>The next release, 0.4.0, has 90 issues currently in <a href="https://issues.apache.org/jira/browse/NIFI/fixforversion/12333070/?selectedTab=com.atlassian.jira.jira-projects-plugin:version-issues-panel">Jira</a>.  I&rsquo;m not completely sure if Nifi has settled on firm release dates or not, but I imagine this one should be out in a month or two, if anything by the end of the year.</p>
+
+<p>The full list of release notes can be found on <a href="https://issues.apache.org/jira/secure/ReleaseNote.jspa?projectId=12316020&amp;version=12329653">Apache Nifi&rsquo;s Jira</a>  This release is available through Nifi&rsquo;s site <a href="https://nifi.apache.org/download.html">download&rsquo;s section</a>, along with their previous releases.</p>
+
+<p>We&rsquo;ve missed a few of Nifi&rsquo;s releases, 0.2.0-incubating and 0.2.1 since they graduated but hopefully will continue to give you a break down of Nifi releases as they come!</p>
+]]></content>
+    
+  </entry>
+  
+  <entry>
+    
+    <title type="html"><![CDATA[Apache Nifi Graduation]]></title>
+    <link href="http://www.nifi.rocks/apache-nifi-graduation/"/>
+    
+    <updated>2015-09-29T01:17:11+00:00</updated>
+    <id>http://www.nifi.rocks/apache-nifi-graduation</id>
+    
+    <content type="html"><![CDATA[<p>Apache Nifi graduated from a podling to a top level Apache Software Foundation project a few months ago, which is great news!  Congratulations to the NiFi team and all the contributors to making Apache Nifi great and meeting the requirements to move from an incubating project to a top level project.</p>
+
+<!-- more -->
+
+
+<h3>So&hellip;what does this mean?</h3>
+
+<p>If you are not familiar with Apache, new projects are first accepted into the Apache incubator.  A list of these type of projects can be seen on <a href="http://incubator.apache.org/">Apache&rsquo;s Incubator Page</a>.  The move from a podling, a project that is in incubation, to a Top Level Project (TLP), means Nifi can be taken more seriously and now has Apache behind it.  It&rsquo;s not just some pet project where a guy decided to give out his source code; It is an Apache TLP, with the likes of Hadoop, Cassandra, etc.</p>
+
+<p>So congratulations to Apache Nifi, looking forward to what will come next!</p>
+]]></content>
+    
+  </entry>
   
   <entry>
     
