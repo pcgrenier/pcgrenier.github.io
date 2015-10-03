@@ -78,7 +78,7 @@
   <title><![CDATA[NiFi.rocks]]></title>
   <link href="http://www.nifi.rocks/atom.xml" rel="self"/>
   <link href="http://www.nifi.rocks/"/>
-  <updated>2015-09-29T02:45:10+00:00</updated>
+  <updated>2015-10-03T21:29:24+00:00</updated>
   <id>http://www.nifi.rocks/</id>
   <author>
     <name><![CDATA[]]></name>
@@ -762,13 +762,16 @@
     <updated>2015-02-05T03:00:06+00:00</updated>
     <id>http://www.nifi.rocks/apache-nifi-processors</id>
     
-    <content type="html"><![CDATA[<p><strong> Includes all processors through release 0.0.2 </strong></p>
+    <content type="html"><![CDATA[<p><strong> Includes all processors through release 0.3.0 </strong></p>
 
 <p>I looked around at what can be done with Apache NiFi and didn&rsquo;t notice a list of processors without looking at the code or building the project.  I think a list of available processors, the work horse of Apache Nifi, would greatly help decide if it is right for certain needs.  So, I went into the usage guide in the Apache Nifi UI and pulled a list of processors and a quick description for those who want to know what possibilities there are before getting into nifi itself!</p>
 
 <h1>List of processors</h1>
 
-<p>Here is a list of all 53 processors, listed alphabetically, that are currently in Apache Nifi as of February 5th, 2015.  Each one links to a description of the processor further down.  The Usage documentation available in the web ui has much more detail about each processor, it&rsquo;s properties, modifiable attributes, and relationships and each processor has it&rsquo;s own page in the UI, so here is just a quick overview.  Again, this content is taken directly from Nifi&rsquo;s Usage guide in their web UI and all credit/rights belong to them under the Apache 2.0 License.</p>
+<p>With new releases of Nifi, the number of processors have increased from the original 53 to 90!
+Here is a list of all 90 processors, listed alphabetically, that are currently in Apache Nifi as of <strike>February 5th, 2015</strike> Ocotober 3rd, 2015.  Each one links to a description of the processor further down.  The Usage documentation available in the web ui has much more detail about each processor, it&rsquo;s properties, modifiable attributes, and relationships and each processor has it&rsquo;s own page in the UI, so here is just a quick overview.  Again, this content is taken directly from Nifi&rsquo;s Usage guide in their web UI and all credit/rights belong to them under the Apache 2.0 License.</p>
+
+<p>Nifi has improved their documentation, which was originally only available when running apache nifi.  The documentation now is produced through the build process and has been added to <a href="https://nifi.apache.org/docs.html">their website</a>.  So if you need more information or more detail about each processor just check there.</p>
 
 <!--more -->
 
@@ -777,20 +780,34 @@
 <li><a href="#Base64EncodeContent">Base64EncodeContent</a></li>
 <li><a href="#CompressContent">CompressContent</a></li>
 <li><a href="#ControlRate">ControlRate</a></li>
+<li><a href="#ConvertAvroSchema">ConvertAvroSchema</a></li>
+<li><a href="#ConvertAvroToJSON">ConvertAvroToJSON</a></li>
 <li><a href="#ConvertCharacterSet">ConvertCharacterSet</a></li>
 <li><a href="#ConvertCSVToAvro">ConvertCSVToAvro</a></li>
 <li><a href="#ConvertJSONToAvro">ConvertJSONToAvro</a></li>
+<li><a href="#ConvertCSVToSQL">ConvertCSVToSQL</a></li>
 <li><a href="#CreateHadoopSequenceFile">CreateHadoopSequenceFile</a></li>
+<li><a href="#DeleteSQS">DeleteSQS</a></li>
 <li><a href="#DetectDuplicate">DetectDuplicate</a></li>
 <li><a href="#DistributeLoad">DistributeLoad</a></li>
+<li><a href="#DuplicateFlowFile">DuplicateFlowFile</a></li>
 <li><a href="#EncryptContent">EncryptContent</a></li>
 <li><a href="#EvaluateJSONPath">EvaluateJSONPath</a></li>
-<li><a href="#EvaluateRegularExpression">EvaluateRegularExpression</a></li>
+<li><a href="#EvaluateRegularExpression">EvaluateRegularExpression</a> DEPRECATED-Use <a href="#ExtractText">ExtractText</a></li>
 <li><a href="#EvaluateXPath">EvaluateXPath</a></li>
 <li><a href="#EvaluateXQuery">EvaluateXQuery</a></li>
+<li><a href="#ExecuteFlumeSink">ExecuteFlumeSink</a></li>
+<li><a href="#ExecuteFlumeSource">ExecuteFlumeSource</a></li>
 <li><a href="#ExecuteProcess">ExecuteProcess</a></li>
+<li><a href="#ExecuteSQL">ExecuteSQL</a></li>
 <li><a href="#ExecuteStreamCommand">ExecuteStreamCommand</a></li>
+<li><a href="#ExtractHL7Attributes">ExtractHL7Attributes</a></li>
+<li><a href="#ExtractImageMetadata">ExtractImageMetadata</a></li>
+<li><a href="#ExtractText">ExtractText</a></li>
+<li><a href="#FetchHDFS">FetchHDFS</a></li>
+<li><a href="#FetchS3Object">FetchS3Object</a></li>
 <li><a href="#GenerateFlowFile">GenerateFlowFile</a></li>
+<li><a href="#GeoEnrichIP">GeoEnrichIP</a></li>
 <li><a href="#GetFile">GetFile</a></li>
 <li><a href="#GetFTP">GetFTP</a></li>
 <li><a href="#GetHDFS">GetHDFS</a></li>
@@ -799,7 +816,11 @@
 <li><a href="#GetJMSQueue">GetJMSQueue</a></li>
 <li><a href="#GetJMSTopic">GetJMSTopic</a></li>
 <li><a href="#GetKafka">GetKafka</a></li>
+<li><a href="#GetMongo">GetMongo</a></li>
 <li><a href="#GetSFTP">GetSFTP</a></li>
+<li><a href="#GetSolr">GetSolr</a></li>
+<li><a href="#GetSQS">GetSQS</a></li>
+<li><a href="#GetTwitter">GetTwitter</a></li>
 <li><a href="#HandleHttpRequest">HandleHttpRequest</a></li>
 <li><a href="#HandleHttpResponse">HandleHttpResponse</a></li>
 <li><a href="#HashAttribute">HashAttribute</a></li>
@@ -808,6 +829,7 @@
 <li><a href="#InvokeHTTP">InvokeHTTP</a></li>
 <li><a href="#ListenHTTP">ListenHTTP</a></li>
 <li><a href="#ListenUDP">ListenUDP</a></li>
+<li><a href="#ListHDFS">ListHDFS</a></li>
 <li><a href="#LogAttribute">LogAttribute</a></li>
 <li><a href="#MergeContent">MergeContent</a></li>
 <li><a href="#ModifyBytes">ModifyBytes</a></li>
@@ -819,9 +841,17 @@
 <li><a href="#PutHDFS">PutHDFS</a></li>
 <li><a href="#PutJMS">PutJMS</a></li>
 <li><a href="#PutKafka">PutKafka</a></li>
+<li><a href="#PutMongo">PutMongo</a></li>
+<li><a href="#PutS3Object">PutS3Object</a></li>
 <li><a href="#PutSFTP">PutSFTP</a></li>
+<li><a href="#PutSNS">PutSNS</a></li>
+<li><a href="#PutSolrContentStream">PutSolrContentStream</a></li>
+<li><a href="#PutSQL">PutSQL</a></li>
+<li><a href="#PutSQS">PutSQS</a></li>
 <li><a href="#ReplaceText">ReplaceText</a></li>
 <li><a href="#ReplaceTextWithMapping">ReplaceTextWithMapping</a></li>
+<li><a href="#ResizeImage">ResizeImage</a></li>
+<li><a href="#RouteHL7">RouteHL7</a></li>
 <li><a href="#RouteOnAttribute">RouteOnAttribute</a></li>
 <li><a href="#RouteOnContent">RouteOnContent</a></li>
 <li><a href="#ScanAttribute">ScanAttribute</a></li>
@@ -836,6 +866,7 @@
 <li><a href="#UnpackContent">UnpackContent</a></li>
 <li><a href="#UpdateAttribute">UpdateAttribute</a></li>
 <li><a href="#ValidateXML">ValidateXML</a></li>
+<li><a href="#YandexTranslate">YandexTranslate</a></li>
 </ul>
 
 
@@ -845,11 +876,26 @@
 
 <h3><a name="CompressContent"></a>CompressContent</h3>
 
-<p>This processor compresses and decompresses the contents of FlowFiles using a user-specified compression algorithm.</p>
+<p>This processor compresses or decompresses the contents of FlowFiles using a user-specified compression algorithm and updates the mime.type attribute as appropriate</p>
 
 <h3><a name="ControlRate"></a>ControlRate</h3>
 
 <p>This processor controls the rate at which data is transferred to follow-on processors.</p>
+
+<h3><a name="ConvertAvroSchema"></a></h3>
+
+<p>Convert records from one Avro schema to another, including support for flattening and simple type conversions.</p>
+
+<p>This processor is used to convert data between two Avro formats, such as those coming from the ConvertCSVToAvro or ConvertJSONToAvro processors. The input and output content of the flow files should be Avro data files. The processor includes support for the following basic type conversions:</p>
+
+<p>Anything to String, using the data&rsquo;s default String representation
+String types to numeric types int, long, double, and float
+Conversion to and from optional Avro types
+In addition, fields can be renamed or unpacked from a record type by using the dynamic properties.</p>
+
+<h3><a name ="ConvertAvroToJSON"></a>ConvertAvroToJSON</h3>
+
+<p>Converts a Binary Avro record into a JSON object. This processor provides a direct mapping of an Avro field to a JSON field, such that the resulting JSON will have the same hierarchical structure as the Avro document. Note that the Avro schema information will be lost, as this is not a translation from binary Avro to JSON formatted Avro. The output JSON is encoded the UTF-8 encoding. If an incoming FlowFile contains a stream of multiple Avro records, the resultant FlowFile will contain a JSON Array containing all of the Avro records.</p>
 
 <h3><a name="ConvertCharacterSet"></a>ConvertCharacterSet</h3>
 
@@ -857,11 +903,16 @@
 
 <h3><a name="ConvertCSVToAvro"></a>ConvertCSVToAvro</h3>
 
-<p>No description is given for this processor.</p>
+<p>Converts CSV files to Avro according to an Avro Schema</p>
 
-<h3><a name="ConvertJSONToAvro"></a>ConvertJSONToAvro</h3>
+<h3><a name="ConvertCSVToJSON"></a>ConvertCSVToJSON</h3>
 
-<p>No description is given for this processor.</p>
+<p>Converts JSON files to Avro according to an Avro Schema</p>
+
+<h3><a name="ConvertCSVToSQL"></a>ConvertCSVToSQL</h3>
+
+<p>Converts JSON files to Avro according to an Avro Schema
+Converts a JSON-formatted FlowFile into an UPDATE or INSERT SQL statement. The incoming FlowFile is expected to be &ldquo;flat&rdquo; JSON message, meaning that it consists of a single JSON element and each field maps to a simple type. If a field maps to a JSON object, that JSON object will be interpreted as Text. If the input is an array of JSON elements, each element in the array is output as a separate FlowFile to the &lsquo;sql&rsquo; relationship. Upon successful conversion, the original FlowFile is routed to the &lsquo;original&rsquo; relationship and the SQL is routed to the &lsquo;sql&rsquo; relationship.</p>
 
 <h3><a name="CreateHadoopSequenceFile"></a>CreateHadoopSequenceFile</h3>
 
@@ -873,6 +924,10 @@ FlowFileStream v3
 The created SequenceFile is named the same as the incoming FlowFile with the suffix &lsquo;.sf&rsquo;. For incoming FlowFiles that are bundled, the keys in the SequenceFile are the individual file names, the values are the contents of each file.
 NOTE: The value portion of a key/value pair is loaded into memory. While there is a max size limit of 2GB, this could cause memory issues if there are too many concurrent tasks and the flow file sizes are large.</p>
 
+<h3><a name="DeleteSQS"></a>DeleteSQS</h3>
+
+<p>Deletes a message from an Amazon Simple Queuing Service Queue</p>
+
 <h3><a name="DetectDuplicate"></a>DetectDuplicate</h3>
 
 <p>This processor detects duplicate data by examining flow file attributes, thus allowing the user to configure what it means for two FlowFiles to be considered &ldquo;duplicates&rdquo;. This processor does not read the contents of a flow file, and is typically preceded by another processor which computes a value based on the flow file content and adds that value to the flow file&rsquo;s attributes; e.g. HashContent. Because this Processor needs to be able to work within a NiFi cluster, it makes use of a distributed cache service to determine whether or not the data has been seen previously.</p>
@@ -883,9 +938,13 @@ NOTE: The value portion of a key/value pair is loaded into memory. While there i
 
 <p>This processor distributes FlowFiles to downstream processors based on a distribution strategy. The user may select the strategy &ldquo;round robin&rdquo;, the strategy &ldquo;next available&rdquo;, or &ldquo;load distribution service&rdquo;. If using the round robin strategy, the default is to assign each destination (i.e., relationship) a weighting of 1 (evenly distributed). However, the user may add optional properties to change this weighting. When adding a property, the name must be a positive integer between 1 and the number of relationships (inclusive). For example, if Number of Relationships has a value of 8 and a property is added with the name 5 and the value 10, then relationship 5 (among the 8) will receive 10 FlowFiles in each iteration instead of 1. All other relationships will receive 1 FlowFile in each iteration.</p>
 
+<h3><a name="DuplicateFlowFile"></a>DuplicateFlowFile</h3>
+
+<p>Intended for load testing, this processor will create the configured number of copies of each incoming FlowFile</p>
+
 <h3><a name="EncryptContent"></a>EncryptContent</h3>
 
-<p>This processor encrypts or decrypts FlowFiles.</p>
+<p>Encrypts or Decrypts a FlowFile using either symmetric encryption with a password and randomly generated salt, or asymmetric encryption using a public and secret key.</p>
 
 <h3><a name="EvaluateJsonPath"></a>EvaluateJsonPath</h3>
 
@@ -893,27 +952,63 @@ NOTE: The value portion of a key/value pair is loaded into memory. While there i
 
 <h3><a name="EvaluateRegularExpression"></a>EvaluateRegularExpression</h3>
 
-<p>This processor evaluates one or more Regular Expressions against the content of a FlowFile. The results of those Regular Expressions are assigned to FlowFile Attributes. Regular Expressions are entered by adding user-defined properties; the name of the property maps to the Attribute Name into which the result will be placed. The value of the property must be a valid Regular Expressions with exactly one capturing group. If the Regular Expression matches more than once, only the first match will be used. If any provided Regular Expression matches, the FlowFile(s) will be routed to &lsquo;matched&rsquo;. If no provided Regular Expression matches, the FlowFile will be routed to &lsquo;unmatched&rsquo; and no attributes will be applied to the FlowFile.</p>
+<p>WARNING: This has been deprecated and will be removed in 0.2.0. Use ExtractText instead.</p>
 
 <h3><a name="EvaluateXPath"></a>EvaluateXPath</h3>
 
-<p>This processor evaluates one or more XPaths against the content of FlowFiles. The results of those XPaths are assigned to FlowFile attributes or are written to the content of the FlowFile itself, depending on how the user configures the Destination and Return Type properties in the processor. XPaths are entered by adding user-defined properties; the name of each user-added property maps to the attribute name into which the result should be placed. The value of the property must be a valid XPath expression.</p>
+<p>This processor evaluates one or more XPaths against the content of a FlowFile. The results of those XPaths are assigned to FlowFile Attributes or are written to the content of the FlowFile itself, depending on configuration of the Processor. XPaths are entered by adding user-defined properties; the name of the property maps to the Attribute Name into which the result will be placed (if the Destination is flowfile-attribute; otherwise, the property name is ignored). The value of the property must be a valid XPath expression. If the XPath evaluates to more than one node and the Return Type is set to &lsquo;nodeset&rsquo; (either directly, or via &lsquo;auto-detect&rsquo; with a Destination of &lsquo;flowfile-content&rsquo;), the FlowFile will be unmodified and will be routed to failure. If the XPath does not evaluate to a Node, the FlowFile will be routed to &lsquo;unmatched&rsquo; without having its contents modified. If Destination is flowfile-attribute and the expression matches nothing, attributes will be created with empty strings as the value, and the FlowFile will always be routed to &lsquo;matched&rsquo;</p>
 
 <h3><a name="EvaluateXQuery"></a>EvaluateXQuery</h3>
 
-<p>This processor evaluates one or more XQueries against the content of FlowFiles. The results of those XQueries are assigned to FlowFile attributes or are written to the content of the FlowFile itself, depending on how the user configures the Destination property in the processor. One attribute or FlowFile is produced for each XQuery result. Each produced FlowFile will carry the attributes of the input FlowFile. See the &ldquo;Examples&rdquo; section for details on how multiple results can be wrapped or concatenated. XQueries are entered by adding user-defined properties; the name of each user-added property maps to the attribute name into which the result should be placed. The value of the property must be a valid XQuery expression.</p>
+<p>This processor evaluates one or more XQueries against the content of a FlowFile. The results of those XQueries are assigned to FlowFile Attributes or are written to the content of the FlowFile itself, depending on configuration of the Processor. XQueries are entered by adding user-defined properties; the name of the property maps to the Attribute Name into which the result will be placed (if the Destination is &lsquo;flowfile-attribute&rsquo;; otherwise, the property name is ignored). The value of the property must be a valid XQuery. If the XQuery returns more than one result, new attributes or FlowFiles (for Destinations of &lsquo;flowfile-attribute&rsquo; or &lsquo;flowfile-content&rsquo; respectively) will be created for each result (attributes will have a &lsquo;.n&rsquo; one-up number appended to the specified attribute name). If any provided XQuery returns a result, the FlowFile(s) will be routed to &lsquo;matched&rsquo;. If no provided XQuery returns a result, the FlowFile will be routed to &lsquo;unmatched&rsquo;. If the Destination is &lsquo;flowfile-attribute&rsquo; and the XQueries matche nothing, no attributes will be applied to the FlowFile.</p>
+
+<h3><a name="ExecuteFlumeSink"></a>ExecuteFlumeSink</h3>
+
+<p>This processor executes a Flume sink. Each input FlowFile is converted into a Flume Event for processing by the sink.</p>
+
+<h3><a name="ExecuteFlumeSource"></a>ExecuteFlumeSource</h3>
+
+<p>Execute a Flume source. Each Flume Event is sent to the success relationship as a FlowFile</p>
 
 <h3><a name="ExecuteProcess"></a>ExecuteProcess</h3>
 
 <p>Runs an operating system command specified by the user and writes the output of that command to a FlowFile. If the command is expected to be long-running, the Processor can output the partial data on a specified interval. When this option is used, the output is expected to be in textual format, as it typically does not make sense to split binary data on arbitrary time-based intervals.</p>
 
+<h3><a name="ExecuteSQL"></a>ExecuteSQL</h3>
+
+<p>Execute provided SQL select query. Query result will be converted to Avro format. Streaming is used so arbitrarily large result sets are supported</p>
+
 <h3><a name="ExecuteStreamCommand"></a>ExecuteStreamCommand</h3>
 
 <p>This processor executes an external command on the contents of a FlowFile, and creates a new FlowFile with the results of the command.</p>
 
+<h3><a name="ExtractHL7Attributes"></a>ExtractHL7Attributes</h3>
+
+<p>Extracts information from an HL7 (Health Level 7) formatted FlowFile and adds the information as FlowFile Attributes. The attributes are named as <Segment Name> <dot> <Field Index>. If the segment is repeating, the naming will be <Segment Name> <underscore> <Segment Index> <dot> <Field Index>. For example, we may have an attribute named &ldquo;MHS.12&rdquo; with a value of &ldquo;2.1&rdquo; and an attribute named &ldquo;OBX_11.3&rdquo; with a value of &ldquo;93000<sup>CPT4</sup>&rdquo;.</p>
+
+<h3><a name="ExtractImageMetadata"></a>ExtractImageMetadata</h3>
+
+<p>Extract the image metadata from flowfiles containing images. This processor relies on this metadata extractor library <a href="https://github.com/drewnoakes/metadata-extractor.">https://github.com/drewnoakes/metadata-extractor.</a> It extracts a long list of metadata types including but not limited to EXIF, IPTC, XMP and Photoshop fields. For the full list visit the library&rsquo;s website.NOTE: The library being used loads the images into memory so extremely large images may cause problems</p>
+
+<h3><a name="ExtractText"></a>ExtractText</h3>
+
+<p>Evaluates one or more Regular Expressions against the content of a FlowFile. The results of those Regular Expressions are assigned to FlowFile Attributes. Regular Expressions are entered by adding user-defined properties; the name of the property maps to the Attribute Name into which the result will be placed. The first capture group, if any found, will be placed into that attribute name.But all capture groups, including the matching string sequence itself will also be provided at that attribute name with an index value provided.The value of the property must be a valid Regular Expressions with one or more capturing groups. If the Regular Expression matches more than once, only the first match will be used. If any provided Regular Expression matches, the FlowFile(s) will be routed to &lsquo;matched&rsquo;. If no provided Regular Expression matches, the FlowFile will be routed to &lsquo;unmatched&rsquo; and no attributes will be applied to the FlowFile.</p>
+
+<h3><a name="FetchHDFS"></a>FetchHDFS</h3>
+
+<p>Retrieves a file from HDFS. The content of the incoming FlowFile is replaced by the content of the file in HDFS. The file in HDFS is left intact without any changes being made to it.</p>
+
+<h3><a name="FetchS3Object"></a>FetchS3Object</h3>
+
+<p>Retrieves the contents of an S3 Object and writes it to the content of a FlowFile</p>
+
 <h3><a name="GenerateFlowFile"></a>GenerateFlowFile</h3>
 
 <p>This processor creates FlowFiles of random data to be used for load testing purposes.</p>
+
+<h3><a name="GeoEnrichIP"></a>GeoEnrichIP</h3>
+
+<p>Looks up geolocation information for an IP address and adds the geo information to FlowFile attributes. The geo data is provided as a MaxMind database. The attribute that contains the IP address to lookup is provided by the &lsquo;IP Address Attribute&rsquo; property. If the name of the attribute provided is &lsquo;X&rsquo;, then the the attributes added by enrichment will take the form X.geo.<fieldName></p>
 
 <h3><a name="GetFile"></a>GetFile</h3>
 
@@ -925,13 +1020,11 @@ NOTE: The value portion of a key/value pair is loaded into memory. While there i
 
 <h3><a name="GetHDFS"></a>GetHDFS</h3>
 
-<p>This processor reads files from an HDFS cluster into NiFi FlowFiles.</p>
+<p>Fetch files from Hadoop Distributed File System (HDFS) into FlowFiles. This Processor will delete the file from HDFS after fetching it.</p>
 
 <h3><a name="GetHDFSSequenceFile"></a>GetHDFSSequenceFile</h3>
 
-<p>This processor is used to pull files from HDFS. The files being pulled in MUST be SequenceFile formatted files. The processor creates a flow file for each key/value entry in the ingested SequenceFile. The created flow file&rsquo;s content depends on the value of the optional configuration property FlowFile Content. Currently, there are two choices: VALUE ONLY and KEY VALUE PAIR. With the prior, only the SequenceFile value element is written to the flow file contents. With the latter, the SequenceFile key and value are written to the flow file contents as serialized objects; the format is key length (int), key(String), value length(int), value(bytes). The default is VALUE ONLY.</p>
-
-<p>NOTE: This processor loads the entire value entry into memory. While the size limit for a value entry is 2GB, this will cause memory problems if there are too many concurrent tasks and the data being ingested is large.</p>
+<p>Fetch sequence files from Hadoop Distributed File System (HDFS) into FlowFiles</p>
 
 <h3><a name="GetHTTP"></a>GetHTTP</h3>
 
@@ -951,9 +1044,25 @@ NOTE: The value portion of a key/value pair is loaded into memory. While there i
 
 <p>Kafka supports the notion of a Consumer Group when pulling messages in order to provide scalability while still offering a publish-subscribe interface. Each Consumer Group must have a unique identifier. The Consumer Group identifier that is used by NiFi is the UUID of the Processor. This means that all of the nodes within a cluster will use the same Consumer Group Identifier so that they do not receive duplicate data but multiple GetKafka Processors can be used to pull from multiple Topics, as each Processor will receive a different Processor UUID and therefore a different Consumer Group Identifier.</p>
 
+<h3><a name="GetMongo"></a>GetMongo</h3>
+
+<p>Creates FlowFiles from documents in MongoDB</p>
+
 <h3><a name="GetSFTP"></a>GetSFTP</h3>
 
 <p>This processor pulls files from an SFTP server and creates FlowFiles to encapsulate them.</p>
+
+<h3><a name="GetSolr"></a>GetSolr</h3>
+
+<p>Queries Solr and outputs the results as a FlowFile</p>
+
+<h3><a name="GetSQS"></a>GetSQS</h3>
+
+<p>Fetches messages from an Amazon Simple Queuing Service Queue</p>
+
+<h3><a name="GetTwitter"></a>GetTwitter</h3>
+
+<p>Pulls status changes from Twitter&rsquo;s streaming API</p>
 
 <h3><a name="HandleHttpRequest"></a>HandleHttpRequest</h3>
 
@@ -987,7 +1096,7 @@ NOTE: The value portion of a key/value pair is loaded into memory. While there i
 
 <h3><a name="IdentifyMimeType"></a>IdentifyMimeType</h3>
 
-<p>This processor attempts to identify the MIME type used for a FlowFile. If the MIME type can be identified, an attribute with the name mime.type is added to the FlowFile, and its value is the detected MIME type. Some MIME types require the processor to read a significant amount of data; for these MIME types, their identification is optional. (See the properties Identify ZIP and Identify TAR.) The algorithm may have to read the entire contents of a file for each type of identification. If the MIME Type cannot be determined, its mime.type attribute will be set to application/octet-stream .</p>
+<p>This processor attempts to identify the MIME Type used for a FlowFile. If the MIME Type can be identified, an attribute with the name &lsquo;mime.type&rsquo; is added with the value being the MIME Type. If the MIME Type cannot be determined, the value will be set to &lsquo;application/octet-stream&rsquo;. In addition, the attribute mime.extension will be set if a common file extension for the MIME Type is known.</p>
 
 <p>The following MIME Types are detected:</p>
 
@@ -1036,7 +1145,11 @@ NOTE: The value portion of a key/value pair is loaded into memory. While there i
 
 <h3><a name="ListenUDP"></a>ListenUDP</h3>
 
-<p>This processor listens for Datagram Packets on a given port and concatenates the contents of those packets together generating FlowFiles roughly as often as the internal buffer fills up or until no more data is currently available.</p>
+<p>This processor listens for Datagram Packets on a given port and concatenates the contents of those packets together generating flow files</p>
+
+<h3><a name="ListHDFS"></a>ListHDFS</h3>
+
+<p>This processor retrieves a listing of files from HDFS. For each file that is listed in HDFS, creates a FlowFile that represents the HDFS file so that it can be fetched in conjunction with ListHDFS. This Processor is designed to run on Primary Node only in a cluster. If the primary node changes, the new Primary Node will pick up where the previous node left off without duplicating all of the data. Unlike GetHDFS, this Processor does not delete any data from HDFS.</p>
 
 <h3><a name="LogAttribute"></a>LogAttribute</h3>
 
@@ -1052,7 +1165,7 @@ NOTE: The value portion of a key/value pair is loaded into memory. While there i
 
 <h3><a name="MonitorActivity"></a>MonitorActivity</h3>
 
-<p>This processor monitors its point in the dataflow for activity and sends a notice when there is a lack of data flowing through it for some user-specified amount of time; it then sends another notice when the flow of data resumes.</p>
+<p>This processor monitors the flow for activity and sends out an indicator when the flow has not had any data for some specified amount of time and again when the flow&rsquo;s activity is restored.</p>
 
 <h3><a name="PostHTTP"></a>PostHTTP</h3>
 
@@ -1090,9 +1203,45 @@ NOTE: The value portion of a key/value pair is loaded into memory. While there i
 
 <p>The Processor allows the user to configure an optional Message Delimiter that can be used to send many messages per FlowFile. For example, a \n could be used to indicate that the contents of the FlowFile should be used to send one message per line of text. If the property is not set, the entire contents of the FlowFile will be sent as a single message. When using the delimiter, if some messages are successfully sent but other messages fail to send, the FlowFile will be FORKed into two child FlowFiles, with the successfully sent messages being routed to &lsquo;success&rsquo; and the messages that could not be sent going to &lsquo;failure&rsquo;.</p>
 
+<h3><a name="PutMongo"></a>PutMongo</h3>
+
+<p>Writes the contents of a FlowFile to MongoDB</p>
+
+<h3><a name="PutS3Object"></a>PutS3Object</h3>
+
+<p>Puts FlowFiles to an Amazon S3 Bucket</p>
+
 <h3><a name="PutSFTP"></a>PutSFTP</h3>
 
 <p>This processor sends FlowFiles via SFTP to an SFTP server.</p>
+
+<h3><a name="PutSNS"></a>PutSNS</h3>
+
+<p>Sends the content of a FlowFile as a notification to the Amazon Simple Notification Service</p>
+
+<h3><a name="PutSolrContentStream"></a>PutSolrContentStream</h3>
+
+<p>This processor streams the contents of a FlowFile to an Apache Solr update handler. Any properties added to this processor by the user are passed to Solr on the update request. If a parameter must be sent multiple times with different values, properties can follow a naming convention: name.number, where name is the parameter name and number is a unique number. Repeating parameters will be sorted by their property name.</p>
+
+<p>Example: To specify multiple &lsquo;f&rsquo; parameters for indexing custom json, the following properties can be defined:</p>
+
+<ul>
+<li>split: /exams</li>
+<li>f.1: first:/first</li>
+<li>f.2: last:/last</li>
+<li>f.3: grade:/grade
+This will result in sending the following url to Solr:
+split=/exams&amp;f=first:/first&amp;f=last:/last&amp;f=grade:/grade</li>
+</ul>
+
+
+<h3><a name="PutSQL"></a>PutSQL</h3>
+
+<p>Executes a SQL UPDATE or INSERT command. The content of an incoming FlowFile is expected to be the SQL command to execute. The SQL command may use the ? to escape parameters. In this case, the parameters to use must exist as FlowFile attributes with the naming convention sql.args.N.type and sql.args.N.value, where N is a positive integer. The sql.args.N.type is expected to be a number indicating the JDBC Type. The content of the FlowFile is expected to be in UTF-8 format.</p>
+
+<h3><a name="PutSQS"></a>PutSQS</h3>
+
+<p>Publishes a message to an Amazon Simple Queuing Service Queue</p>
 
 <h3><a name="ReplaceText"></a>ReplaceText</h3>
 
@@ -1100,7 +1249,15 @@ NOTE: The value portion of a key/value pair is loaded into memory. While there i
 
 <h3><a name="ReplaceTextWithMapping"></a>ReplaceTextWithMapping</h3>
 
-<p>This processor updates the content of a FlowFile by evaluating a regular expression (regex) against the content and replacing the section of content that matches a specified matching  group of the regular expression with an alternate, user-defined, value provided in a mapping file.  The mapping file is formatted as one key/value pair per line, seperated by tabs.</p>
+<p>This processor updates the content of a FlowFile by evaluating a Regular Expression against it and replacing the section of the content that matches the Regular Expression with some alternate value provided in a mapping file.</p>
+
+<h3><a name="ResizeImage"></a>ResizeImage</h3>
+
+<p>Resizes an image to user-specified dimensions. This Processor uses the image codecs registered with the environment that NiFi is running in. By default, this includes JPEG, PNG, BMP, WBMP, and GIF images.</p>
+
+<h3><a name="RouteHL7"></a>RouteHL7</h3>
+
+<p>Routes incoming HL7 data according to user-defined queries. To add a query, add a new property to the processor. The name of the property will become a new relationship for the processor, and the value is an HL7 Query Language query. If a FlowFile matches the query, a copy of the FlowFile will be routed to the associated relationship.</p>
 
 <h3><a name="RouteOnAttribute"></a>RouteOnAttribute</h3>
 
@@ -1108,9 +1265,12 @@ NOTE: The value portion of a key/value pair is loaded into memory. While there i
 
 <p>Example: The goal is to route all files with filenames that start with ABC down a certain path. Add a property with the following name and value:</p>
 
-<p>property name: ABC
-property value: ${filename:startsWith(&lsquo;ABC&rsquo;)}
-In this example, all files with filenames that start with ABC will follow the ABC relationship.</p>
+<ul>
+<li>property name: ABC</li>
+<li>property value: ${filename:startsWith(&lsquo;ABC&rsquo;)}
+In this example, all files with filenames that start with ABC will follow the ABC relationship.</li>
+</ul>
+
 
 <h3><a name="RouteOnContent"></a>RouteOnContent</h3>
 
@@ -1135,8 +1295,6 @@ In this example, all files with filenames that start with ABC will follow the AB
 <h3><a name="SplitJson"></a>SplitJson</h3>
 
 <p>This processor splits a JSON File into multiple, separate FlowFiles for an array element specified by a JsonPath expression. Each generated FlowFile is comprised of an element of the specified array and transferred to relationship &lsquo;split,&rsquo; with the original file transferred to the &lsquo;original&rsquo; relationship. If the specified JsonPath is not found or does not evaluate to an array element, the original file is routed to &lsquo;failure&rsquo; and no files are generated.</p>
-
-<p>Note: The underlying JsonPath library loads the entirety of the streamed content into and performs result evaluations in memory. Accordingly, it is important to consider the anticipated profile of content being evaluated by this processor and the hardware supporting it especially when working against large JSON documents.</p>
 
 <h3><a name="SplitText"></a>SplitText</h3>
 
@@ -1165,6 +1323,10 @@ In this example, all files with filenames that start with ABC will follow the AB
 <h3><a name="ValidateXML"></a>ValidateXML</h3>
 
 <p>This processor validates the contents of FlowFiles against a user-specified XML schema file.</p>
+
+<h3><a name="YandexTranslate"></a>YandexTranslate</h3>
+
+<p>Translates content and attributes from one language to another</p>
 
 <p>If you have questions about a processor, I&rsquo;d encourage you to download the binaries and start up Apache Nifi.  If you really want more information, let me know and I&rsquo;ll try to compile a more complete post about each and every processor.</p>
 ]]></content>
