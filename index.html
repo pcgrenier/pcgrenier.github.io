@@ -54,10 +54,7 @@
 	<br><div class="header-subtitle">Your home for everything Apache NiFi</div>
 
 </header>
-  <nav role="navigation"><ul class="subscription" data-subscription="rss">
-  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
-  
-</ul>
+  <nav role="navigation">
   
 <form action="https://www.google.com/search" method="get">
   <fieldset role="search">
@@ -77,6 +74,103 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+  
+    
+      <h1 class="entry-title"><a href="/apache-nifi-release-0-dot-3-0-highlights/">Apache Nifi Release 0.3.0 Highlights</a></h1>
+      
+      
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2015-09-29T01:17:47+00:00'><span class='date'>September 29, 2015</span> <span class='time'></span></time>
+        
+         | <a href="/apache-nifi-release-0-dot-3-0-highlights/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>Apache Nifi released their third release, <a href="https://nifi.apache.org/download.html">0.3.0</a> since graduating to a TLP.  It was a minor release but still included a descent number of changes.</p>
+
+<ul>
+<li><a href="#bugfixes">Bug Fixes</a>:           56</li>
+<li><a href="#improvements">Improvements</a>:    20</li>
+<li><a href="#newfeatures">New Features</a>:     5</li>
+</ul>
+
+
+<p>Release Highlights according to nifi can be found on their <a href="https://cwiki.apache.org/confluence/display/NIFI/Release+Notes#ReleaseNotes-Version0.3.0">confluence page</a>, but are also listed below.</p>
+
+<ul>
+<li>Performance improvements in handling large volumes of small files.</li>
+<li>Performance improvements in Provenance repositories.</li>
+<li>Added Reporting Task for ApacheTM AmbariTM.</li>
+<li>Improved stability of nifi bootstrap.</li>
+<li>Added Processors for working with images.</li>
+<li>Support for interacting with Kerberos enabled Hadoop clusters</li>
+<li>Added additional Avro capabilities - merging datafiles &amp; converting to json</li>
+<li>Added processors for performing INSERT, UPDATE, DELETE statements against relational databases</li>
+</ul>
+
+
+</div>
+  
+  
+    <footer>
+      <a rel="full-article" href="/apache-nifi-release-0-dot-3-0-highlights/">Read more &rarr;</a>
+    </footer>
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+  
+    
+      <h1 class="entry-title"><a href="/apache-nifi-graduation/">Apache Nifi Graduation</a></h1>
+      
+      
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2015-09-29T01:17:11+00:00'><span class='date'>September 29, 2015</span> <span class='time'></span></time>
+        
+         | <a href="/apache-nifi-graduation/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>Apache Nifi graduated from a podling to a top level Apache Software Foundation project a few months ago, which is great news!  Congratulations to the NiFi team and all the contributors to making Apache Nifi great and meeting the requirements to move from an incubating project to a top level project.</p>
+
+</div>
+  
+  
+    <footer>
+      <a rel="full-article" href="/apache-nifi-graduation/">Read more &rarr;</a>
+    </footer>
+  
+
+
+    </article>
   
   
     <article>
@@ -145,7 +239,7 @@
   </header>
 
 
-  <div class="entry-content"><p>Apache Nifi just kicked out their second release, <a href="https://nifi.incubator.apache.org/downloads/">0.0.2</a>.  It doesn&rsquo;t have too many new features in it, hence a patch release according to <a href="http://semver.org">semantic versioning</a>, but it is definitely an improvement over the previous version, with it&rsquo;s bug fixes, improvements, and new features numbers below.</p>
+  <div class="entry-content"><p>Apache Nifi just kicked out their second release, <a href="https://nifi.apache.org/download.html">0.0.2</a>.  It doesn&rsquo;t have too many new features in it, hence a patch release according to <a href="http://semver.org">semantic versioning</a>, but it is definitely an improvement over the previous version, with it&rsquo;s bug fixes, improvements, and new features numbers below.</p>
 
 <ul>
 <li><a href="#bugfixes">Bug Fixes</a>:       35</li>
@@ -228,13 +322,16 @@
   </header>
 
 
-  <div class="entry-content"><p><strong> Includes all processors through release 0.0.2 </strong></p>
+  <div class="entry-content"><p><strong> Includes all processors through release 0.3.0 </strong></p>
 
 <p>I looked around at what can be done with Apache NiFi and didn&rsquo;t notice a list of processors without looking at the code or building the project.  I think a list of available processors, the work horse of Apache Nifi, would greatly help decide if it is right for certain needs.  So, I went into the usage guide in the Apache Nifi UI and pulled a list of processors and a quick description for those who want to know what possibilities there are before getting into nifi itself!</p>
 
 <h1>List of processors</h1>
 
-<p>Here is a list of all 53 processors, listed alphabetically, that are currently in Apache Nifi as of February 5th, 2015.  Each one links to a description of the processor further down.  The Usage documentation available in the web ui has much more detail about each processor, it&rsquo;s properties, modifiable attributes, and relationships and each processor has it&rsquo;s own page in the UI, so here is just a quick overview.  Again, this content is taken directly from Nifi&rsquo;s Usage guide in their web UI and all credit/rights belong to them under the Apache 2.0 License.</p>
+<p>With new releases of Nifi, the number of processors have increased from the original 53 to 90!
+Here is a list of all 90 processors, listed alphabetically, that are currently in Apache Nifi as of <strike>February 5th, 2015</strike> Ocotober 3rd, 2015.  Each one links to a description of the processor further down.  The Usage documentation available in the web ui has much more detail about each processor, it&rsquo;s properties, modifiable attributes, and relationships and each processor has it&rsquo;s own page in the UI, so here is just a quick overview.  Again, this content is taken directly from Nifi&rsquo;s Usage guide in their web UI and all credit/rights belong to them under the Apache 2.0 License.</p>
+
+<p>Nifi has improved their documentation, which was originally only available when running apache nifi.  The documentation now is produced through the build process and has been added to <a href="https://nifi.apache.org/docs.html">their website</a>.  So if you need more information or more detail about each processor just check there.</p>
 
 </div>
   
@@ -272,7 +369,7 @@
   </header>
 
 
-  <div class="entry-content"><p>Apache Nifi just had their first release, <a href="https://nifi.incubator.apache.org/downloads/">0.0.1</a>.  It showed good movement forward with 75 bug fixes, 24 improvements, and 2 new features.  A list of <a href="https://issues.apache.org/jira/secure/ReleaseNote.jspa?projectId=12316020&amp;version=12329078">Release Notes</a> is on their Jira page.  With the release, it gives the users source downloads to start from, which is great, but lets look at the highlights of this release.</p>
+  <div class="entry-content"><p>Apache Nifi just had their first release, <a href="https://nifi.apache.org/download.html">0.0.1</a>.  It showed good movement forward with 75 bug fixes, 24 improvements, and 2 new features.  A list of <a href="https://issues.apache.org/jira/secure/ReleaseNote.jspa?projectId=12316020&amp;version=12329078">Release Notes</a> is on their Jira page.  With the release, it gives the users source downloads to start from, which is great, but lets look at the highlights of this release.</p>
 
 <h2>Apache Nifi Release 0.0.1 Highlights</h2>
 
@@ -291,7 +388,7 @@
 </ul>
 
 
-<p>I&rsquo;m pretty excited to see what&rsquo;s in the next release, but also excited that I don&rsquo;t have to build nifi to use it.  Release binaries are available on the <a href="https://nifi.incubator.apache.org/downloads/">nifi website</a>.</p>
+<p>I&rsquo;m pretty excited to see what&rsquo;s in the next release, but also excited that I don&rsquo;t have to build nifi to use it.  Release binaries are available on the <a href="https://nifi.apache.org/download.html">nifi website</a>.</p>
 </div>
   
   
@@ -363,13 +460,13 @@
 
 
   <div class="entry-content"><ul>
-<li>Update Feb. 2nd 2014: The Vagrantfile has been updated to pull the release tag 0.0.1 for stability</li>
+<li>Update April 8th 2015: The Vagrantfile has been updated to pull the release tag 0.0.2 for stability</li>
 </ul>
 
 
 <h1>Install options</h1>
 
-<p><a href="http://nifi.incubator.apache.org/">Apache NiFi</a> is currently in incubation and so does not have any releases, so to start we have to checkout the project and build the code base.  A users guide is avaialble on the <a href="http://nifi.incubator.apache.org/development/quickstart.html">nifi website</a> with requirements for building and running nifi, mainly java 7 and maven 3.0.5+.  OpendJDK will work but currently the unit tests will not pass.  A quick tldr; can be found below.</p>
+<p><a href="https://nifi.apache.org">Apache NiFi</a> is currently in incubation and so does not have any releases, so to start we have to checkout the project and build the code base.  A users guide is avaialble on the <a href="https://nifi.apache.org/quickstart.html">nifi website</a> with requirements for building and running nifi, mainly java 7 and maven 3.0.5+.  OpendJDK will work but currently the unit tests will not pass.  A quick tldr; can be found below.</p>
 
 <h2>Using Vagrant</h2>
 
@@ -399,6 +496,14 @@
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/apache-nifi-release-0-dot-3-0-highlights/">Apache Nifi Release 0.3.0 highlights</a>
+      </li>
+    
+      <li class="post">
+        <a href="/apache-nifi-graduation/">Apache Nifi Graduation</a>
+      </li>
+    
+      <li class="post">
         <a href="/developing-a-custom-apache-nifi-processor-unit-tests-partI/">Developing a Custom Apache Nifi Processor-Unit Tests (Part I)</a>
       </li>
     
@@ -408,14 +513,6 @@
     
       <li class="post">
         <a href="/developing-a-custom-apache-nifi-processor-json/">Developing A Custom Apache Nifi Processor (JSON)</a>
-      </li>
-    
-      <li class="post">
-        <a href="/apache-nifi-processors/">Apache Nifi: What Processors are there?</a>
-      </li>
-    
-      <li class="post">
-        <a href="/whats-in-nifis-first-release-nifi-0-dot-0-1/">What&#8217;s in Nifi&#8217;s first release: Nifi 0.0.1</a>
       </li>
     
   </ul>

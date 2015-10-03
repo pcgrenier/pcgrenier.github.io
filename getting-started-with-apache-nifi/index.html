@@ -54,10 +54,7 @@
 	<br><div class="header-subtitle">Your home for everything Apache NiFi</div>
 
 </header>
-  <nav role="navigation"><ul class="subscription" data-subscription="rss">
-  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
-  
-</ul>
+  <nav role="navigation">
   
 <form action="https://www.google.com/search" method="get">
   <fieldset role="search">
@@ -101,13 +98,13 @@
 
 
 <div class="entry-content"><ul>
-<li>Update Feb. 2nd 2014: The Vagrantfile has been updated to pull the release tag 0.0.1 for stability</li>
+<li>Update April 8th 2015: The Vagrantfile has been updated to pull the release tag 0.0.2 for stability</li>
 </ul>
 
 
 <h1>Install options</h1>
 
-<p><a href="http://nifi.incubator.apache.org/">Apache NiFi</a> is currently in incubation and so does not have any releases, so to start we have to checkout the project and build the code base.  A users guide is avaialble on the <a href="http://nifi.incubator.apache.org/development/quickstart.html">nifi website</a> with requirements for building and running nifi, mainly java 7 and maven 3.0.5+.  OpendJDK will work but currently the unit tests will not pass.  A quick tldr; can be found below.</p>
+<p><a href="https://nifi.apache.org">Apache NiFi</a> is currently in incubation and so does not have any releases, so to start we have to checkout the project and build the code base.  A users guide is avaialble on the <a href="https://nifi.apache.org/quickstart.html">nifi website</a> with requirements for building and running nifi, mainly java 7 and maven 3.0.5+.  OpendJDK will work but currently the unit tests will not pass.  A quick tldr; can be found below.</p>
 
 <h2>Using Vagrant</h2>
 
@@ -124,9 +121,8 @@
 <p>If you want to build it for yourself it normally takes 2-6 minutes depending on your system, with parrallel builds enabled.
 Clone from Apache Nifi git repo:</p>
 
-<pre><code>git clone http://git-wip-us.apache.org/repos/asf/incubator-nifi.git
-cd incubator-nifi
-git checkout develop
+<pre><code>git git clone http://git-wip-us.apache.org/repos/asf/nifi.git
+cd nifi
 </code></pre>
 
 <p>Once you have the source, first have to build the nar-maven-plugin.</p>
@@ -281,6 +277,14 @@ bin/nifi.sh start
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/apache-nifi-release-0-dot-3-0-highlights/">Apache Nifi Release 0.3.0 highlights</a>
+      </li>
+    
+      <li class="post">
+        <a href="/apache-nifi-graduation/">Apache Nifi Graduation</a>
+      </li>
+    
+      <li class="post">
         <a href="/developing-a-custom-apache-nifi-processor-unit-tests-partI/">Developing a Custom Apache Nifi Processor-Unit Tests (Part I)</a>
       </li>
     
@@ -290,14 +294,6 @@ bin/nifi.sh start
     
       <li class="post">
         <a href="/developing-a-custom-apache-nifi-processor-json/">Developing A Custom Apache Nifi Processor (JSON)</a>
-      </li>
-    
-      <li class="post">
-        <a href="/apache-nifi-processors/">Apache Nifi: What Processors are there?</a>
-      </li>
-    
-      <li class="post">
-        <a href="/whats-in-nifis-first-release-nifi-0-dot-0-1/">What&#8217;s in Nifi&#8217;s first release: Nifi 0.0.1</a>
       </li>
     
   </ul>
