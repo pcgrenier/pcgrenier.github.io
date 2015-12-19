@@ -5,18 +5,18 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>Navigating Apache Nifi - NiFi.rocks</title>
+  <title>Apache Nifi Release 0.4.0 highlights - NiFi.rocks</title>
   <meta name="author" content="">
 
-<meta name="description" content="Navigating Apache Nifi video.">
-<meta name="keywords" content="Apache nifi, navigation Apache Nifi, video, how to, guide">
+<meta name="description" content="Nifi release 0.4.0. What's new and release highlights">
+<meta name="keywords" content="Apache Nifi, apache nifi, Nifi, Release, Nifi Release 04.0">
   <!-- http://t.co/dKP3o1e -->
   <meta name="HandheldFriendly" content="True">
   <meta name="MobileOptimized" content="320">
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <link rel="canonical" href="http://www.nifi.rocks/navigating-apache-nifi">
+  <link rel="canonical" href="http://www.nifi.rocks/apache-nifi-release-0-dot-4-0-highlights">
   <link href="/favicon.png" rel="icon">
   <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
   <link href="/atom.xml" rel="alternate" title="NiFi.rocks" type="application/atom+xml">
@@ -78,7 +78,7 @@
   <header>
   
     
-      <h1 class="entry-title">Navigating Apache Nifi</h1>
+      <h1 class="entry-title">Apache Nifi Release 0.4.0 Highlights</h1>
     
   
     
@@ -88,7 +88,7 @@
 
 
 
-<time class='entry-date' datetime='2015-01-28T03:58:20+00:00'><span class='date'>January 28, 2015</span> <span class='time'></span></time>
+<time class='entry-date' datetime='2015-12-15T03:00:56+00:00'><span class='date'>December 15, 2015</span> <span class='time'></span></time>
         
          | <a href="#disqus_thread">Comments</a>
         
@@ -97,12 +97,70 @@
   </header>
 
 
-<div class="entry-content"><p>The main user interface of Apache Nifi is their web ui.  This makes it much more enjoyable to use than a command line interface, but can still be hard to grasp quickly or know where certain things are when you first start using it.  To help reduce the learning curve, we are going through and breaking down the web ui through a video showing how-to navigate Apache Nifi.</p>
+<div class="entry-content"><p>Apache Nifi kicked out thier second release since graduating this past Friday.  With the release of 0.4.0, they are one step closer to a 1.0.0 release which will contain some very interesting things.  While we look forward to the first big release of Apache Nifi, lets break down the changes in the current build.  As always, release 0.4.0 is available on <a href="https://nifi.apache.org/download.html">Apache Nifi&rsquo;s download page</a>.</p>
 
-<p>Our main points will be the menu bar and building a data flow with some tips and tricks along the way.  The data flow will be based off of our previous post <a href="http://www.nifi.rocks/getting-started-with-apache-nifi/">Getting Started with Apache Nifi</a>.</p>
+<ul>
+<li><a href="#bugfixes">Bug Fixes</a>:           93</li>
+<li><a href="#improvements">Improvements</a>:    44</li>
+<li><a href="#newfeatures">New Features</a>:     13</li>
+</ul>
 
-<iframe width="560" height="315" src="https://www.youtube.com/embed/FgTGAWLC170" frameborder="0" allowfullscreen></iframe>
 
+<p>The release notes are available on <a href="https://cwiki.apache.org/confluence/display/NIFI/Release+Notes#ReleaseNotes-Version0.4.0">Nifi&rsquo;s confluence page</a> and a quick highlight can be found below.  First lets just say, this is the biggest release so far, with almost double the amount of bug fixes, and over double the amount of improvements and new features!</p>
+
+<ul>
+<li>General UI improvements to usability</li>
+<li>Multiple Authentication Mechanisms</li>
+<li>New Provenance event types and ability to searh provenance events</li>
+<li>Idle CPU usage was reduced</li>
+<li><a href="#newprocessors">New Processors!</a></li>
+<li>Improved OS support</li>
+</ul>
+
+
+<!--more-->
+
+
+<h3><a name="bugfixes"></a>Bug Fixes</h3>
+
+<p>Bug fixes, bug fixes everywhere!  So many bug fixes that it&rsquo;s almost impossible to list them all here.  Some of the big ones include fixing quite a few issues with MergeContent (efficiencies with 10,000+ files, queue swapping and an issue with delimiters), improved S3 support with PutS3 and FetchS3 fixes (now works with java 8, logs the URL correctly, corrected provenance evnet) and HDFS now acts accordingly with failures (passes to failure relationship and acts as expected for permission failures).  There were also fixes with the database connection pooling and with the PutSQL supporting multiple data types and booleans.  ConvertJSONToSQL also had quite a few fixes including caching results and metadata.  For the full list, either fire up nifi and check it out or look at the release notes!</p>
+
+<h3><a name="improvements"></a>Improvements</h3>
+
+<p>There are a few new provenance events with this release, including download event, fetch event, and REMOTE_INVOCATION event.  ExecuteSQL can now be run periodically without an input FlowFile allowing for expanded use of SQL tasks.  InvokeHTTP has been improved, it now has unique ids across clusters and has additional unit tests. The management side of nifi has been refactored slightly, mainly to clean up the shell scripts and fix some whitespace bugs.  SSL support has been added to the PutS3 processor. It&rsquo;s good to see improvements in so many different areas of nifi!</p>
+
+<h3><a name="new-features"></a>New Features</h3>
+
+<p>The 13 new features include a few <a name="newprocessors">new processors</a>:</p>
+
+<ul>
+<li>AttributesToJSON</li>
+<li>DeleteS3Object</li>
+<li>ExtractAvroMetadata</li>
+<li>FetchFile</li>
+<li>FetchSFTP</li>
+<li>GetAzureEventHub</li>
+<li>GetCouchbaseKey</li>
+<li>GetHBase</li>
+<li>ListenSyslog</li>
+<li>ListFile</li>
+<li>ListSFTP</li>
+<li>ParseSyslog</li>
+<li>PutAzureEventHub</li>
+<li>PutCouchbaseKey</li>
+<li>PutDistributedMapCache</li>
+<li>PutHBaseCell</li>
+<li>PutHBaseJSON</li>
+<li>PutSyslog</li>
+<li>RouteText</li>
+<li>SplitAvro</li>
+<li>TailFile</li>
+</ul>
+
+
+<p>To see more information about all Nifi Processors, checkout our full list of <a href="http://www.nifi.rocks/apache-nifi-processors/">nifi processors and their quick descriptions</a>.  You can also check <a href="https://nifi.apache.org/docs.html">Nifi&rsquo;s Documentation</a> for a little more information.  In addition to the new processors, Nifi now supports LDAP authentication ontop of username/password and two way SSL.  An enhancement to the UI now allows users to drop queued FLowFiles.  Before you had to stop the processor, add a new processor with a failure to discard the file and restart Nifi just to clear a queue!  Now it&rsquo;s much easier!</p>
+
+<p>There is talks already about the first major release of Apache Nifi, 1.0.0 and redoing some of the decisions they made which would break backwords compatability.  We look forward to their next release which seems to be about every 6-8 weeks.  See you guys then!</p>
 </div>
 
 
@@ -111,19 +169,19 @@
       
   
 
-<span class="byline author vcard">Posted by <span class="fn">Chad Zobrisky</span></span>
+
 
       
 
 
 
 
-<time class='entry-date' datetime='2015-01-28T03:58:20+00:00'><span class='date'>January 28, 2015</span> <span class='time'></span></time>
+<time class='entry-date' datetime='2015-12-15T03:00:56+00:00'><span class='date'>December 15, 2015</span> <span class='time'></span></time>
       
 
 <span class="categories">
   
-    <a class='category' href='/categories/apache-nifi/'>apache nifi</a>, <a class='category' href='/categories/how-tos/'>how-tos</a>, <a class='category' href='/categories/videos/'>videos</a>
+    <a class='category' href='/categories/apache-nifi/'>apache nifi</a>, <a class='category' href='/categories/release/'>release</a>
   
 </span>
 
@@ -132,7 +190,7 @@
     
       <div class="sharing">
   
-  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://www.nifi.rocks/navigating-apache-nifi/" data-via="nifirocks" data-counturl="http://www.nifi.rocks/navigating-apache-nifi/" >Tweet</a>
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://www.nifi.rocks/apache-nifi-release-0-dot-4-0-highlights/" data-via="nifirocks" data-counturl="http://www.nifi.rocks/apache-nifi-release-0-dot-4-0-highlights/" >Tweet</a>
   
   
   <div class="g-plusone" data-size="medium"></div>
@@ -145,10 +203,8 @@
     
     <p class="meta">
       
-        <a class="basic-alignment left" href="/getting-started-with-apache-nifi/" title="Previous Post: Getting Started with Apache Nifi">&laquo; Getting Started with Apache Nifi</a>
+        <a class="basic-alignment left" href="/apache-nifi-release-0-dot-3-0-highlights/" title="Previous Post: Apache Nifi Release 0.3.0 highlights">&laquo; Apache Nifi Release 0.3.0 highlights</a>
       
-      
-        <a class="basic-alignment right" href="/whats-in-nifis-first-release-nifi-0-dot-0-1/" title="Next Post: What's in Nifi's first release: Nifi 0.0.1">What&#8217;s in Nifi&#8217;s first release: Nifi 0.0.1 &raquo;</a>
       
     </p>
   </footer>
@@ -216,8 +272,8 @@
       
         
         // var disqus_developer = 1;
-        var disqus_identifier = 'http://www.nifi.rocks/navigating-apache-nifi/';
-        var disqus_url = 'http://www.nifi.rocks/navigating-apache-nifi/';
+        var disqus_identifier = 'http://www.nifi.rocks/apache-nifi-release-0-dot-4-0-highlights/';
+        var disqus_url = 'http://www.nifi.rocks/apache-nifi-release-0-dot-4-0-highlights/';
         var disqus_script = 'embed.js';
       
     (function () {
