@@ -2,7 +2,7 @@
 layout: post
 title: "Apache Nifi: What Processors are there?"
 date: 2015-02-05 03:00:06 +0000
-updated: 2015-10-03 12:14:00 +0000
+updated: 2015-12-18 2214:00 +0000
 author: Chad Zobrisky
 comments: true
 sharing: true
@@ -12,18 +12,18 @@ keywords: Apache Nifi, apache nifi, Nifi, Processors
 categories: [Apache Nifi, Processors]
 ---
 
-** Includes all processors through release 0.3.0 **
+** Includes all processors through release 0.4.0 **
 
 I looked around at what can be done with Apache NiFi and didn't notice a list of processors without looking at the code or building the project.  I think a list of available processors, the work horse of Apache Nifi, would greatly help decide if it is right for certain needs.  So, I went into the usage guide in the Apache Nifi UI and pulled a list of processors and a quick description for those who want to know what possibilities there are before getting into nifi itself!
 
 # List of processors
 With new releases of Nifi, the number of processors have increased from the original 53 to 90!
-Here is a list of all 90 processors, listed alphabetically, that are currently in Apache Nifi as of <strike>February 5th, 2015</strike> Ocotober 3rd, 2015.  Each one links to a description of the processor further down.  The Usage documentation available in the web ui has much more detail about each processor, it's properties, modifiable attributes, and relationships and each processor has it's own page in the UI, so here is just a quick overview.  Again, this content is taken directly from Nifi's Usage guide in their web UI and all credit/rights belong to them under the Apache 2.0 License.
+Here is a list of all 90 processors, listed alphabetically, that are currently in Apache Nifi as of <strike>Ocotober 3rd, 2015</strike> December 18th, 2015.  Each one links to a description of the processor further down.  The Usage documentation available in the web ui has much more detail about each processor, it's properties, modifiable attributes, and relationships and each processor has it's own page in the UI, so here is just a quick overview.  Again, this content is taken directly from Nifi's Usage guide in their web UI and all credit/rights belong to them under the Apache 2.0 License.
 
 Nifi has improved their documentation, which was originally only available when running apache nifi.  The documentation now is produced through the build process and has been added to [their website](https://nifi.apache.org/docs.html).  So if you need more information or more detail about each processor just check there.
 
 <!--more -->
-
+* [AttributesToJSON](#AttributesToJSON)
 * [Base64EncodeContent](#Base64EncodeContent)
 * [CompressContent](#CompressContent)
 * [ControlRate](#ControlRate)
@@ -34,6 +34,7 @@ Nifi has improved their documentation, which was originally only available when 
 * [ConvertJSONToAvro](#ConvertJSONToAvro)
 * [ConvertCSVToSQL](#ConvertCSVToSQL)
 * [CreateHadoopSequenceFile](#CreateHadoopSequenceFile)
+* [DeleteS3Object](#DeleteS3Object)
 * [DeleteSQS](#DeleteSQS)
 * [DetectDuplicate](#DetectDuplicate)
 * [DistributeLoad](#DistributeLoad)
@@ -48,15 +49,21 @@ Nifi has improved their documentation, which was originally only available when 
 * [ExecuteProcess](#ExecuteProcess)
 * [ExecuteSQL](#ExecuteSQL)
 * [ExecuteStreamCommand](#ExecuteStreamCommand)
+* [ExtractAvroMetadata](#ExtractAvroMetadata)
 * [ExtractHL7Attributes](#ExtractHL7Attributes)
 * [ExtractImageMetadata](#ExtractImageMetadata)
 * [ExtractText](#ExtractText)
+* [FetchFile](#FetchFile)
 * [FetchHDFS](#FetchHDFS)
 * [FetchS3Object](#FetchS3Object)
+* [FetchSFTP](#FetchSFTP)
 * [GenerateFlowFile](#GenerateFlowFile)
 * [GeoEnrichIP](#GeoEnrichIP)
+* [GetAzureEventHub](#GetAzureEventHub)
+* [GetCouchbaseKey](#GetCouchbaseKey)
 * [GetFile](#GetFile)
 * [GetFTP](#GetFTP)
+* [GetHBase](#GetHBase)
 * [GetHDFS](#GetHDFS)
 * [GetHDFSSequenceFile](#GetHDFSSequenceFile)
 * [GetHTTP](#GetHTTP)
@@ -75,16 +82,25 @@ Nifi has improved their documentation, which was originally only available when 
 * [IdentifyMimeType](#IdentifyMimeType)
 * [InvokeHTTP](#InvokeHTTP)
 * [ListenHTTP](#ListenHTTP)
+* [ListenSyslog](#ListenSyslog)
 * [ListenUDP](#ListenUDP)
+* [ListFile](#ListFile)
 * [ListHDFS](#ListHDFS)
+* [ListSFTP](#ListSFTP)
 * [LogAttribute](#LogAttribute)
 * [MergeContent](#MergeContent)
 * [ModifyBytes](#ModifyBytes)
 * [MonitorActivity](#MonitorActivity)
+* [ParseSyslog](#ParseSyslog)
 * [PostHTTP](#PostHTTP)
+* [PutAzureEventHub](#PutAzureEventHub)
+* [PutCouchbaseKey](#PutCouchbaseKey)
+* [PutDistributedMapCache](#PutDistributedMapCache)
 * [PutEmail](#PutEmail)
 * [PutFile](#PutFile)
 * [PutFTP](#PutFTP)
+* [PutHBaseCell](#PutHBaseCell)
+* [PutHBaseJSON](#PutHBaseJSON)
 * [PutHDFS](#PutHDFS)
 * [PutJMS](#PutJMS)
 * [PutKafka](#PutKafka)
@@ -95,25 +111,32 @@ Nifi has improved their documentation, which was originally only available when 
 * [PutSolrContentStream](#PutSolrContentStream)
 * [PutSQL](#PutSQL)
 * [PutSQS](#PutSQS)
+* [PutSyslog](#PutSyslog)
 * [ReplaceText](#ReplaceText)
 * [ReplaceTextWithMapping](#ReplaceTextWithMapping)
 * [ResizeImage](#ResizeImage)
 * [RouteHL7](#RouteHL7)
 * [RouteOnAttribute](#RouteOnAttribute)
 * [RouteOnContent](#RouteOnContent)
+* [RouteText](#RouteText)
 * [ScanAttribute](#ScanAttribute)
 * [ScanContent](#ScanContent)
 * [SegmentContent](#SegmentContent)
+* [SplitAvro](#SplitAvro)
 * [SplitContent](#SplitContent)
 * [SplitJson](#SplitJson)
 * [SplitText](#SplitText)
 * [SplitXML](#SplitXML)
 * [StoreInKiteDataset](#StoreInKiteDataset)
+* [TailFile](#TailFile)
 * [TransformXML](#TransformXML)
 * [UnpackContent](#UnpackContent)
 * [UpdateAttribute](#UpdateAttribute)
 * [ValidateXML](#ValidateXML)
 * [YandexTranslate](#YandexTranslate)
+
+### <a name="AttributesToJSON"></a>AttributesToJSON
+Generates a JSON representation of the input FlowFile Attributes. The resulting JSON can be written to either a new Attribute 'JSONAttributes' or written to the FlowFile as content.
 
 ### <a name="Base64EncodeContent"></a>Base64EncodeContent
 This processor base64 encodes FlowFile content, or decodes FlowFile content from base64.
@@ -158,6 +181,8 @@ ZIP
 FlowFileStream v3
 The created SequenceFile is named the same as the incoming FlowFile with the suffix '.sf'. For incoming FlowFiles that are bundled, the keys in the SequenceFile are the individual file names, the values are the contents of each file.
 NOTE: The value portion of a key/value pair is loaded into memory. While there is a max size limit of 2GB, this could cause memory issues if there are too many concurrent tasks and the flow file sizes are large.
+### <a name="DeleteS3Object"></a>DeleteS3Object
+Deletes FlowFiles on an Amazon S3 Bucket. If attempting to delete a file that does not exist, FlowFile is routed to success.
 
 ### <a name="DeleteSQS"></a>DeleteSQS
 Deletes a message from an Amazon Simple Queuing Service Queue
@@ -203,6 +228,9 @@ Execute provided SQL select query. Query result will be converted to Avro format
 ### <a name="ExecuteStreamCommand"></a>ExecuteStreamCommand
 This processor executes an external command on the contents of a FlowFile, and creates a new FlowFile with the results of the command.
 
+### <a name="ExtractAvroMetadata"></a>ExtractAvroMetadata
+Extracts metadata from the header of an Avro datafile.
+
 ### <a name="ExtractHL7Attributes"></a>ExtractHL7Attributes
 Extracts information from an HL7 (Health Level 7) formatted FlowFile and adds the information as FlowFile Attributes. The attributes are named as <Segment Name> <dot> <Field Index>. If the segment is repeating, the naming will be <Segment Name> <underscore> <Segment Index> <dot> <Field Index>. For example, we may have an attribute named "MHS.12" with a value of "2.1" and an attribute named "OBX_11.3" with a value of "93000^CPT4".
 
@@ -212,11 +240,17 @@ Extract the image metadata from flowfiles containing images. This processor reli
 ### <a name="ExtractText"></a>ExtractText
 Evaluates one or more Regular Expressions against the content of a FlowFile. The results of those Regular Expressions are assigned to FlowFile Attributes. Regular Expressions are entered by adding user-defined properties; the name of the property maps to the Attribute Name into which the result will be placed. The first capture group, if any found, will be placed into that attribute name.But all capture groups, including the matching string sequence itself will also be provided at that attribute name with an index value provided.The value of the property must be a valid Regular Expressions with one or more capturing groups. If the Regular Expression matches more than once, only the first match will be used. If any provided Regular Expression matches, the FlowFile(s) will be routed to 'matched'. If no provided Regular Expression matches, the FlowFile will be routed to 'unmatched' and no attributes will be applied to the FlowFile.
 
+### <a name="FetchFile"></a>FetchFile
+Reads the contents of a file from disk and streams it into the contents of an incoming FlowFile. Once this is done, the file is optionally moved elsewhere or deleted to help keep the file system organized.
+
 ### <a name="FetchHDFS"></a>FetchHDFS
 Retrieves a file from HDFS. The content of the incoming FlowFile is replaced by the content of the file in HDFS. The file in HDFS is left intact without any changes being made to it.
 
 ### <a name="FetchS3Object"></a>FetchS3Object
 Retrieves the contents of an S3 Object and writes it to the content of a FlowFile
+
+### <a name="FetchSFTP"></a>FetchSFTP
+Fetches the content of a file from a remote SFTP server and overwrites the contents of an incoming FlowFile with the content of the remote file.
 
 ### <a name="GenerateFlowFile"></a>GenerateFlowFile
 This processor creates FlowFiles of random data to be used for load testing purposes.
@@ -224,11 +258,20 @@ This processor creates FlowFiles of random data to be used for load testing purp
 ### <a name="GeoEnrichIP"></a>GeoEnrichIP
 Looks up geolocation information for an IP address and adds the geo information to FlowFile attributes. The geo data is provided as a MaxMind database. The attribute that contains the IP address to lookup is provided by the 'IP Address Attribute' property. If the name of the attribute provided is 'X', then the the attributes added by enrichment will take the form X.geo.<fieldName>
 
+### <a name="GetAzureEventHub"></a>GetAzureEventHub
+Receives messages from a Microsoft Azure Event Hub, writing the contents of the Azure message to the content of the FlowFile
+
+### <a name="GetCouchbaseKey"></a>GetCouchbaseKey
+Get a document from Couchbase Server via Key/Value access. The ID of the document to fetch may be supplied by setting the <Document Id> property. NOTE: if the Document Id property is not set, the contents of the FlowFile will be read to determine the Document Id, which means that the contents of the entire FlowFile will be buffered in memory.
+
 ### <a name="GetFile"></a>GetFile
 This processor obtains FlowFiles from a local directory. NiFi will need at least read permissions on the files it will pull otherwise it will ignore them.
 
 ### <a name="GetFTP"></a>GetFTP
 This processor fetches files from an FTP server and creates FlowFiles from them.
+
+### <a name="GetHBase"></a>GetHBase
+This Processor polls HBase for any records in the specified table. The processor keeps track of the timestamp of the cells that it receives, so that as new records are pushed to HBase, they will automatically be pulled. Each record is output in JSON format, as {"row": "<row key>", "cells": { "<column 1 family>:<column 1 qualifier>": "<cell 1 value>", "<column 2 family>:<column 2 qualifier>": "<cell 2 value>", ... }}. For each record received, a Provenance RECEIVE event is emitted with the format hbase://<table name>/<row key>, where <row key> is the UTF-8 encoded value of the row's key.
 
 ### <a name="GetHDFS"></a>GetHDFS
 Fetch files from Hadoop Distributed File System (HDFS) into FlowFiles. This Processor will delete the file from HDFS after fetching it.
@@ -334,11 +377,20 @@ An HTTP client processor that converts FlowFile attributes to HTTP headers with 
 ### <a name="ListenHTTP"></a>ListenHTTP
 This processor starts an HTTP service that is used to receive FlowFiles from remote sources. The URL of the service is http://{hostname}:{port}/contentListener.
 
+### <a name="ListenSyslog"></a>ListenSyslog
+Listens for Syslog messages being sent to a given port over TCP or UDP. Incoming messages are checked against regular expressions for RFC5424 and RFC3164 formatted messages. The format of each message is: (<PRIORITY>)(VERSION )(TIMESTAMP) (HOSTNAME) (BODY) where version is optional. The timestamp can be an RFC5424 timestamp with a format of "yyyy-MM-dd'T'HH:mm:ss.SZ" or "yyyy-MM-dd'T'HH:mm:ss.S+hh:mm", or it can be an RFC3164 timestamp with a format of "MMM d HH:mm:ss". If an incoming messages matches one of these patterns, the message will be parsed and the individual pieces will be placed in FlowFile attributes, with the original message in the content of the FlowFile. If an incoming message does not match one of these patterns it will not be parsed and the syslog.valid attribute will be set to false with the original message in the content of the FlowFile. Valid messages will be transferred on the success relationship, and invalid messages will be transferred on the invalid relationship.
+
 ### <a name="ListenUDP"></a>ListenUDP
 This processor listens for Datagram Packets on a given port and concatenates the contents of those packets together generating flow files
 
+### <a name="ListFile"></a>ListFile
+Retrieves a listing of files from the local filesystem. For each file that is listed, creates a FlowFile that represents the file so that it can be fetched in conjunction with ListFile. This Processor is designed to run on Primary Node only in a cluster. If the primary node changes, the new Primary Node will pick up where the previous node left off without duplicating all of the data. Unlike GetFile, this Processor does not delete any data from the local filesystem.
+
 ### <a name="ListHDFS"></a>ListHDFS
 This processor retrieves a listing of files from HDFS. For each file that is listed in HDFS, creates a FlowFile that represents the HDFS file so that it can be fetched in conjunction with ListHDFS. This Processor is designed to run on Primary Node only in a cluster. If the primary node changes, the new Primary Node will pick up where the previous node left off without duplicating all of the data. Unlike GetHDFS, this Processor does not delete any data from HDFS.
+
+### <a name="ListSFTP"></a>ListSFTP
+Performs a listing of the files residing on an SFTP server. For each file that is found on the remote server, a new FlowFile will be created with the filename attribute set to the name of the file on the remote server. This can then be used in conjunction with FetchSFTP in order to fetch those files.
 
 ### <a name="LogAttribute"></a>LogAttribute
 This processor reads the attributes on incoming FlowFiles and prints those attributes and their values to the log at the logging level specified by the user.
@@ -352,8 +404,20 @@ This processor updates the content of a FlowFile by removing bytes from start or
 ### <a name="MonitorActivity"></a>MonitorActivity
 This processor monitors the flow for activity and sends out an indicator when the flow has not had any data for some specified amount of time and again when the flow's activity is restored.
 
+### <a name="ParseSyslog"></a>ParseSyslog
+Parses the contents of a Syslog message and adds attributes to the FlowFile for each of the parts of the Syslog message
+
 ### <a name="PostHTTP"></a>PostHTTP
 This processor performs an HTTP post with the content of each incoming FlowFile.
+
+### <a name="PutAzureEventHub"></a>PutAzureEventHub
+Sends the contents of a FlowFile to a Windows Azure Event Hub. Note: the content of the FlowFile will be buffered into memory before being sent, so care should be taken to avoid sending FlowFiles to this Processor that exceed the amount of Java Heap Space available.
+
+### <a name="PutCouchbaseKey"></a>PutCouchbaseKey
+Put a document to Couchbase Server via Key/Value access.
+
+### <a name="PutDistributedMapCache"></a>PutDistributedMapCache
+Gets the content of a FlowFile and puts it to a distributed map cache, using a cache key computed from FlowFile attributes. If the cache already contains the entry and the cache update strategy is 'keep original' the entry is not replaced.'
 
 ### <a name="PutEmail"></a>PutEmail
 This processor sends an e-mail to configured recipients for each incoming FlowFile.
@@ -363,6 +427,12 @@ This processor writes FlowFiles to the local file system.
 
 ### <a name="PutFTP"></a>PutFTP
 This processor sends FlowFiles via FTP to an FTP server.
+
+### <a name="PutHBaseCell"></a>PutHBaseCell
+Adds the Contents of a FlowFile to HBase as the value of a single cell
+
+### <a name="PutHBaseJSON"></a>PutHBaseJSON
+Adds rows to HBase based on the contents of incoming JSON documents. Each FlowFile must contain a single UTF-8 encoded JSON document, and any FlowFiles where the root element is not a single document will be routed to failure. Each JSON field name and value will become a column qualifier and value of the HBase row. Any fields with a null value will be skipped, and fields with a complex value will be handled according to the Complex Field Strategy. The row id can be specified either directly on the processor through the Row Identifier property, or can be extracted from the JSON document by specifying the Row Identifier Field Name property. This processor will hold the contents of all FlowFiles for the given batch in memory at one time.
 
 ### <a name="PutHDFS"></a>PutHDFS
 This processor writes FlowFiles to an HDFS cluster. It will create directories in which to store files as needed based on the Directory property.
@@ -411,6 +481,9 @@ Executes a SQL UPDATE or INSERT command. The content of an incoming FlowFile is 
 ### <a name="PutSQS"></a>PutSQS
 Publishes a message to an Amazon Simple Queuing Service Queue
 
+### <a name="PutSyslog"></a>PutSyslog
+Sends Syslog messages to a given host and port over TCP or UDP. Messages are constructed from the "Message ___" properties of the processor which can use expression language to generate messages from incoming FlowFiles. The properties are used to construct messages of the form: (<PRIORITY>)(VERSION )(TIMESTAMP) (HOSTNAME) (BODY) where version is optional. The constructed messages are checked against regular expressions for RFC5424 and RFC3164 formatted messages. The timestamp can be an RFC5424 timestamp with a format of "yyyy-MM-dd'T'HH:mm:ss.SZ" or "yyyy-MM-dd'T'HH:mm:ss.S+hh:mm", or it can be an RFC3164 timestamp with a format of "MMM d HH:mm:ss". If a message is constructed that does not form a valid Syslog message according to the above description, then it is routed to the invalid relationship. Valid messages are sent to the Syslog server and successes are routed to the success relationship, failures routed to the failure relationship.
+
 ### <a name="ReplaceText"></a>ReplaceText
 This processor updates the content of a FlowFile by evaluating a regular expression (regex) against the content and replacing the section of content that matches the regular expression with an alternate, user-defined, value.
 
@@ -435,6 +508,9 @@ In this example, all files with filenames that start with ABC will follow the AB
 ### <a name="RouteOnContent"></a>RouteOnContent
 This processor applies user-added regular expressions to the content of a FlowFile and routes a copy of the FlowFile to each destination whose regular expression matches. The user adds properties where the name is the relationship that the FlowFile should follow if it matches the regular expression, which is defined as the property's value. User-defined properties do support the NiFi Expression Language, but in such cases, the results are interpreted as literal values, not regular expressions.
 
+### <a name="RouteText"></a>RouteText
+Routes textual data based on a set of user-defined rules. Each line in an incoming FlowFile is compared against the values specified by user-defined Properties. The mechanism by which the text is compared to these user-defined properties is defined by the 'Matching Strategy'. The data is then routed according to these rules, routing each line of the text individually.
+
 ### <a name="ScanAttribute"></a>ScanAttribute
 This processor scans the specified attributes of FlowFiles, checking to see if any of their values are present within the specified dictionary of terms.
 
@@ -443,6 +519,9 @@ This processor scans the content of FlowFiles for terms that are found in a user
 
 ### <a name="SegmentContent"></a>SegmentContent
 This processor segments a FlowFile into multiple smaller segments on byte boundaries. Each segment is given attributes that can then be used by the MergeContent processor to reconstruct the original FlowFile.
+
+### <a name="SplitAvro"></a>SplitAvro
+Splits a binary encoded Avro datafile into smaller files based on the configured Output Size. The Output Strategy determines if the smaller files will be Avro datafiles, or bare Avro records with metadata in the FlowFile attributes. The output will always be binary encoded.
 
 ### <a name="SplitContent"></a>SplitContent
 This processor splits incoming FlowFiles by a specified byte sequence.
@@ -458,6 +537,9 @@ This processor splits an XML file into multiple separate FlowFiles, each compris
 
 ### <a name="StoreInKiteDataset"></a>StoreInKiteDataset
 No description is given for this processor.
+
+### <a name="TailFile"></a>TailFile
+"Tails" a file, ingesting data from the file as it is written to the file. The file is expected to be textual. Data is ingested only when a new line is encountered (carriage return or new-line character or combination). If the file to tail is periodically "rolled over", as is generally the case with log files, an optional Rolling Filename Pattern can be used to retrieve data from files that have rolled over, even if the rollover occurred while NiFi was not running (provided that the data still exists upon restart of NiFi). It is generally advisable to set the Run Schedule to a few seconds, rather than running with the default value of 0 secs, as this Processor will consume a lot of resources if scheduled very aggressively. At this time, this Processor does not support ingesting files that have been compressed when 'rolled over'.
 
 ### <a name="TransformXML"></a>TransformXML
 This processor transforms the contents of FlowFiles based on a user-specified XSLT stylesheet file. XSL versions 1.0 and 2.0 are supported.
