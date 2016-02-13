@@ -115,9 +115,23 @@ public void onConfigured(final ConfigurationContext context) throws Initializati
 
 To see the other private functions you can refer to the github code.  
 
-The last step in the process is to create a processor to use the service.  This is exactly the same as creating a normal processor, but in this instance we want to add some specifics to use the PropertiesFileService.  To do this, we just grab a reference from context of the Controller Service, and then call the getProperty(propertyName) function.  We are just going to get the property and add it to the nifi properties so it is available to other processors down the line for now.
+The last step in the process is to create a processor to use the service.  This is exactly the same as creating a normal processor, but in this instance we want to add some specifics to use the PropertiesFileService.  To do this, we just grab a reference from context of the Controller Service, and then call the getProperty(propertyName) function.  We are just going to get the property and add it to the nifi flowfile properties so it is available to other processors down the line for now.  To specify which property we want we will add a PropertyDescriptor so that the user can set it in the Nifi UI, and another PropertyDescriptor to specify which PropertiesFileService to get the property value from.
 
 {% codeblock lang:java Controll Service Processor https://github.com/pcgrenier/nifi-examples/blob/sample-processor/sample-processor/src/main/java/rocks/nifi/examples/processors/ControllerServiceProcessor.java ControllerServiceProcessor.java %}
+
+public static final PropertyDescriptor PROPERTY_NAME = new PropertyDescriptor.Builder()
+            .name("Property Name")
+            .required(true)
+            .addValidator(StandardValidators.NON_EMPTY_VALIDATOR)
+            .build();
+
+    public static final PropertyDescriptor PROPERTIES_SERVICE = new PropertyDescriptor.Builder()
+            .name("Properties Service")
+            .description("System properties loader")
+            .required(false)
+            .identifiesControllerService(PropertiesFileService.class)
+            .build();
+.......
 
 @Override
 public void onTrigger(final ProcessContext context, final ProcessSession session) throws ProcessException {
@@ -142,6 +156,22 @@ public void onTrigger(final ProcessContext context, final ProcessSession session
 
 {% endcodeblock %}
 
-Once you have the actual service and processor written, if you have followed the directory setup in the source code, you are good to go!  Just build your service project and copy the nar, from the sample-bundle-nar/target/ directory, into your Apache Nifi instance lib directory.  Once copied, start/restart Apache Nifi and you now have your service available as usual to be used!
+Once you have the actual service and processor written, if you have followed the directory setup in the source code, you are good to go!  Just build your service project(mvn clean install), from the root pom.xml directory.  Then copy the nar, from the sample-bundle-nar/target/ directory, into your Apache Nifi instance lib directory, .  Once copied, start/restart Apache Nifi and you now have your service available as usual to be used!
+
+## Configuring the Service
+
+Once you have deployed the service nar bundle, go to the Controller Settings in the upper right of the web gui.
+
+{% img /images/nifi-controller-settings.png %}
+
+Then search or select the Controller Services tab and click the '+' button on the upper right of the model.  You can either search for the StandardPropertiesFileService, or just select it since there aren't many services.  From there configure the service as needed.
+
+{% img /images/controller-service.png %}
+
+Once the service is configured, add the ControllerServiceProcessor to the flow and configure the PropertyName and PropertyService, the name of the property that you want from the Java properties file and the PropertiesService that you just setup.
+
+{% img /images/controller-processor.png %}
+
+And that is pretty much it for configuring and setting up a service for use in a flow.  Now you just use the Flow file attribute as you would any other attribute.  This could be extended to grab multiple properties, maybe all of the from a file, and set them as Flow file attributes.  This is just a basic example showing how you can create a controller service that fits your needs.
 
 If you have any questions about custom services, let us know below or at info@nifi.rocks!
