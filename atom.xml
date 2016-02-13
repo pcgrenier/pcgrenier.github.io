@@ -78,7 +78,7 @@
   <title><![CDATA[NiFi.rocks]]></title>
   <link href="http://www.nifi.rocks/atom.xml" rel="self"/>
   <link href="http://www.nifi.rocks/"/>
-  <updated>2016-02-13T06:11:10+00:00</updated>
+  <updated>2016-02-13T21:30:04+00:00</updated>
   <id>http://www.nifi.rocks/</id>
   <author>
     <name><![CDATA[]]></name>
@@ -259,7 +259,7 @@
 
 <p>To see the other private functions you can refer to the github code.</p>
 
-<p>The last step in the process is to create a processor to use the service.  This is exactly the same as creating a normal processor, but in this instance we want to add some specifics to use the PropertiesFileService.  To do this, we just grab a reference from context of the Controller Service, and then call the getProperty(propertyName) function.  We are just going to get the property and add it to the nifi properties so it is available to other processors down the line for now.</p>
+<p>The last step in the process is to create a processor to use the service.  This is exactly the same as creating a normal processor, but in this instance we want to add some specifics to use the PropertiesFileService.  To do this, we just grab a reference from context of the Controller Service, and then call the getProperty(propertyName) function.  We are just going to get the property and add it to the nifi flowfile properties so it is available to other processors down the line for now.  To specify which property we want we will add a PropertyDescriptor so that the user can set it in the Nifi UI, and another PropertyDescriptor to specify which PropertiesFileService to get the property value from.</p>
 
 <figure class='code'><figcaption><span>Controll Service Processor</span><a href='https://github.com/pcgrenier/nifi-examples/blob/sample-processor/sample-processor/src/main/java/rocks/nifi/examples/processors/ControllerServiceProcessor.java'>ControllerServiceProcessor.java </a></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
@@ -281,7 +281,35 @@
 <span class='line-number'>18</span>
 <span class='line-number'>19</span>
 <span class='line-number'>20</span>
-</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="nd">@Override</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="kd">public</span> <span class="kd">static</span> <span class="kd">final</span> <span class="n">PropertyDescriptor</span> <span class="n">PROPERTY_NAME</span> <span class="o">=</span> <span class="k">new</span> <span class="n">PropertyDescriptor</span><span class="o">.</span><span class="na">Builder</span><span class="o">()</span>
+</span><span class='line'>            <span class="o">.</span><span class="na">name</span><span class="o">(</span><span class="s">&quot;Property Name&quot;</span><span class="o">)</span>
+</span><span class='line'>            <span class="o">.</span><span class="na">required</span><span class="o">(</span><span class="kc">true</span><span class="o">)</span>
+</span><span class='line'>            <span class="o">.</span><span class="na">addValidator</span><span class="o">(</span><span class="n">StandardValidators</span><span class="o">.</span><span class="na">NON_EMPTY_VALIDATOR</span><span class="o">)</span>
+</span><span class='line'>            <span class="o">.</span><span class="na">build</span><span class="o">();</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="kd">public</span> <span class="kd">static</span> <span class="kd">final</span> <span class="n">PropertyDescriptor</span> <span class="n">PROPERTIES_SERVICE</span> <span class="o">=</span> <span class="k">new</span> <span class="n">PropertyDescriptor</span><span class="o">.</span><span class="na">Builder</span><span class="o">()</span>
+</span><span class='line'>            <span class="o">.</span><span class="na">name</span><span class="o">(</span><span class="s">&quot;Properties Service&quot;</span><span class="o">)</span>
+</span><span class='line'>            <span class="o">.</span><span class="na">description</span><span class="o">(</span><span class="s">&quot;System properties loader&quot;</span><span class="o">)</span>
+</span><span class='line'>            <span class="o">.</span><span class="na">required</span><span class="o">(</span><span class="kc">false</span><span class="o">)</span>
+</span><span class='line'>            <span class="o">.</span><span class="na">identifiesControllerService</span><span class="o">(</span><span class="n">PropertiesFileService</span><span class="o">.</span><span class="na">class</span><span class="o">)</span>
+</span><span class='line'>            <span class="o">.</span><span class="na">build</span><span class="o">();</span>
+</span><span class='line'><span class="o">.......</span>
+</span><span class='line'>
+</span><span class='line'><span class="nd">@Override</span>
 </span><span class='line'><span class="kd">public</span> <span class="kt">void</span> <span class="nf">onTrigger</span><span class="o">(</span><span class="kd">final</span> <span class="n">ProcessContext</span> <span class="n">context</span><span class="o">,</span> <span class="kd">final</span> <span class="n">ProcessSession</span> <span class="n">session</span><span class="o">)</span> <span class="kd">throws</span> <span class="n">ProcessException</span> <span class="o">{</span>
 </span><span class='line'>    <span class="kd">final</span> <span class="n">ProcessorLog</span> <span class="n">log</span> <span class="o">=</span> <span class="k">this</span><span class="o">.</span><span class="na">getLogger</span><span class="o">();</span>
 </span><span class='line'>    <span class="kd">final</span> <span class="n">AtomicReference</span><span class="o">&lt;</span><span class="n">String</span><span class="o">&gt;</span> <span class="n">value</span> <span class="o">=</span> <span class="k">new</span> <span class="n">AtomicReference</span><span class="o">&lt;&gt;();</span>
@@ -304,7 +332,23 @@
 </span></code></pre></td></tr></table></div></figure>
 
 
-<p>Once you have the actual service and processor written, if you have followed the directory setup in the source code, you are good to go!  Just build your service project and copy the nar, from the sample-bundle-nar/target/ directory, into your Apache Nifi instance lib directory.  Once copied, start/restart Apache Nifi and you now have your service available as usual to be used!</p>
+<p>Once you have the actual service and processor written, if you have followed the directory setup in the source code, you are good to go!  Just build your service project(mvn clean install), from the root pom.xml directory.  Then copy the nar, from the sample-bundle-nar/target/ directory, into your Apache Nifi instance lib directory, .  Once copied, start/restart Apache Nifi and you now have your service available as usual to be used!</p>
+
+<h2>Configuring the Service</h2>
+
+<p>Once you have deployed the service nar bundle, go to the Controller Settings in the upper right of the web gui.</p>
+
+<p><img src="http://www.nifi.rocks/images/nifi-controller-settings.png"></p>
+
+<p>Then search or select the Controller Services tab and click the &lsquo;+&rsquo; button on the upper right of the model.  You can either search for the StandardPropertiesFileService, or just select it since there aren&rsquo;t many services.  From there configure the service as needed.</p>
+
+<p><img src="http://www.nifi.rocks/images/controller-service.png"></p>
+
+<p>Once the service is configured, add the ControllerServiceProcessor to the flow and configure the PropertyName and PropertyService, the name of the property that you want from the Java properties file and the PropertiesService that you just setup.</p>
+
+<p><img src="http://www.nifi.rocks/images/controller-processor.png"></p>
+
+<p>And that is pretty much it for configuring and setting up a service for use in a flow.  Now you just use the Flow file attribute as you would any other attribute.  This could be extended to grab multiple properties, maybe all of the from a file, and set them as Flow file attributes.  This is just a basic example showing how you can create a controller service that fits your needs.</p>
 
 <p>If you have any questions about custom services, let us know below or at info@nifi.rocks!</p>
 ]]></content>
