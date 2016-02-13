@@ -78,7 +78,7 @@
   <title><![CDATA[NiFi.rocks]]></title>
   <link href="http://www.nifi.rocks/atom.xml" rel="self"/>
   <link href="http://www.nifi.rocks/"/>
-  <updated>2015-12-19T03:35:20+00:00</updated>
+  <updated>2016-02-13T06:11:10+00:00</updated>
   <id>http://www.nifi.rocks/</id>
   <author>
     <name><![CDATA[]]></name>
@@ -86,6 +86,230 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    
+    <title type="html"><![CDATA[Developing a Custom Apache Nifi Controller Service]]></title>
+    <link href="http://www.nifi.rocks/developing-a-custom-apache-nifi-controller-service/"/>
+    
+    <updated>2016-02-07T00:37:57+00:00</updated>
+    <id>http://www.nifi.rocks/developing-a-custom-apache-nifi-controller-service</id>
+    
+    <content type="html"><![CDATA[<p>Controller services are shared between processors, other controller services and reporting tasks. Normally they provide access to a shared resource, such as a database or ssl context, or externally managed content. This post will cover the basics of a controller service through a simple example. This example will take a file path that contains one or more properties files, and provide a processor access to those properties. The full source is hosted on <a href="https://github.com/pcgrenier/nifi-examples/tree/sample-processor">Github</a>.</p>
+
+<!-- more -->
+
+
+<h2>Setup</h2>
+
+<p>This project will use a more advanced maven structure than the simple one used in the <a href="http://www.nifi.rocks//developing-a-custom-apache-nifi-processor-json">developing a custom processor</a> post.  If you have looked at the processor post you&rsquo;ll see that most of the setup for services is very similar.</p>
+
+<figure class='code'><figcaption><span>Apache Nifi Controller Servcie Folder Structure </span></figcaption>
+<div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>./sample-bundle
+</span><span class='line'>├── pom.xml
+</span><span class='line'>├── sample-bundle-nar
+</span><span class='line'>│   ├── pom.xml
+</span><span class='line'>│   └── src
+</span><span class='line'>├── sample-controller-service
+</span><span class='line'>│   ├── pom.xml
+</span><span class='line'>│   └── src
+</span><span class='line'>├── sample-controller-service-api
+</span><span class='line'>│   ├── pom.xml
+</span><span class='line'>│   └── src
+</span><span class='line'>├── sample-controller-service-api-nar
+</span><span class='line'>│   ├── pom.xml
+</span><span class='line'>│   └── src
+</span><span class='line'>└── sample-processor
+</span><span class='line'>    ├── pom.xml
+</span><span class='line'>    └── src</span></code></pre></td></tr></table></div></figure>
+
+
+<p>I won&rsquo;t go into details on the pom files but the general idea is that you want a seperate nar for the api interface and the service itself, this allows something much smaller to be used as a dependency in your other bundles. So the sample-bundle-nar will pull in the sample-processor and sample-controller-service packages. The sample-controller-service-api-nar will just pull in the sample-controller-service-api.</p>
+
+<h2>The Controller Service API Interface</h2>
+
+<figure class='code'><figcaption><span>Controller Service API</span><a href='https://github.com/pcgrenier/nifi-examples/blob/sample-processor/sample-controller-service-api/src/main/java/rocks/nifi/examples/PropertiesFileService.java'>PropertiesFileService.java </a></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="kd">public</span> <span class="kd">interface</span> <span class="nc">PropertiesFileService</span> <span class="kd">extends</span> <span class="n">ControllerService</span><span class="o">{</span>
+</span><span class='line'>    <span class="n">String</span> <span class="nf">getProperty</span><span class="o">(</span><span class="n">String</span> <span class="n">key</span><span class="o">);</span>
+</span><span class='line'><span class="o">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>This is just a simple interface that extends nifi&rsquo;s ControllerService. We also provide the only entry point to processors, the getProperty function.  This is similar to the current services in Apache Nifi such as <a href="https://raw.githubusercontent.com/apache/nifi/master/nifi-nar-bundles/nifi-standard-services/nifi-dbcp-service-api/src/main/java/org/apache/nifi/dbcp/DBCPService.java">DBCPService.java</a> providing the getConnection() function.</p>
+
+<h2>The Controller Service</h2>
+
+<p>If you have read the <a href="http://www.nifi.rocks//developing-a-custom-apache-nifi-processor-json">developing a custom processor</a> post a lot of this will be review. Controller services provide the same interfaces for configuration and validation. The initialization method only differs in taking a ControllerServiceInitializationContext.</p>
+
+<p>Just like with the processors, tags are useful for finding your controller services. The capability description annotation provides a simple explanation of what the controller service will provide.</p>
+
+<figure class='code'><figcaption><span>Controller Service</span><a href='https://github.com/pcgrenier/nifi-examples/blob/sample-processor/sample-controller-service/src/main/java/rocks/nifi/examples/StandardPropertiesFileService.java'>StandardPropertiesFileService.java </a></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="nd">@Tags</span><span class="o">({</span><span class="s">&quot;nifirocks&quot;</span><span class="o">,</span> <span class="s">&quot;properties&quot;</span><span class="o">})</span>
+</span><span class='line'><span class="nd">@CapabilityDescription</span><span class="o">(</span><span class="s">&quot;Provides a controller service to manage property files.&quot;</span><span class="o">)</span>
+</span><span class='line'><span class="kd">public</span> <span class="kd">class</span> <span class="nc">StandardPropertiesFileService</span> <span class="kd">extends</span> <span class="n">AbstractControllerService</span> <span class="kd">implements</span> <span class="n">PropertiesFileService</span><span class="o">{</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Next we create the property descriptors. One will take the file or directory holding the property files, the other will be how often to check. Unlike processors controller services do not contain relationships.</p>
+
+<figure class='code'><figcaption><span>Controller Service</span><a href='https://github.com/pcgrenier/nifi-examples/blob/sample-processor/sample-controller-service/src/main/java/rocks/nifi/examples/StandardPropertiesFileService.java'>StandardPropertiesFileService.java </a></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="kd">public</span> <span class="kd">static</span> <span class="kd">final</span> <span class="n">PropertyDescriptor</span> <span class="n">CONFIG_URI</span> <span class="o">=</span> <span class="k">new</span>   <span class="n">PropertyDescriptor</span><span class="o">.</span><span class="na">Builder</span><span class="o">()</span>
+</span><span class='line'>        <span class="o">.</span><span class="na">name</span><span class="o">(</span><span class="s">&quot;Configuration Directory&quot;</span><span class="o">)</span>
+</span><span class='line'>        <span class="o">.</span><span class="na">description</span><span class="o">(</span><span class="s">&quot;Configuration directory for properties files.&quot;</span><span class="o">)</span>
+</span><span class='line'>        <span class="o">.</span><span class="na">defaultValue</span><span class="o">(</span><span class="kc">null</span><span class="o">)</span>
+</span><span class='line'>        <span class="o">.</span><span class="na">addValidator</span><span class="o">(</span><span class="n">StandardValidators</span><span class="o">.</span><span class="na">NON_EMPTY_VALIDATOR</span><span class="o">)</span>
+</span><span class='line'>        <span class="o">.</span><span class="na">build</span><span class="o">();</span>
+</span><span class='line'>
+</span><span class='line'><span class="kd">public</span> <span class="kd">static</span> <span class="kd">final</span> <span class="n">PropertyDescriptor</span> <span class="n">RELOAD_INTERVAL</span> <span class="o">=</span> <span class="k">new</span> <span class="n">PropertyDescriptor</span><span class="o">.</span><span class="na">Builder</span><span class="o">()</span>
+</span><span class='line'>        <span class="o">.</span><span class="na">name</span><span class="o">(</span><span class="s">&quot;Reload Interval&quot;</span><span class="o">)</span>
+</span><span class='line'>        <span class="o">.</span><span class="na">description</span><span class="o">(</span><span class="s">&quot;Time before looking for changes&quot;</span><span class="o">)</span>
+</span><span class='line'>        <span class="o">.</span><span class="na">defaultValue</span><span class="o">(</span><span class="s">&quot;60 min&quot;</span><span class="o">)</span>
+</span><span class='line'>        <span class="o">.</span><span class="na">required</span><span class="o">(</span><span class="kc">true</span><span class="o">)</span>
+</span><span class='line'>        <span class="o">.</span><span class="na">addValidator</span><span class="o">(</span><span class="n">StandardValidators</span><span class="o">.</span><span class="na">TIME_PERIOD_VALIDATOR</span><span class="o">)</span>
+</span><span class='line'>        <span class="o">.</span><span class="na">build</span><span class="o">();</span>
+</span><span class='line'>
+</span><span class='line'><span class="kd">private</span> <span class="kd">static</span> <span class="kd">final</span> <span class="n">List</span><span class="o">&lt;</span><span class="n">PropertyDescriptor</span><span class="o">&gt;</span> <span class="n">serviceProperties</span><span class="o">;</span>
+</span><span class='line'>
+</span><span class='line'><span class="kd">static</span><span class="o">{</span>
+</span><span class='line'>    <span class="kd">final</span> <span class="n">List</span><span class="o">&lt;</span><span class="n">PropertyDescriptor</span><span class="o">&gt;</span> <span class="n">props</span> <span class="o">=</span> <span class="k">new</span> <span class="n">ArrayList</span><span class="o">&lt;&gt;();</span>
+</span><span class='line'>    <span class="n">props</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="n">CONFIG_URI</span><span class="o">);</span>
+</span><span class='line'>    <span class="n">props</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="n">RELOAD_INTERVAL</span><span class="o">);</span>
+</span><span class='line'>    <span class="n">serviceProperties</span> <span class="o">=</span> <span class="n">Collections</span><span class="o">.</span><span class="na">unmodifiableList</span><span class="o">(</span><span class="n">props</span><span class="o">);</span>
+</span><span class='line'><span class="o">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>The next step is the onConfigured function which will read the properties set and call any other necessary functions needed to start the service.  We just read the two properties we have, configUri and reloadIntervalMilli, and then call loadPropertiesFile().  After the properties file is loaded, we start up a file watcher and executer so that the properties can be dynamic and not just read in at startup.</p>
+
+<figure class='code'><figcaption><span>Conroller Service</span><a href='https://github.com/pcgrenier/nifi-examples/blob/sample-processor/sample-controller-service/src/main/java/rocks/nifi/examples/StandardPropertiesFileService.java'>StandardPropertiesFileService.java </a></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="nd">@OnEnabled</span>
+</span><span class='line'><span class="kd">public</span> <span class="kt">void</span> <span class="nf">onConfigured</span><span class="o">(</span><span class="kd">final</span> <span class="n">ConfigurationContext</span> <span class="n">context</span><span class="o">)</span> <span class="kd">throws</span> <span class="n">InitializationException</span><span class="o">{</span>
+</span><span class='line'>    <span class="n">log</span><span class="o">.</span><span class="na">info</span><span class="o">(</span><span class="s">&quot;Starting properties file service&quot;</span><span class="o">);</span>
+</span><span class='line'>    <span class="n">configUri</span> <span class="o">=</span> <span class="n">context</span><span class="o">.</span><span class="na">getProperty</span><span class="o">(</span><span class="n">CONFIG_URI</span><span class="o">).</span><span class="na">getValue</span><span class="o">();</span>
+</span><span class='line'>    <span class="n">reloadIntervalMilli</span> <span class="o">=</span> <span class="n">context</span><span class="o">.</span><span class="na">getProperty</span><span class="o">(</span><span class="n">RELOAD_INTERVAL</span><span class="o">).</span><span class="na">asTimePeriod</span><span class="o">(</span><span class="n">TimeUnit</span><span class="o">.</span><span class="na">MILLISECONDS</span><span class="o">);</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="c1">// Initialize the properties</span>
+</span><span class='line'>    <span class="n">loadPropertiesFiles</span><span class="o">();</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="n">fileWatcher</span> <span class="o">=</span> <span class="k">new</span> <span class="nf">SynchronousFileWatcher</span><span class="o">(</span><span class="n">Paths</span><span class="o">.</span><span class="na">get</span><span class="o">(</span><span class="n">configUri</span><span class="o">),</span> <span class="k">new</span> <span class="nf">LastModifiedMonitor</span><span class="o">());</span>
+</span><span class='line'>    <span class="n">executor</span> <span class="o">=</span> <span class="n">Executors</span><span class="o">.</span><span class="na">newSingleThreadScheduledExecutor</span><span class="o">();</span>
+</span><span class='line'>    <span class="n">FilesWatcherWorker</span> <span class="n">reloadTask</span> <span class="o">=</span> <span class="k">new</span> <span class="nf">FilesWatcherWorker</span><span class="o">();</span>
+</span><span class='line'>    <span class="n">executor</span><span class="o">.</span><span class="na">scheduleWithFixedDelay</span><span class="o">(</span><span class="n">reloadTask</span><span class="o">,</span> <span class="mi">0</span><span class="o">,</span> <span class="n">reloadIntervalMilli</span><span class="o">,</span> <span class="n">TimeUnit</span><span class="o">.</span><span class="na">MILLISECONDS</span><span class="o">);</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>To see the other private functions you can refer to the github code.</p>
+
+<p>The last step in the process is to create a processor to use the service.  This is exactly the same as creating a normal processor, but in this instance we want to add some specifics to use the PropertiesFileService.  To do this, we just grab a reference from context of the Controller Service, and then call the getProperty(propertyName) function.  We are just going to get the property and add it to the nifi properties so it is available to other processors down the line for now.</p>
+
+<figure class='code'><figcaption><span>Controll Service Processor</span><a href='https://github.com/pcgrenier/nifi-examples/blob/sample-processor/sample-processor/src/main/java/rocks/nifi/examples/processors/ControllerServiceProcessor.java'>ControllerServiceProcessor.java </a></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="nd">@Override</span>
+</span><span class='line'><span class="kd">public</span> <span class="kt">void</span> <span class="nf">onTrigger</span><span class="o">(</span><span class="kd">final</span> <span class="n">ProcessContext</span> <span class="n">context</span><span class="o">,</span> <span class="kd">final</span> <span class="n">ProcessSession</span> <span class="n">session</span><span class="o">)</span> <span class="kd">throws</span> <span class="n">ProcessException</span> <span class="o">{</span>
+</span><span class='line'>    <span class="kd">final</span> <span class="n">ProcessorLog</span> <span class="n">log</span> <span class="o">=</span> <span class="k">this</span><span class="o">.</span><span class="na">getLogger</span><span class="o">();</span>
+</span><span class='line'>    <span class="kd">final</span> <span class="n">AtomicReference</span><span class="o">&lt;</span><span class="n">String</span><span class="o">&gt;</span> <span class="n">value</span> <span class="o">=</span> <span class="k">new</span> <span class="n">AtomicReference</span><span class="o">&lt;&gt;();</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="kd">final</span> <span class="n">String</span> <span class="n">propertyName</span> <span class="o">=</span> <span class="n">context</span><span class="o">.</span><span class="na">getProperty</span><span class="o">(</span><span class="n">PROPERTY_NAME</span><span class="o">).</span><span class="na">getValue</span><span class="o">();</span>
+</span><span class='line'>    <span class="kd">final</span> <span class="n">PropertiesFileService</span> <span class="n">propertiesService</span> <span class="o">=</span> <span class="n">context</span><span class="o">.</span><span class="na">getProperty</span><span class="o">(</span><span class="n">PROPERTIES_SERVICE</span><span class="o">).</span><span class="na">asControllerService</span><span class="o">(</span><span class="n">PropertiesFileService</span><span class="o">.</span><span class="na">class</span><span class="o">);</span>
+</span><span class='line'>    <span class="kd">final</span> <span class="n">String</span> <span class="n">property</span> <span class="o">=</span> <span class="n">propertiesService</span><span class="o">.</span><span class="na">getProperty</span><span class="o">(</span><span class="n">propertyName</span><span class="o">);</span>
+</span><span class='line'>    <span class="n">log</span><span class="o">.</span><span class="na">info</span><span class="o">(</span><span class="s">&quot;Property = &quot;</span> <span class="o">+</span> <span class="n">property</span><span class="o">);</span>
+</span><span class='line'>
+</span><span class='line'>
+</span><span class='line'>    <span class="n">FlowFile</span> <span class="n">flowfile</span> <span class="o">=</span> <span class="n">session</span><span class="o">.</span><span class="na">get</span><span class="o">();</span>
+</span><span class='line'>    <span class="c1">// Write the results to an attribute</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="k">if</span><span class="o">(</span><span class="n">property</span> <span class="o">!=</span> <span class="kc">null</span> <span class="o">&amp;&amp;</span> <span class="o">!</span><span class="n">property</span><span class="o">.</span><span class="na">isEmpty</span><span class="o">()){</span>
+</span><span class='line'>        <span class="n">flowfile</span> <span class="o">=</span> <span class="n">session</span><span class="o">.</span><span class="na">putAttribute</span><span class="o">(</span><span class="n">flowfile</span><span class="o">,</span> <span class="s">&quot;property&quot;</span><span class="o">,</span> <span class="n">property</span><span class="o">);</span>
+</span><span class='line'>    <span class="o">}</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="n">session</span><span class="o">.</span><span class="na">transfer</span><span class="o">(</span><span class="n">flowfile</span><span class="o">,</span> <span class="n">SUCCESS</span><span class="o">);</span>
+</span><span class='line'><span class="o">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Once you have the actual service and processor written, if you have followed the directory setup in the source code, you are good to go!  Just build your service project and copy the nar, from the sample-bundle-nar/target/ directory, into your Apache Nifi instance lib directory.  Once copied, start/restart Apache Nifi and you now have your service available as usual to be used!</p>
+
+<p>If you have any questions about custom services, let us know below or at info@nifi.rocks!</p>
+]]></content>
+    
+  </entry>
   
   <entry>
     
@@ -100,7 +324,7 @@
 <ul>
 <li><a href="#bugfixes">Bug Fixes</a>:           93</li>
 <li><a href="#improvements">Improvements</a>:    44</li>
-<li><a href="#newfeatures">New Features</a>:     13</li>
+<li><a href="#new-features">New Features</a>:    13</li>
 </ul>
 
 
@@ -129,7 +353,7 @@
 
 <h3><a name="new-features"></a>New Features</h3>
 
-<p>The 13 new features include a few <a name="newprocessors">new processors</a>:</p>
+<p>The 13 new features include a few <a name="newprocessors"></a>new processors:</p>
 
 <ul>
 <li>AttributesToJSON</li>
@@ -1696,7 +1920,7 @@ bin/nifi.sh start
     </div>
   </div>
   <footer role="contentinfo"><p>
-  Copyright &copy; 2015 -   <br/>
+  Copyright &copy; 2016 -   <br/>
   <span class="credit">Powered by <a href="http://octopress.org">Octopress</a> + <a href="https://github.com/ioveracker/mnml">mnml</a>.
 	  
   </span>

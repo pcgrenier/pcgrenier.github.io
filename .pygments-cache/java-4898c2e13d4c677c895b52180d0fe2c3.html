@@ -1,0 +1,24 @@
+<div class="highlight"><pre><span class="kd">public</span> <span class="kd">static</span> <span class="kd">final</span> <span class="n">PropertyDescriptor</span> <span class="n">CONFIG_URI</span> <span class="o">=</span> <span class="k">new</span>   <span class="n">PropertyDescriptor</span><span class="o">.</span><span class="na">Builder</span><span class="o">()</span>
+        <span class="o">.</span><span class="na">name</span><span class="o">(</span><span class="s">&quot;Configuration Directory&quot;</span><span class="o">)</span>
+        <span class="o">.</span><span class="na">description</span><span class="o">(</span><span class="s">&quot;Configuration directory for properties files.&quot;</span><span class="o">)</span>
+        <span class="o">.</span><span class="na">defaultValue</span><span class="o">(</span><span class="kc">null</span><span class="o">)</span>
+        <span class="o">.</span><span class="na">addValidator</span><span class="o">(</span><span class="n">StandardValidators</span><span class="o">.</span><span class="na">NON_EMPTY_VALIDATOR</span><span class="o">)</span>
+        <span class="o">.</span><span class="na">build</span><span class="o">();</span>
+
+<span class="kd">public</span> <span class="kd">static</span> <span class="kd">final</span> <span class="n">PropertyDescriptor</span> <span class="n">RELOAD_INTERVAL</span> <span class="o">=</span> <span class="k">new</span> <span class="n">PropertyDescriptor</span><span class="o">.</span><span class="na">Builder</span><span class="o">()</span>
+        <span class="o">.</span><span class="na">name</span><span class="o">(</span><span class="s">&quot;Reload Interval&quot;</span><span class="o">)</span>
+        <span class="o">.</span><span class="na">description</span><span class="o">(</span><span class="s">&quot;Time before looking for changes&quot;</span><span class="o">)</span>
+        <span class="o">.</span><span class="na">defaultValue</span><span class="o">(</span><span class="s">&quot;60 min&quot;</span><span class="o">)</span>
+        <span class="o">.</span><span class="na">required</span><span class="o">(</span><span class="kc">true</span><span class="o">)</span>
+        <span class="o">.</span><span class="na">addValidator</span><span class="o">(</span><span class="n">StandardValidators</span><span class="o">.</span><span class="na">TIME_PERIOD_VALIDATOR</span><span class="o">)</span>
+        <span class="o">.</span><span class="na">build</span><span class="o">();</span>
+
+<span class="kd">private</span> <span class="kd">static</span> <span class="kd">final</span> <span class="n">List</span><span class="o">&lt;</span><span class="n">PropertyDescriptor</span><span class="o">&gt;</span> <span class="n">serviceProperties</span><span class="o">;</span>
+
+<span class="kd">static</span><span class="o">{</span>
+    <span class="kd">final</span> <span class="n">List</span><span class="o">&lt;</span><span class="n">PropertyDescriptor</span><span class="o">&gt;</span> <span class="n">props</span> <span class="o">=</span> <span class="k">new</span> <span class="n">ArrayList</span><span class="o">&lt;&gt;();</span>
+    <span class="n">props</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="n">CONFIG_URI</span><span class="o">);</span>
+    <span class="n">props</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="n">RELOAD_INTERVAL</span><span class="o">);</span>
+    <span class="n">serviceProperties</span> <span class="o">=</span> <span class="n">Collections</span><span class="o">.</span><span class="na">unmodifiableList</span><span class="o">(</span><span class="n">props</span><span class="o">);</span>
+<span class="o">}</span>
+</pre></div>
