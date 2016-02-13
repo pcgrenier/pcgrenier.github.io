@@ -81,6 +81,44 @@
   <header>
   
     
+      <h1 class="entry-title"><a href="/developing-a-custom-apache-nifi-controller-service/">Developing a Custom Apache Nifi Controller Service</a></h1>
+      
+      
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2016-02-07T00:37:57+00:00'><span class='date'>February  7, 2016</span> <span class='time'></span></time>
+        
+         | <a href="/developing-a-custom-apache-nifi-controller-service/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>Controller services are shared between processors, other controller services and reporting tasks. Normally they provide access to a shared resource, such as a database or ssl context, or externally managed content. This post will cover the basics of a controller service through a simple example. This example will take a file path that contains one or more properties files, and provide a processor access to those properties. The full source is hosted on <a href="https://github.com/pcgrenier/nifi-examples/tree/sample-processor">Github</a>.</p>
+
+</div>
+  
+  
+    <footer>
+      <a rel="full-article" href="/developing-a-custom-apache-nifi-controller-service/">Read more &rarr;</a>
+    </footer>
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+  
+    
       <h1 class="entry-title"><a href="/apache-nifi-release-0-dot-4-0-highlights/">Apache Nifi Release 0.4.0 Highlights</a></h1>
       
       
@@ -105,7 +143,7 @@
 <ul>
 <li><a href="#bugfixes">Bug Fixes</a>:           93</li>
 <li><a href="#improvements">Improvements</a>:    44</li>
-<li><a href="#newfeatures">New Features</a>:     13</li>
+<li><a href="#new-features">New Features</a>:    13</li>
 </ul>
 
 
@@ -491,56 +529,9 @@ Here is a list of all 90 processors, listed alphabetically, that are currently i
 
     </article>
   
-  
-    <article>
-      
-  <header>
-  
-    
-      <h1 class="entry-title"><a href="/getting-started-with-apache-nifi/">Getting Started With Apache Nifi</a></h1>
-      
-      
-    
-      <p class="meta">
-        
-
-
-
-
-<time class='entry-date' datetime='2015-01-16T01:08:03+00:00'><span class='date'>January 16, 2015</span> <span class='time'></span></time>
-        
-         | <a href="/getting-started-with-apache-nifi/#disqus_thread">Comments</a>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><ul>
-<li>Update April 8th 2015: The Vagrantfile has been updated to pull the release tag 0.0.2 for stability</li>
-</ul>
-
-
-<h1>Install options</h1>
-
-<p><a href="https://nifi.apache.org">Apache NiFi</a> is currently in incubation and so does not have any releases, so to start we have to checkout the project and build the code base.  A users guide is avaialble on the <a href="https://nifi.apache.org/quickstart.html">nifi website</a> with requirements for building and running nifi, mainly java 7 and maven 3.0.5+.  OpendJDK will work but currently the unit tests will not pass.  A quick tldr; can be found below.</p>
-
-<h2>Using Vagrant</h2>
-
-<p>If you like to keep your project dependencies seperate like me, I&rsquo;ve created a <a href="https://gist.github.com/czobrisky/a1ed32d9429600f4e661#file-vagrantfile">Vagrantfile</a> that will get all dependencies and then build the project in the shared /vagrant/ folder.  After building it will start nifi and you can point your browser to localhost:8080/nifi/ and skip to <a href="#building-dataflow">Building a Simple Dataflow</a>.  The provisioning of the VM will take about 10-15 minutes depending on your hardware.</p>
-
-</div>
-  
-  
-    <footer>
-      <a rel="full-article" href="/getting-started-with-apache-nifi/">Read more &rarr;</a>
-    </footer>
-  
-
-
-    </article>
-  
   <div class="pagination">
+    
+      <a class="prev" href="2">&larr; Older</a>
     
     <a href="/blog/archives">Blog Archives</a>
     
@@ -551,6 +542,10 @@ Here is a list of all 90 processors, listed alphabetically, that are currently i
     <section>
   <h1>Recent Posts</h1>
   <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/developing-a-custom-apache-nifi-controller-service/">Developing a Custom Apache Nifi Controller Service</a>
+      </li>
     
       <li class="post">
         <a href="/apache-nifi-release-0-dot-4-0-highlights/">Apache Nifi Release 0.4.0 highlights</a>
@@ -568,10 +563,6 @@ Here is a list of all 90 processors, listed alphabetically, that are currently i
         <a href="/developing-a-custom-apache-nifi-processor-unit-tests-partI/">Developing a Custom Apache Nifi Processor-Unit Tests (Part I)</a>
       </li>
     
-      <li class="post">
-        <a href="/apache-nifi-release-0-dot-0-2-highlights/">Apache Nifi Release 0.0.2 Highlights</a>
-      </li>
-    
   </ul>
 </section>
 
@@ -585,7 +576,7 @@ Here is a list of all 90 processors, listed alphabetically, that are currently i
     </div>
   </div>
   <footer role="contentinfo"><p>
-  Copyright &copy; 2015 -   <br/>
+  Copyright &copy; 2016 -   <br/>
   <span class="credit">Powered by <a href="http://octopress.org">Octopress</a> + <a href="https://github.com/ioveracker/mnml">mnml</a>.
 	  
   </span>
