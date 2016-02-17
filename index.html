@@ -67,6 +67,7 @@
   <li><a href="/">Home</a></li>
   <li><a href="/archives">Archives</a></li>
   <li><a href="/about">About</a></li>
+  <li><a href="/apache-nifi-processors/">Processors</a></li>
 </ul>
 
 </nav>
@@ -74,6 +75,54 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+  
+    
+      <h1 class="entry-title"><a href="/apache-nifi-release-0-dot-5-0-highlights/">Apache Nifi Release 0.5.0 Highlights</a></h1>
+      
+      
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2016-02-16T20:09:49+00:00'><span class='date'>February 16, 2016</span> <span class='time'></span></time>
+        
+         | <a href="/apache-nifi-release-0-dot-5-0-highlights/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>Apache Nifi just voted on another release and have annouced and released 0.5.0, probably their most interesting release to date.  This release contains quite a few big features that expand what nifi has to offer and also how you can use it; notably script execution in a flow.  This new processor allows you to execute scripts in Javascript, Groovy, JRuby, Jython, Lua, and Python.  To grab the latest binaries, go to
+<a href="https://nifi.apache.org/download.html">Apache Nifi&rsquo;s download page</a>  The full release notes are also available on <a href="https://cwiki.apache.org/confluence/display/NIFI/Release+Notes#ReleaseNotes-Version0.5.0">Apache Nifi&rsquo;s wiki page</a>.</p>
+
+<ul>
+<li><a href="#bugfixes">Bug Fixes</a>:           64</li>
+<li><a href="#improvements">Improvements</a>:    28</li>
+<li><a href="#new-features">New Features</a>:    10</li>
+</ul>
+
+
+<p>This release is substantial and really expands Apache Nifi&rsquo;s usablity, specificall for those users who don&rsquo;t feel comfortable with Java.  Lets take a deeper look at what else is included!</p>
+
+</div>
+  
+  
+    <footer>
+      <a rel="full-article" href="/apache-nifi-release-0-dot-5-0-highlights/">Read more &rarr;</a>
+    </footer>
+  
+
+
+    </article>
   
   
     <article>
@@ -417,7 +466,7 @@
   </header>
 
 
-  <div class="entry-content"><p><strong> Includes all processors through release 0.4.0 </strong></p>
+  <div class="entry-content"><p><strong> Includes all processors through release 0.5.0 </strong></p>
 
 <p>I looked around at what can be done with Apache NiFi and didn&rsquo;t notice a list of processors without looking at the code or building the project.  I think a list of available processors, the work horse of Apache Nifi, would greatly help decide if it is right for certain needs.  So, I went into the usage guide in the Apache Nifi UI and pulled a list of processors and a quick description for those who want to know what possibilities there are before getting into nifi itself!</p>
 
@@ -491,44 +540,6 @@ Here is a list of all 90 processors, listed alphabetically, that are currently i
 
     </article>
   
-  
-    <article>
-      
-  <header>
-  
-    
-      <h1 class="entry-title"><a href="/navigating-apache-nifi/">Navigating Apache Nifi</a></h1>
-      
-      
-    
-      <p class="meta">
-        
-
-
-
-
-<time class='entry-date' datetime='2015-01-28T03:58:20+00:00'><span class='date'>January 28, 2015</span> <span class='time'></span></time>
-        
-         | <a href="/navigating-apache-nifi/#disqus_thread">Comments</a>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>The main user interface of Apache Nifi is their web ui.  This makes it much more enjoyable to use than a command line interface, but can still be hard to grasp quickly or know where certain things are when you first start using it.  To help reduce the learning curve, we are going through and breaking down the web ui through a video showing how-to navigate Apache Nifi.</p>
-
-<p>Our main points will be the menu bar and building a data flow with some tips and tricks along the way.  The data flow will be based off of our previous post <a href="http://www.nifi.rocks/getting-started-with-apache-nifi/">Getting Started with Apache Nifi</a>.</p>
-
-<iframe width="560" height="315" src="https://www.youtube.com/embed/FgTGAWLC170" frameborder="0" allowfullscreen></iframe>
-
-</div>
-  
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/posts/2">&larr; Older</a>
@@ -544,6 +555,10 @@ Here is a list of all 90 processors, listed alphabetically, that are currently i
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/apache-nifi-release-0-dot-5-0-highlights/">Apache Nifi Release 0.5.0 Highlights</a>
+      </li>
+    
+      <li class="post">
         <a href="/developing-a-custom-apache-nifi-controller-service/">Developing a Custom Apache Nifi Controller Service</a>
       </li>
     
@@ -557,10 +572,6 @@ Here is a list of all 90 processors, listed alphabetically, that are currently i
     
       <li class="post">
         <a href="/apache-nifi-graduation/">Apache Nifi Graduation</a>
-      </li>
-    
-      <li class="post">
-        <a href="/developing-a-custom-apache-nifi-processor-unit-tests-partI/">Developing a Custom Apache Nifi Processor-Unit Tests (Part I)</a>
       </li>
     
   </ul>
