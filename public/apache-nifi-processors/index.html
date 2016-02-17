@@ -67,6 +67,7 @@
   <li><a href="/">Home</a></li>
   <li><a href="/archives">Archives</a></li>
   <li><a href="/about">About</a></li>
+  <li><a href="/apache-nifi-processors/">Processors</a></li>
 </ul>
 
 </nav>
@@ -97,7 +98,7 @@
   </header>
 
 
-<div class="entry-content"><p><strong> Includes all processors through release 0.4.0 </strong></p>
+<div class="entry-content"><p><strong> Includes all processors through release 0.5.0 </strong></p>
 
 <p>I looked around at what can be done with Apache NiFi and didn&rsquo;t notice a list of processors without looking at the code or building the project.  I think a list of available processors, the work horse of Apache Nifi, would greatly help decide if it is right for certain needs.  So, I went into the usage guide in the Apache Nifi UI and pulled a list of processors and a quick description for those who want to know what possibilities there are before getting into nifi itself!</p>
 
@@ -115,13 +116,15 @@ Here is a list of all 90 processors, listed alphabetically, that are currently i
 <li><a href="#AttributesToJSON">AttributesToJSON</a></li>
 <li><a href="#Base64EncodeContent">Base64EncodeContent</a></li>
 <li><a href="#CompressContent">CompressContent</a></li>
+<li><a href="#ConsumeAMQP">ConsumeAMQP</a></li>
 <li><a href="#ControlRate">ControlRate</a></li>
 <li><a href="#ConvertAvroSchema">ConvertAvroSchema</a></li>
 <li><a href="#ConvertAvroToJSON">ConvertAvroToJSON</a></li>
 <li><a href="#ConvertCharacterSet">ConvertCharacterSet</a></li>
 <li><a href="#ConvertCSVToAvro">ConvertCSVToAvro</a></li>
 <li><a href="#ConvertJSONToAvro">ConvertJSONToAvro</a></li>
-<li><a href="#ConvertCSVToSQL">ConvertCSVToSQL</a></li>
+<li><a href="#ConvertCSVToSQL">ConvertCSVToSQL</a> DEPRECATED - no longer available in 0.5.0</li>
+<li><a href="#ConvertJSONToSQL">ConvertJSONToSQL</a></li>
 <li><a href="#CreateHadoopSequenceFile">CreateHadoopSequenceFile</a></li>
 <li><a href="#DeleteS3Object">DeleteS3Object</a></li>
 <li><a href="#DeleteSQS">DeleteSQS</a></li>
@@ -136,12 +139,15 @@ Here is a list of all 90 processors, listed alphabetically, that are currently i
 <li><a href="#ExecuteFlumeSink">ExecuteFlumeSink</a></li>
 <li><a href="#ExecuteFlumeSource">ExecuteFlumeSource</a></li>
 <li><a href="#ExecuteProcess">ExecuteProcess</a></li>
+<li><a href="#ExecuteScript">ExecuteScript</a></li>
 <li><a href="#ExecuteSQL">ExecuteSQL</a></li>
 <li><a href="#ExecuteStreamCommand">ExecuteStreamCommand</a></li>
 <li><a href="#ExtractAvroMetadata">ExtractAvroMetadata</a></li>
 <li><a href="#ExtractHL7Attributes">ExtractHL7Attributes</a></li>
 <li><a href="#ExtractImageMetadata">ExtractImageMetadata</a></li>
 <li><a href="#ExtractText">ExtractText</a></li>
+<li><a href="#FetchDistributedMapCache">FetchDistributedMapCache</a></li>
+<li><a href="#FetchElasticSearch">FetchElasticSearch</a></li>
 <li><a href="#FetchFile">FetchFile</a></li>
 <li><a href="#FetchHDFS">FetchHDFS</a></li>
 <li><a href="#FetchS3Object">FetchS3Object</a></li>
@@ -155,6 +161,7 @@ Here is a list of all 90 processors, listed alphabetically, that are currently i
 <li><a href="#GetHBase">GetHBase</a></li>
 <li><a href="#GetHDFS">GetHDFS</a></li>
 <li><a href="#GetHDFSSequenceFile">GetHDFSSequenceFile</a></li>
+<li><a href="#GetHTMLElement">GetHTMLElement</a></li>
 <li><a href="#GetHTTP">GetHTTP</a></li>
 <li><a href="#GetJMSQueue">GetJMSQueue</a></li>
 <li><a href="#GetJMSTopic">GetJMSTopic</a></li>
@@ -169,8 +176,11 @@ Here is a list of all 90 processors, listed alphabetically, that are currently i
 <li><a href="#HashAttribute">HashAttribute</a></li>
 <li><a href="#HashContent">HashContent</a></li>
 <li><a href="#IdentifyMimeType">IdentifyMimeType</a></li>
+<li><a href="#InferAvroShema">InferAvroShema</a></li>
 <li><a href="#InvokeHTTP">InvokeHTTP</a></li>
+<li><a href="#InvokeScriptedProcessor">InvokeScriptedProcessor</a></li>
 <li><a href="#ListenHTTP">ListenHTTP</a></li>
+<li><a href="#ListenRELP">ListenRELP</a></li>
 <li><a href="#ListenSyslog">ListenSyslog</a></li>
 <li><a href="#ListenUDP">ListenUDP</a></li>
 <li><a href="#ListFile">ListFile</a></li>
@@ -179,21 +189,26 @@ Here is a list of all 90 processors, listed alphabetically, that are currently i
 <li><a href="#LogAttribute">LogAttribute</a></li>
 <li><a href="#MergeContent">MergeContent</a></li>
 <li><a href="#ModifyBytes">ModifyBytes</a></li>
+<li><a href="#ModifyHTMLElement">ModifyHTMLElement</a></li>
 <li><a href="#MonitorActivity">MonitorActivity</a></li>
 <li><a href="#ParseSyslog">ParseSyslog</a></li>
 <li><a href="#PostHTTP">PostHTTP</a></li>
+<li><a href="#PublishAMQP">PublishAMQP</a></li>
 <li><a href="#PutAzureEventHub">PutAzureEventHub</a></li>
 <li><a href="#PutCouchbaseKey">PutCouchbaseKey</a></li>
 <li><a href="#PutDistributedMapCache">PutDistributedMapCache</a></li>
+<li><a href="#PutElasticsearch">PutElasticsearch</a></li>
 <li><a href="#PutEmail">PutEmail</a></li>
 <li><a href="#PutFile">PutFile</a></li>
 <li><a href="#PutFTP">PutFTP</a></li>
 <li><a href="#PutHBaseCell">PutHBaseCell</a></li>
 <li><a href="#PutHBaseJSON">PutHBaseJSON</a></li>
 <li><a href="#PutHDFS">PutHDFS</a></li>
+<li><a href="#PutHTMLElement">PutHTMLElement</a></li>
 <li><a href="#PutJMS">PutJMS</a></li>
 <li><a href="#PutKafka">PutKafka</a></li>
 <li><a href="#PutMongo">PutMongo</a></li>
+<li><a href="#PutRiemann">PutRiemann</a></li>
 <li><a href="#PutS3Object">PutS3Object</a></li>
 <li><a href="#PutSFTP">PutSFTP</a></li>
 <li><a href="#PutSNS">PutSNS</a></li>
@@ -238,6 +253,10 @@ Here is a list of all 90 processors, listed alphabetically, that are currently i
 
 <p>This processor compresses or decompresses the contents of FlowFiles using a user-specified compression algorithm and updates the mime.type attribute as appropriate</p>
 
+<h3><a name="ConsumeAMQP"></a>ConsumeAMQP</h3>
+
+<p>Consumes AMQP Message transforming its content to a FlowFile and transitioning it to &lsquo;success&rsquo; relationship</p>
+
 <h3><a name="ControlRate"></a>ControlRate</h3>
 
 <p>This processor controls the rate at which data is transferred to follow-on processors.</p>
@@ -269,10 +288,14 @@ In addition, fields can be renamed or unpacked from a record type by using the d
 
 <p>Converts JSON files to Avro according to an Avro Schema</p>
 
-<h3><a name="ConvertCSVToSQL"></a>ConvertCSVToSQL</h3>
+<h3><a name="ConvertCSVToSQL"></a>ConvertCSVToSQL - DEPRECATED in 0.5.0</h3>
 
 <p>Converts JSON files to Avro according to an Avro Schema
 Converts a JSON-formatted FlowFile into an UPDATE or INSERT SQL statement. The incoming FlowFile is expected to be &ldquo;flat&rdquo; JSON message, meaning that it consists of a single JSON element and each field maps to a simple type. If a field maps to a JSON object, that JSON object will be interpreted as Text. If the input is an array of JSON elements, each element in the array is output as a separate FlowFile to the &lsquo;sql&rsquo; relationship. Upon successful conversion, the original FlowFile is routed to the &lsquo;original&rsquo; relationship and the SQL is routed to the &lsquo;sql&rsquo; relationship.</p>
+
+<h3><a name="ConvertJSONToSQL"></a>ConvertJSONToSQL</h3>
+
+<p>Converts a JSON-formatted FlowFile into an UPDATE or INSERT SQL statement. The incoming FlowFile is expected to be &ldquo;flat&rdquo; JSON message, meaning that it consists of a single JSON element and each field maps to a simple type. If a field maps to a JSON object, that JSON object will be interpreted as Text. If the input is an array of JSON elements, each element in the array is output as a separate FlowFile to the &lsquo;sql&rsquo; relationship. Upon successful conversion, the original FlowFile is routed to the &lsquo;original&rsquo; relationship and the SQL is routed to the &lsquo;sql&rsquo; relationship.</p>
 
 <h3><a name="CreateHadoopSequenceFile"></a>CreateHadoopSequenceFile</h3>
 
@@ -338,6 +361,10 @@ NOTE: The value portion of a key/value pair is loaded into memory. While there i
 
 <p>Runs an operating system command specified by the user and writes the output of that command to a FlowFile. If the command is expected to be long-running, the Processor can output the partial data on a specified interval. When this option is used, the output is expected to be in textual format, as it typically does not make sense to split binary data on arbitrary time-based intervals.</p>
 
+<h3><a name="ExecuteScript"></a>ExecuteScript</h3>
+
+<p>Experimental - Executes a script given the flow file and a process session. The script is responsible for handling the incoming flow file (transfer to SUCCESS or remove, e.g.) as well as any flow files created by the script. If the handling is incomplete or incorrect, the session will be rolled back. Experimental: Impact of sustained usage not yet verified.</p>
+
 <h3><a name="ExecuteSQL"></a>ExecuteSQL</h3>
 
 <p>Execute provided SQL select query. Query result will be converted to Avro format. Streaming is used so arbitrarily large result sets are supported</p>
@@ -361,6 +388,14 @@ NOTE: The value portion of a key/value pair is loaded into memory. While there i
 <h3><a name="ExtractText"></a>ExtractText</h3>
 
 <p>Evaluates one or more Regular Expressions against the content of a FlowFile. The results of those Regular Expressions are assigned to FlowFile Attributes. Regular Expressions are entered by adding user-defined properties; the name of the property maps to the Attribute Name into which the result will be placed. The first capture group, if any found, will be placed into that attribute name.But all capture groups, including the matching string sequence itself will also be provided at that attribute name with an index value provided.The value of the property must be a valid Regular Expressions with one or more capturing groups. If the Regular Expression matches more than once, only the first match will be used. If any provided Regular Expression matches, the FlowFile(s) will be routed to &lsquo;matched&rsquo;. If no provided Regular Expression matches, the FlowFile will be routed to &lsquo;unmatched&rsquo; and no attributes will be applied to the FlowFile.</p>
+
+<h3><a name="FetchDistributedMapCache"></a>FetchDistributedMapCache</h3>
+
+<p>Computes a cache key from FlowFile attributes, for each incoming FlowFile, and fetches the value from the Distributed Map Cache associated with that key. The incoming FlowFile&rsquo;s content is replaced with the binary data received by the Distributed Map Cache. If there is no value stored under that key then the flow file will be routed to &lsquo;not-found&rsquo;. Note that the processor will always attempt to read the entire cached value into memory before placing it in it&rsquo;s destination. This could be potentially problematic if the cached value is very large.</p>
+
+<h3><a name="FetchElasticSearch"></a>FetchElasticSearch</h3>
+
+<p>Retrieves a document from Elasticsearch using the specified connection properties and the identifier of the document to retrieve. If the cluster has been configured for authorization and/or secure transport (SSL/TLS) and the Shield plugin is available, secure connections can be made. This processor supports Elasticsearch 2.x clusters.</p>
 
 <h3><a name="FetchFile"></a>FetchFile</h3>
 
@@ -413,6 +448,10 @@ NOTE: The value portion of a key/value pair is loaded into memory. While there i
 <h3><a name="GetHDFSSequenceFile"></a>GetHDFSSequenceFile</h3>
 
 <p>Fetch sequence files from Hadoop Distributed File System (HDFS) into FlowFiles</p>
+
+<h3><a name="GetHTMLElement"></a>GetHTMLElement</h3>
+
+<p>Extracts HTML element values from the incoming flowfile&rsquo;s content using a CSS selector. The incoming HTML is first converted into a HTML Document Object Model so that HTML elements may be selected in the similar manner that CSS selectors are used to apply styles to HTML. The resulting HTML DOM is then &ldquo;queried&rdquo; using the user defined CSS selector string. The result of &ldquo;querying&rdquo; the HTML DOM may produce 0-N results. If no results are found the flowfile will be transferred to the &ldquo;element not found&rdquo; relationship to indicate so to the end user. If N results are found a new flowfile will be created and emitted for each result. The query result will either be placed in the content of the new flowfile or as an attribute of the new flowfile. By default the result is written to an attribute. This can be controlled by the &ldquo;Destination&rdquo; property. Resulting query values may also have data prepended or appended to them by setting the value of property &ldquo;Prepend Element Value&rdquo; or &ldquo;Append Element Value&rdquo;. Prepended and appended values are treated as string values and concatenated to the result retrieved from the HTML DOM query operation. A more thorough reference for the CSS selector syntax can be found at &ldquo;<a href="http://jsoup.org/apidocs/org/jsoup/select/Selector.html">http://jsoup.org/apidocs/org/jsoup/select/Selector.html</a>&rdquo;</p>
 
 <h3><a name="GetHTTP"></a>GetHTTP</h3>
 
@@ -521,15 +560,27 @@ NOTE: The value portion of a key/value pair is loaded into memory. While there i
 </ul>
 
 
+<h3><a name="InferAvroShema"></a>InferAvroShema</h3>
+
+<p>Examines the contents of the incoming FlowFile to infer an Avro schema. The processor will use the Kite SDK to make an attempt to automatically generate an Avro schema from the incoming content. When inferring the schema from JSON data the key names will be used in the resulting Avro schema definition. When inferring from CSV data a &ldquo;header definition&rdquo; must be present either as the first line of the incoming data or the &ldquo;header definition&rdquo; must be explicitly set in the property &ldquo;CSV Header Definition&rdquo;. A &ldquo;header definition&rdquo; is simply a single comma separated line defining the names of each column. The &ldquo;header definition&rdquo; is required in order to determine the names that should be given to each field in the resulting Avro definition. When inferring data types the higher order data type is always used if there is ambiguity. For example when examining numerical values the type may be set to &ldquo;long&rdquo; instead of &ldquo;integer&rdquo; since a long can safely hold the value of any &ldquo;integer&rdquo;. Only CSV and JSON content is currently supported for automatically inferring an Avro schema. The type of content present in the incoming FlowFile is set by using the property &ldquo;Input Content Type&rdquo;. The property can either be explicitly set to CSV, JSON, or &ldquo;use mime.type value&rdquo; which will examine the value of the mime.type attribute on the incoming FlowFile to determine the type of content present.</p>
+
 <h3><a name="InvokeHTTP"></a>InvokeHTTP</h3>
 
 <p>Making requests to remote HTTP servers. Supporting common HTTP methods. Storing results as new flowfiles upon success. Routing to failure on error.</p>
 
 <p>An HTTP client processor that converts FlowFile attributes to HTTP headers with configurable HTTP method, URL, etc.</p>
 
+<h3><a name="InvokeScriptedProcessor"></a>InvokeScriptedProcessor</h3>
+
+<p>Experimental - Invokes a script engine for a Processor defined in the given script. The script must define a valid class that implements the Processor interface, and it must set a variable &lsquo;processor&rsquo; to an instance of the class. Processor methods such as onTrigger() will be delegated to the scripted Processor instance. Also any Relationships or PropertyDescriptors defined by the scripted processor will be added to the configuration dialog. Experimental: Impact of sustained usage not yet verified.</p>
+
 <h3><a name="ListenHTTP"></a>ListenHTTP</h3>
 
 <p>This processor starts an HTTP service that is used to receive FlowFiles from remote sources. The URL of the service is <a href="http://">http://</a>{hostname}:{port}/contentListener.</p>
+
+<h3><a name="ListenRELP"></a>ListenRELP</h3>
+
+<p>Listens for RELP messages being sent to a given port over TCP. Each message will be acknowledged after successfully writing the message to a FlowFile. Each FlowFile will contain data portion of one or more RELP frames. In the case where the RELP frames contain syslog messages, the output of this processor can be sent to a ParseSyslog processor for further processing.</p>
 
 <h3><a name="ListenSyslog"></a>ListenSyslog</h3>
 
@@ -563,6 +614,10 @@ NOTE: The value portion of a key/value pair is loaded into memory. While there i
 
 <p>This processor updates the content of a FlowFile by removing bytes from start or end of a file.</p>
 
+<h3><a name="ModifyHTMLElement"></a>ModifyHTMLElement</h3>
+
+<p>Modifies the value of an existing HTML element. The desired element to be modified is located by using CSS selector syntax. The incoming HTML is first converted into a HTML Document Object Model so that HTML elements may be selected in the similar manner that CSS selectors are used to apply styles to HTML. The resulting HTML DOM is then &ldquo;queried&rdquo; using the user defined CSS selector string to find the element the user desires to modify. If the HTML element is found the element&rsquo;s value is updated in the DOM using the value specified &ldquo;Modified Value&rdquo; property. All DOM elements that match the CSS selector will be updated. Once all of the DOM elements have been updated the DOM is rendered to HTML and the result replaces the flowfile content with the updated HTML. A more thorough reference for the CSS selector syntax can be found at &ldquo;<a href="http://jsoup.org/apidocs/org/jsoup/select/Selector.html">http://jsoup.org/apidocs/org/jsoup/select/Selector.html</a>&rdquo;</p>
+
 <h3><a name="MonitorActivity"></a>MonitorActivity</h3>
 
 <p>This processor monitors the flow for activity and sends out an indicator when the flow has not had any data for some specified amount of time and again when the flow&rsquo;s activity is restored.</p>
@@ -575,6 +630,10 @@ NOTE: The value portion of a key/value pair is loaded into memory. While there i
 
 <p>This processor performs an HTTP post with the content of each incoming FlowFile.</p>
 
+<h3><a name="PublishAMQP"></a>PublishAMQP</h3>
+
+<p>Creates a AMQP Message from the contents of a FlowFile and sends the message to an AMQP Exchange.In a typical AMQP exchange model, the message that is sent to the AMQP Exchange will be routed based on the &lsquo;Routing Key&rsquo; to its final destination in the queue (the binding). If due to some misconfiguration the binding between the Exchange, Routing Key and Queue is not set up, the message will have no final destination and will return (i.e., the data will not make it to the queue). If that happens you will see a log in both app-log and bulletin stating to that effect. Fixing the binding (normally done by AMQP administrator) will resolve the issue.</p>
+
 <h3><a name="PutAzureEventHub"></a>PutAzureEventHub</h3>
 
 <p>Sends the contents of a FlowFile to a Windows Azure Event Hub. Note: the content of the FlowFile will be buffered into memory before being sent, so care should be taken to avoid sending FlowFiles to this Processor that exceed the amount of Java Heap Space available.</p>
@@ -586,6 +645,10 @@ NOTE: The value portion of a key/value pair is loaded into memory. While there i
 <h3><a name="PutDistributedMapCache"></a>PutDistributedMapCache</h3>
 
 <p>Gets the content of a FlowFile and puts it to a distributed map cache, using a cache key computed from FlowFile attributes. If the cache already contains the entry and the cache update strategy is &lsquo;keep original&rsquo; the entry is not replaced.&#8217;</p>
+
+<h3><a name="PutElasticsearch"></a>PutElasticsearch</h3>
+
+<p>Writes the contents of a FlowFile to Elasticsearch, using the specified parameters such as the index to insert into and the type of the document. If the cluster has been configured for authorization and/or secure transport (SSL/TLS) and the Shield plugin is available, secure connections can be made. This processor supports Elasticsearch 2.x clusters.</p>
 
 <h3><a name="PutEmail"></a>PutEmail</h3>
 
@@ -617,6 +680,10 @@ NOTE: The value portion of a key/value pair is loaded into memory. While there i
 
 <p>NOTE: The Permissions umask property cannot add execute permissions to regular files.</p>
 
+<h3><a name="PutHTMLElement"></a>PutHTMLElement</h3>
+
+<p>Places a new HTML element in the existing HTML DOM. The desired position for the new HTML element is specified by using CSS selector syntax. The incoming HTML is first converted into a HTML Document Object Model so that HTML DOM location may be located in a similar manner that CSS selectors are used to apply styles to HTML. The resulting HTML DOM is then &ldquo;queried&rdquo; using the user defined CSS selector string to find the position where the user desires to add the new HTML element. Once the new HTML element is added to the DOM it is rendered to HTML and the result replaces the flowfile content with the updated HTML. A more thorough reference for the CSS selector syntax can be found at &ldquo;<a href="http://jsoup.org/apidocs/org/jsoup/select/Selector.html">http://jsoup.org/apidocs/org/jsoup/select/Selector.html</a>&rdquo;</p>
+
 <h3><a name="PutJMS"></a>PutJMS</h3>
 
 <p>This processor creates a JMS message from the contents of a FlowFile and sends the message to a JMS server.</p>
@@ -630,6 +697,10 @@ NOTE: The value portion of a key/value pair is loaded into memory. While there i
 <h3><a name="PutMongo"></a>PutMongo</h3>
 
 <p>Writes the contents of a FlowFile to MongoDB</p>
+
+<h3><a name="PutRiemann"></a>PutRiemann</h3>
+
+<p>Send events to Riemann (<a href="http://riemann.io">http://riemann.io</a>) when FlowFiles pass through this processor. You can use events to notify Riemann that a FlowFile passed through, or you can attach a more meaningful metric, such as, the time a FlowFile took to get to this processor. All attributes attached to events support the NiFi Expression Language.</p>
 
 <h3><a name="PutS3Object"></a>PutS3Object</h3>
 
@@ -784,7 +855,7 @@ In this example, all files with filenames that start with ABC will follow the AB
 
 
 
-<time class='updated' datetime='1970-01-01T00:33:35+00:00'><span class='date'>January  1, 1970</span> <span class='time'></span></time>
+<time class='updated' datetime='2016-02-16T23:00:00+00:00'><span class='date'>February 16, 2016</span> <span class='time'></span></time>
       
 
 <span class="categories">
@@ -835,6 +906,10 @@ In this example, all files with filenames that start with ABC will follow the AB
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/apache-nifi-release-0-dot-5-0-highlights/">Apache Nifi Release 0.5.0 Highlights</a>
+      </li>
+    
+      <li class="post">
         <a href="/developing-a-custom-apache-nifi-controller-service/">Developing a Custom Apache Nifi Controller Service</a>
       </li>
     
@@ -848,10 +923,6 @@ In this example, all files with filenames that start with ABC will follow the AB
     
       <li class="post">
         <a href="/apache-nifi-graduation/">Apache Nifi Graduation</a>
-      </li>
-    
-      <li class="post">
-        <a href="/developing-a-custom-apache-nifi-processor-unit-tests-partI/">Developing a Custom Apache Nifi Processor-Unit Tests (Part I)</a>
       </li>
     
   </ul>
