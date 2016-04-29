@@ -2,7 +2,7 @@
 layout: post
 title: "Apache Nifi: What Processors are there?"
 date: 2015-02-05 03:00:06 +0000
-updated: 2016-02-16 23:00:00 +0000
+updated: 2016-04-248 22:00:00 +0000
 author: Chad Zobrisky
 comments: true
 sharing: true
@@ -12,13 +12,13 @@ keywords: Apache Nifi, apache nifi, Nifi, Processors
 categories: [Apache Nifi, Processors]
 ---
 
-** Includes all processors through release 0.5.0 **
+** Includes all processors through release 0.6.1 **
 
 I looked around at what can be done with Apache NiFi and didn't notice a list of processors without looking at the code or building the project.  I think a list of available processors, the work horse of Apache Nifi, would greatly help decide if it is right for certain needs.  So, I went into the usage guide in the Apache Nifi UI and pulled a list of processors and a quick description for those who want to know what possibilities there are before getting into nifi itself!
 
 # List of processors
 With new releases of Nifi, the number of processors have increased from the original 53 to 90!
-Here is a list of all 90 processors, listed alphabetically, that are currently in Apache Nifi as of <strike>Ocotober 3rd, 2015</strike> December 18th, 2015.  Each one links to a description of the processor further down.  The Usage documentation available in the web ui has much more detail about each processor, it's properties, modifiable attributes, and relationships and each processor has it's own page in the UI, so here is just a quick overview.  Again, this content is taken directly from Nifi's Usage guide in their web UI and all credit/rights belong to them under the Apache 2.0 License.
+Here is a list of all 124 processors, listed alphabetically, that are currently in Apache Nifi as of the most rescent release.  Each one links to a description of the processor further down.  The Usage documentation available in the web ui has much more detail about each processor, it's properties, modifiable attributes, and relationships and each processor has it's own page in the UI, so here is just a quick overview.  Again, this content is taken directly from Nifi's Usage guide in their web UI and all credit/rights belong to them under the Apache 2.0 License.
 
 Nifi has improved their documentation, which was originally only available when running apache nifi.  The documentation now is produced through the build process and has been added to [their website](https://nifi.apache.org/docs.html).  So if you need more information or more detail about each processor just check there.
 
@@ -27,13 +27,14 @@ Nifi has improved their documentation, which was originally only available when 
 * [Base64EncodeContent](#Base64EncodeContent)
 * [CompressContent](#CompressContent)
 * [ConsumeAMQP](#ConsumeAMQP)
+* [ConsumerJMS](#ConsumeJMS)
 * [ControlRate](#ControlRate)
 * [ConvertAvroSchema](#ConvertAvroSchema)
 * [ConvertAvroToJSON](#ConvertAvroToJSON)
 * [ConvertCharacterSet](#ConvertCharacterSet)
 * [ConvertCSVToAvro](#ConvertCSVToAvro)
 * [ConvertJSONToAvro](#ConvertJSONToAvro)
-* [ConvertCSVToSQL](#ConvertCSVToSQL) DEPRECATED - no longer available in 0.5.0
+* [ConvertCSVToSQL](#ConvertCSVToSQL) DEPRECATED - no longer available as of 0.5.0
 * [ConvertJSONToSQL](#ConvertJSONToSQL)
 * [CreateHadoopSequenceFile](#CreateHadoopSequenceFile)
 * [DeleteS3Object](#DeleteS3Object)
@@ -79,6 +80,7 @@ Nifi has improved their documentation, which was originally only available when 
 * [GetMongo](#GetMongo)
 * [GetSFTP](#GetSFTP)
 * [GetSolr](#GetSolr)
+* [GetSplunk](#GetSplunk)
 * [GetSQS](#GetSQS)
 * [GetTwitter](#GetTwitter)
 * [HandleHttpRequest](#HandleHttpRequest)
@@ -92,6 +94,7 @@ Nifi has improved their documentation, which was originally only available when 
 * [ListenHTTP](#ListenHTTP)
 * [ListenRELP](#ListenRELP)
 * [ListenSyslog](#ListenSyslog)
+* [ListenTCP](#ListenTCP)
 * [ListenUDP](#ListenUDP)
 * [ListFile](#ListFile)
 * [ListHDFS](#ListHDFS)
@@ -104,7 +107,9 @@ Nifi has improved their documentation, which was originally only available when 
 * [ParseSyslog](#ParseSyslog)
 * [PostHTTP](#PostHTTP)
 * [PublishAMQP](#PublishAMQP)
+* [PublishJMS](#PublishJMS)
 * [PutAzureEventHub](#PutAzureEventHub)
+* [PutCassandraQL](#PutCassandraQL)
 * [PutCouchbaseKey](#PutCouchbaseKey)
 * [PutDistributedMapCache](#PutDistributedMapCache)
 * [PutElasticsearch](#PutElasticsearch)
@@ -117,15 +122,20 @@ Nifi has improved their documentation, which was originally only available when 
 * [PutHTMLElement](#PutHTMLElement)
 * [PutJMS](#PutJMS)
 * [PutKafka](#PutKafka)
+* [PutKinesisFirehose](#PutKinesisFirehose)
+* [PutLambda](#PutLambda)
 * [PutMongo](#PutMongo)
 * [PutRiemann](#PutRiemann)
 * [PutS3Object](#PutS3Object)
 * [PutSFTP](#PutSFTP)
 * [PutSNS](#PutSNS)
 * [PutSolrContentStream](#PutSolrContentStream)
+* [PutSplunk](#PutSplunk)
 * [PutSQL](#PutSQL)
 * [PutSQS](#PutSQS)
 * [PutSyslog](#PutSyslog)
+* [QueryCassandra](#QueryCassandra)
+* [QueryDatabaseTable](#QueryDatabaseTable)
 * [ReplaceText](#ReplaceText)
 * [ReplaceTextWithMapping](#ReplaceTextWithMapping)
 * [ResizeImage](#ResizeImage)
@@ -138,6 +148,7 @@ Nifi has improved their documentation, which was originally only available when 
 * [SegmentContent](#SegmentContent)
 * [SplitAvro](#SplitAvro)
 * [SplitContent](#SplitContent)
+* [SpringContextProcessor](#SpringContextProcessor)
 * [SplitJson](#SplitJson)
 * [SplitText](#SplitText)
 * [SplitXML](#SplitXML)
@@ -160,6 +171,9 @@ This processor compresses or decompresses the contents of FlowFiles using a user
 
 ### <a name="ConsumeAMQP"></a>ConsumeAMQP
 Consumes AMQP Message transforming its content to a FlowFile and transitioning it to 'success' relationship
+
+### <a name="ConsumeJMS"></a>ConsumeJMS
+Consumes JMS Message of type BytesMessage or TextMessage transforming its content to a FlowFile and transitioning it to 'success' relationship.
 
 ### <a name="ControlRate"></a>ControlRate
 This processor controls the rate at which data is transferred to follow-on processors.
@@ -186,7 +200,7 @@ Converts CSV files to Avro according to an Avro Schema
 ### <a name="ConvertCSVToJSON"></a>ConvertCSVToJSON
 Converts JSON files to Avro according to an Avro Schema
 
-### <a name="ConvertCSVToSQL"></a>ConvertCSVToSQL - DEPRECATED in 0.5.0
+### <a name="ConvertCSVToSQL"></a>ConvertCSVToSQL - DEPRECATED as of 0.5.0
 Converts JSON files to Avro according to an Avro Schema
 Converts a JSON-formatted FlowFile into an UPDATE or INSERT SQL statement. The incoming FlowFile is expected to be "flat" JSON message, meaning that it consists of a single JSON element and each field maps to a simple type. If a field maps to a JSON object, that JSON object will be interpreted as Text. If the input is an array of JSON elements, each element in the array is output as a separate FlowFile to the 'sql' relationship. Upon successful conversion, the original FlowFile is routed to the 'original' relationship and the SQL is routed to the 'sql' relationship.
 
@@ -334,6 +348,9 @@ This processor pulls files from an SFTP server and creates FlowFiles to encapsul
 ### <a name="GetSolr"></a>GetSolr
 Queries Solr and outputs the results as a FlowFile
 
+### <a name="GetSplunk"></a>GetSplunk
+Retrieves data from Splunk Enterprise.
+
 ### <a name="GetSQS"></a>GetSQS
 Fetches messages from an Amazon Simple Queuing Service Queue
 
@@ -421,6 +438,9 @@ Listens for RELP messages being sent to a given port over TCP. Each message will
 ### <a name="ListenSyslog"></a>ListenSyslog
 Listens for Syslog messages being sent to a given port over TCP or UDP. Incoming messages are checked against regular expressions for RFC5424 and RFC3164 formatted messages. The format of each message is: (<PRIORITY>)(VERSION )(TIMESTAMP) (HOSTNAME) (BODY) where version is optional. The timestamp can be an RFC5424 timestamp with a format of "yyyy-MM-dd'T'HH:mm:ss.SZ" or "yyyy-MM-dd'T'HH:mm:ss.S+hh:mm", or it can be an RFC3164 timestamp with a format of "MMM d HH:mm:ss". If an incoming messages matches one of these patterns, the message will be parsed and the individual pieces will be placed in FlowFile attributes, with the original message in the content of the FlowFile. If an incoming message does not match one of these patterns it will not be parsed and the syslog.valid attribute will be set to false with the original message in the content of the FlowFile. Valid messages will be transferred on the success relationship, and invalid messages will be transferred on the invalid relationship.
 
+### <a name="ListenTCP"></a>ListenTCP
+Listens for incoming TCP connections and reads data from each connection using a line separator as the message demarcator. The default behavior is for each message to produce a single FlowFile, however this can be controlled by increasing the Batch Size to a larger value for higher throughput. The Receive Buffer Size must be set as large as the largest messages expected to be received, meaning if every 100kb there is a line separator, then the Receive Buffer Size must be greater than 100kb.
+
 ### <a name="ListenUDP"></a>ListenUDP
 This processor listens for Datagram Packets on a given port and concatenates the contents of those packets together generating flow files
 
@@ -457,8 +477,14 @@ This processor performs an HTTP post with the content of each incoming FlowFile.
 ### <a name="PublishAMQP"></a>PublishAMQP
 Creates a AMQP Message from the contents of a FlowFile and sends the message to an AMQP Exchange.In a typical AMQP exchange model, the message that is sent to the AMQP Exchange will be routed based on the 'Routing Key' to its final destination in the queue (the binding). If due to some misconfiguration the binding between the Exchange, Routing Key and Queue is not set up, the message will have no final destination and will return (i.e., the data will not make it to the queue). If that happens you will see a log in both app-log and bulletin stating to that effect. Fixing the binding (normally done by AMQP administrator) will resolve the issue.
 
+### <a name="PublishJMS"></a>PublishJMS
+Creates a JMS Message from the contents of a FlowFile and sends it to a JMS Destination (queue or topic) as JMS BytesMessage.
+
 ### <a name="PutAzureEventHub"></a>PutAzureEventHub
 Sends the contents of a FlowFile to a Windows Azure Event Hub. Note: the content of the FlowFile will be buffered into memory before being sent, so care should be taken to avoid sending FlowFiles to this Processor that exceed the amount of Java Heap Space available.
+
+### <a name="PutCassandraQL"></a>PutCassandraQL
+Execute provided Cassandra Query Language (CQL) statement on a Cassandra 1.x or 2.x cluster. The content of an incoming FlowFile is expected to be the CQL command to execute. The CQL command may use the ? to escape parameters. In this case, the parameters to use must exist as FlowFile attributes with the naming convention cql.args.N.type and cql.args.N.value, where N is a positive integer. The cql.args.N.type is expected to be a lowercase string indicating the Cassandra type.
 
 ### <a name="PutCouchbaseKey"></a>PutCouchbaseKey
 Put a document to Couchbase Server via Key/Value access.
@@ -504,6 +530,12 @@ This Processors puts the contents of a FlowFile to a Topic in Apache Kafka. The 
 
 The Processor allows the user to configure an optional Message Delimiter that can be used to send many messages per FlowFile. For example, a \n could be used to indicate that the contents of the FlowFile should be used to send one message per line of text. If the property is not set, the entire contents of the FlowFile will be sent as a single message. When using the delimiter, if some messages are successfully sent but other messages fail to send, the FlowFile will be FORKed into two child FlowFiles, with the successfully sent messages being routed to 'success' and the messages that could not be sent going to 'failure'.
 
+### <a name="PutKinesisFirehose"></a>PutKinesisFirehose
+Sends the contents to a specified Amazon Kinesis Firehose. In order to send data to firehose, the firehose delivery stream name has to be specified.
+
+### <a name="PutLambda"></a>PutLambda
+Sends the contents to a specified Amazon Lamba Function. The AWS credentials used for authentication must have permissions execute the Lambda function (lambda:InvokeFunction).The FlowFile content must be JSON.
+
 ### <a name="PutMongo"></a>PutMongo
 Writes the contents of a FlowFile to MongoDB
 
@@ -531,6 +563,9 @@ Example: To specify multiple 'f' parameters for indexing custom json, the follow
 This will result in sending the following url to Solr: 
 split=/exams&f=first:/first&f=last:/last&f=grade:/grade
 
+### <a name="PutSplunk"></a>PutSplunk
+Sends logs to Splunk Enterprise over TCP, TCP + TLS/SSL, or UDP. If a Message Delimiter is provided, then this processor will read messages from the incoming FlowFile based on the delimiter, and send each message to Splunk. If a Message Delimiter is not provided then the content of the FlowFile will be sent directly to Splunk as if it were a single message.
+
 ### <a name="PutSQL"></a>PutSQL
 Executes a SQL UPDATE or INSERT command. The content of an incoming FlowFile is expected to be the SQL command to execute. The SQL command may use the ? to escape parameters. In this case, the parameters to use must exist as FlowFile attributes with the naming convention sql.args.N.type and sql.args.N.value, where N is a positive integer. The sql.args.N.type is expected to be a number indicating the JDBC Type. The content of the FlowFile is expected to be in UTF-8 format.
 
@@ -539,6 +574,12 @@ Publishes a message to an Amazon Simple Queuing Service Queue
 
 ### <a name="PutSyslog"></a>PutSyslog
 Sends Syslog messages to a given host and port over TCP or UDP. Messages are constructed from the "Message ___" properties of the processor which can use expression language to generate messages from incoming FlowFiles. The properties are used to construct messages of the form: (<PRIORITY>)(VERSION )(TIMESTAMP) (HOSTNAME) (BODY) where version is optional. The constructed messages are checked against regular expressions for RFC5424 and RFC3164 formatted messages. The timestamp can be an RFC5424 timestamp with a format of "yyyy-MM-dd'T'HH:mm:ss.SZ" or "yyyy-MM-dd'T'HH:mm:ss.S+hh:mm", or it can be an RFC3164 timestamp with a format of "MMM d HH:mm:ss". If a message is constructed that does not form a valid Syslog message according to the above description, then it is routed to the invalid relationship. Valid messages are sent to the Syslog server and successes are routed to the success relationship, failures routed to the failure relationship.
+
+### <a name="QueryCassandra"></a>QueryCassandra
+Execute provided Cassandra Query Language (CQL) select query on a Cassandra 1.x or 2.x cluster. Query result may be converted to Avro or JSON format. Streaming is used so arbitrarily large result sets are supported. This processor can be scheduled to run on a timer, or cron expression, using the standard scheduling methods, or it can be triggered by an incoming FlowFile. If it is triggered by an incoming FlowFile, then attributes of that FlowFile will be available when evaluating the select query. FlowFile attribute 'executecql.row.count' indicates how many rows were selected.
+
+### <a name="QueryDatabaseTable"></a>QueryDatabaseTable
+Execute provided SQL select query. Query result will be converted to Avro format. Streaming is used so arbitrarily large result sets are supported. This processor can be scheduled to run on a timer, or cron expression, using the standard scheduling methods, or it can be triggered by an incoming FlowFile. If it is triggered by an incoming FlowFile, then attributes of that FlowFile will be available when evaluating the select query. FlowFile attribute 'querydbtable.row.count' indicates how many rows were selected.
 
 ### <a name="ReplaceText"></a>ReplaceText
 This processor updates the content of a FlowFile by evaluating a regular expression (regex) against the content and replacing the section of content that matches the regular expression with an alternate, user-defined, value.
@@ -590,6 +631,9 @@ This processor splits a text file into multiple smaller text files on line bound
 
 ### <a name="SplitXML"></a>SplitXML
 This processor splits an XML file into multiple separate FlowFiles, each comprising a child or descendant of the original root element.
+
+### <a name="SpringContextProcessor"></a>SpringContextProcessor
+A Processor that supports sending and receiving data from application defined in Spring Application Context via predefined in/out MessageChannels.
 
 ### <a name="StoreInKiteDataset"></a>StoreInKiteDataset
 No description is given for this processor.
