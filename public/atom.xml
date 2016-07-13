@@ -79,7 +79,7 @@
   <title><![CDATA[NiFi.rocks]]></title>
   <link href="http://www.nifi.rocks/atom.xml" rel="self"/>
   <link href="http://www.nifi.rocks/"/>
-  <updated>2016-04-29T02:03:09+00:00</updated>
+  <updated>2016-07-13T03:32:59+00:00</updated>
   <id>http://www.nifi.rocks/</id>
   <author>
     <name><![CDATA[]]></name>
@@ -87,6 +87,52 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    
+    <title type="html"><![CDATA[Apache Nifi Release 0.6.0 Highlights]]></title>
+    <link href="http://www.nifi.rocks/apache-nifi-release-0-dot-6-0-highlights/"/>
+    
+    <updated>2016-07-12T02:25:08+00:00</updated>
+    <id>http://www.nifi.rocks/apache-nifi-release-0-dot-6-0-highlights</id>
+    
+    <content type="html"><![CDATA[<p>Apache Nifi release 0.6.0 and 0.6.1 recently and I wanted to go throught and highlight some of the key changes that may affect you Nifi users.  So far Nifi has kept pretty well to thier 6 week release schedule that they have discussed.  That&rsquo;s a really agressive release schedule so we&rsquo;ll see if they can keep that up once they hit the 0.7.0/1.0.0 release, which they say is going to actually be pushed back a little.  The 0.6.0 release was again substantial with 52 bug fixes, 15 improvements and 7 new features.  0.6.1 didn&rsquo;t take to long to follow with 11 bug fixes and 1 improvement.  The release binaries are on the <a href="https://nifi.apache.org/download.html">Apache Nifi download page</a>The full release notes are avaialble on <a href="https://cwiki.apache.org/confluence/display/NIFI/Release+Notes#ReleaseNotes-Version0.6.1">Apaches Nifi&rsquo;s wiki page</a>.  The combined 0.6.* release information is below.</p>
+
+<ul>
+<li><a href="#bugfixes">Bug Fixes</a>:           63</li>
+<li><a href="#improvements">Improvements</a>:    16</li>
+<li><a href="#new-features">New Features</a>:    7</li>
+</ul>
+
+
+<!--more-->
+
+
+<h3><a name="bugfixes"></a>Bug Fixes</h3>
+
+<p>So many bug fixes, yet again! Even though Apache Nifi has not released a major version, Apache Nifi is going strong and fixing those annoying issues.  There are quite a few bug fixes that resolve issues with Apache Nifi Processors, which is great since these are the main part of nifi; PutKafka, InferAvroSchema, GetHttp, ControlRate, PutElsaticSearch, GetKafka, ListFile, SplitText, all had fixes!  And this just touches on some of the bug fixes.  If you really want to see if a specific bug fix was completed, you can check <a href="https://issues.apache.org/jira/secure/ReleaseNote.jspa?projectId=12316020&amp;version=12334372">here</a>, but really no need, just reset assured the bugs are getting fixed!</p>
+
+<h3><a name="improvements"></a>Improvements</h3>
+
+<p>The big improvements in this release are proxy support for the AWS Processors and RouteText to use Nifi Expression Language to route lines.  The other improvements are pretty good too, but mostly under the covers, for example ListHDFS to set the correct state in Zookeeper.</p>
+
+<h3><a name="new-features"></a>New Features</h3>
+
+<p>Let&rsquo;s get straight to them, new features an new processors:</p>
+
+<ul>
+<li>Processors for Apache <a href="http://www.nifi.rocks/apache-nifi-processors/#PutCassandraQL">Cassandra</a></li>
+<li>Kerberos authentication</li>
+<li><a href="http://www.nifi.rocks/apache-nifi-processors/#PublishJMS">PublishJMS Processor</a></li>
+<li><a href="http://www.nifi.rocks/apache-nifi-processors/#ConsumeJMS">ConsumeJMS Processor</a></li>
+<li><a href="http://www.nifi.rocks/apache-nifi-processors/#PutLambda">AWS Lambda Processor</a></li>
+</ul>
+
+
+<p>That&rsquo;s pretty much it.  To see all processors, checkout our <a href="http://www.nifi.rocks/apache-nifi-processors/">processor page</a> which lists all current processors and their descriptions.  Check back after next release for a quick break down!</p>
+]]></content>
+    
+  </entry>
   
   <entry>
     
