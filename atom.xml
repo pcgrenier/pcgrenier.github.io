@@ -79,7 +79,7 @@
   <title><![CDATA[NiFi.rocks]]></title>
   <link href="http://www.nifi.rocks/atom.xml" rel="self"/>
   <link href="http://www.nifi.rocks/"/>
-  <updated>2016-07-13T19:12:50+00:00</updated>
+  <updated>2016-07-13T19:28:02+00:00</updated>
   <id>http://www.nifi.rocks/</id>
   <author>
     <name><![CDATA[]]></name>
@@ -96,7 +96,7 @@
     <updated>2016-07-13T02:07:13+00:00</updated>
     <id>http://www.nifi.rocks/apache-nifi-release-0-dot-7-0-highlights</id>
     
-    <content type="html"><![CDATA[<p>Apache Nifi&rsquo;s newest release is out, 0.7.0.  You can grab the binaries from <a href="https://nifi.apache.org/download.html">thier site</a> as always.  So lets dive in and see what to look for in this release!</p>
+    <content type="html"><![CDATA[<p>Apache Nifi&rsquo;s newest release is out, 0.7.0.  You can grab the binaries from <a href="https://nifi.apache.org/download.html">their site</a> as always.  So lets dive in and see what to look for in this release!</p>
 
 <ul>
 <li><a href="#bugfixes">Bug Fixes</a>:           72</li>
@@ -118,7 +118,7 @@
 
 <p>I didn&rsquo;t know where to start for Bug fixes, but really don&rsquo;t know where to begin for Improvements.  I&rsquo;ll start by saying there are a few new processors that they included in this section, but I&rsquo;m going to list in the New Features below to remain consistent.  Other actual improvements were updates to HTTP Processors to allow proxy authentication which I know I saw someone on here asked about, so it&rsquo;s nice to see that it is now doable!  You are now able to use SSL with AMQP processors.  ExecuteScript processors can now be executed concurrently too.  Performance improvements in StreamScanner, SSL for the mongo processors, and the Mock framework can now register FlowFile Assertions.</p>
 
-<p>It&rsquo;s good to mentiont that new documentation has been created for an in depth dive for developers, with Nifi and it&rsquo;s design decisions.  This is a great read and I will try to do a quick</p>
+<p>It&rsquo;s good to mention that new documentation has been created for an in depth dive for developers, with Nifi and it&rsquo;s design decisions.  This is a great read and I will try to do a quick break down in the future for what points I think are really important for developers.</p>
 
 <h3><a name="new-features"></a>New Features</h3>
 
@@ -1301,7 +1301,7 @@ Here is a list of all 154 processors, listed alphabetically, that are currently 
 <li><a href="#CompressContent">CompressContent</a></li>
 <li><a href="#ConsumeAMQP">ConsumeAMQP</a></li>
 <li><a href="#ConsumeJMS">ConsumerJMS</a></li>
-<li><a href="#ConsumeKafka">ConseumeKafka</a></li>
+<li><a href="#ConsumeKafka">ConsumeKafka</a></li>
 <li><a href="#ConsumeMQTT">ConsumeMQTT</a></li>
 <li><a href="#ControlRate">ControlRate</a></li>
 <li><a href="#ConvertAvroSchema">ConvertAvroSchema</a></li>
