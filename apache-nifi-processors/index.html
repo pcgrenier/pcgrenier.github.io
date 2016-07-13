@@ -9,7 +9,7 @@
   <meta name="author" content="">
 
 <meta name="description" content="Apache Nifi processors and processors list.">
-<meta name="keywords" content="Apache Nifi, apache nifi, Nifi, Processors">
+<meta name="keywords" content="Apache Nifi, apache nifi, Nifi, Processors, Nifi Processors, Apache Nifi Processors">
   <!-- http://t.co/dKP3o1e -->
   <meta name="HandheldFriendly" content="True">
   <meta name="MobileOptimized" content="320">
@@ -98,14 +98,14 @@
   </header>
 
 
-<div class="entry-content"><p><strong> Includes all processors through release 0.6.1 </strong></p>
+<div class="entry-content"><p><strong> Includes all processors through release 0.7.0 </strong></p>
 
 <p>I looked around at what can be done with Apache NiFi and didn&rsquo;t notice a list of processors without looking at the code or building the project.  I think a list of available processors, the work horse of Apache Nifi, would greatly help decide if it is right for certain needs.  So, I went into the usage guide in the Apache Nifi UI and pulled a list of processors and a quick description for those who want to know what possibilities there are before getting into nifi itself!</p>
 
 <h1>List of processors</h1>
 
-<p>With new releases of Nifi, the number of processors have increased from the original 53 to 90!
-Here is a list of all 124 processors, listed alphabetically, that are currently in Apache Nifi as of the most rescent release.  Each one links to a description of the processor further down.  The Usage documentation available in the web ui has much more detail about each processor, it&rsquo;s properties, modifiable attributes, and relationships and each processor has it&rsquo;s own page in the UI, so here is just a quick overview.  Again, this content is taken directly from Nifi&rsquo;s Usage guide in their web UI and all credit/rights belong to them under the Apache 2.0 License.</p>
+<p>With new releases of Nifi, the number of processors have increased from the original 53 to 154!
+Here is a list of all 154 processors, listed alphabetically, that are currently in Apache Nifi as of the most rescent release.  Each one links to a description of the processor further down.  The Usage documentation available in the web ui has much more detail about each processor, it&rsquo;s properties, modifiable attributes, and relationships and each processor has it&rsquo;s own page in the UI, so here is just a quick overview.  Again, this content is taken directly from Nifi&rsquo;s Usage guide in their web UI and all credit/rights belong to them under the Apache 2.0 License.</p>
 
 <p>Nifi has improved their documentation, which was originally only available when running apache nifi.  The documentation now is produced through the build process and has been added to <a href="https://nifi.apache.org/docs.html">their website</a>.  So if you need more information or more detail about each processor just check there.</p>
 
@@ -118,6 +118,8 @@ Here is a list of all 124 processors, listed alphabetically, that are currently 
 <li><a href="#CompressContent">CompressContent</a></li>
 <li><a href="#ConsumeAMQP">ConsumeAMQP</a></li>
 <li><a href="#ConsumeJMS">ConsumerJMS</a></li>
+<li><a href="#ConsumeKafka">ConseumeKafka</a></li>
+<li><a href="#ConsumeMQTT">ConsumeMQTT</a></li>
 <li><a href="#ControlRate">ControlRate</a></li>
 <li><a href="#ConvertAvroSchema">ConvertAvroSchema</a></li>
 <li><a href="#ConvertAvroToJSON">ConvertAvroToJSON</a></li>
@@ -127,6 +129,7 @@ Here is a list of all 124 processors, listed alphabetically, that are currently 
 <li><a href="#ConvertCSVToSQL">ConvertCSVToSQL</a> DEPRECATED - no longer available as of 0.5.0</li>
 <li><a href="#ConvertJSONToSQL">ConvertJSONToSQL</a></li>
 <li><a href="#CreateHadoopSequenceFile">CreateHadoopSequenceFile</a></li>
+<li><a href="#DebugFlow">DebugFlow</a></li>
 <li><a href="#DeleteS3Object">DeleteS3Object</a></li>
 <li><a href="#DeleteSQS">DeleteSQS</a></li>
 <li><a href="#DetectDuplicate">DetectDuplicate</a></li>
@@ -134,7 +137,9 @@ Here is a list of all 124 processors, listed alphabetically, that are currently 
 <li><a href="#DuplicateFlowFile">DuplicateFlowFile</a></li>
 <li><a href="#EncryptContent">EncryptContent</a></li>
 <li><a href="#EvaluateJSONPath">EvaluateJSONPath</a></li>
-<li><a href="#EvaluateRegularExpression">EvaluateRegularExpression</a> DEPRECATED-Use <a href="#ExtractText">ExtractText</a></li>
+<li><a href="#EvaluateRegularExpression">EvaluateRegularExpression</a></li>
+<li><a href="#ExtractMediaMetadata">ExtractMediaMetadata</a>
+DEPRECATED-Use <a href="#ExtractText">ExtractText</a></li>
 <li><a href="#EvaluateXPath">EvaluateXPath</a></li>
 <li><a href="#EvaluateXQuery">EvaluateXQuery</a></li>
 <li><a href="#ExecuteFlumeSink">ExecuteFlumeSink</a></li>
@@ -157,10 +162,12 @@ Here is a list of all 124 processors, listed alphabetically, that are currently 
 <li><a href="#GeoEnrichIP">GeoEnrichIP</a></li>
 <li><a href="#GetAzureEventHub">GetAzureEventHub</a></li>
 <li><a href="#GetCouchbaseKey">GetCouchbaseKey</a></li>
+<li><a href="#GetDynamoDB">GetDynamoDB</a></li>
 <li><a href="#GetFile">GetFile</a></li>
 <li><a href="#GetFTP">GetFTP</a></li>
 <li><a href="#GetHBase">GetHBase</a></li>
 <li><a href="#GetHDFS">GetHDFS</a></li>
+<li><a href="#GetHDFSEvents">GetHDFSEvents</a></li>
 <li><a href="#GetHDFSSequenceFile">GetHDFSSequenceFile</a></li>
 <li><a href="#GetHTMLElement">GetHTMLElement</a></li>
 <li><a href="#GetHTTP">GetHTTP</a></li>
@@ -169,6 +176,7 @@ Here is a list of all 124 processors, listed alphabetically, that are currently 
 <li><a href="#GetKafka">GetKafka</a></li>
 <li><a href="#GetMongo">GetMongo</a></li>
 <li><a href="#GetSFTP">GetSFTP</a></li>
+<li><a href="#GetSNMP">GetSNMP</a></li>
 <li><a href="#GetSolr">GetSolr</a></li>
 <li><a href="#GetSplunk">GetSplunk</a></li>
 <li><a href="#GetSQS">GetSQS</a></li>
@@ -181,13 +189,16 @@ Here is a list of all 124 processors, listed alphabetically, that are currently 
 <li><a href="#InferAvroShema">InferAvroShema</a></li>
 <li><a href="#InvokeHTTP">InvokeHTTP</a></li>
 <li><a href="#InvokeScriptedProcessor">InvokeScriptedProcessor</a></li>
+<li><a href="#JoltTransformJSON">JoltTransformJSON</a></li>
 <li><a href="#ListenHTTP">ListenHTTP</a></li>
+<li><a href="#ListenLumberjack">ListenLumberjack</a></li>
 <li><a href="#ListenRELP">ListenRELP</a></li>
 <li><a href="#ListenSyslog">ListenSyslog</a></li>
 <li><a href="#ListenTCP">ListenTCP</a></li>
 <li><a href="#ListenUDP">ListenUDP</a></li>
 <li><a href="#ListFile">ListFile</a></li>
 <li><a href="#ListHDFS">ListHDFS</a></li>
+<li><a href="#ListS3">ListS3</a></li>
 <li><a href="#ListSFTP">ListSFTP</a></li>
 <li><a href="#LogAttribute">LogAttribute</a></li>
 <li><a href="#MergeContent">MergeContent</a></li>
@@ -198,10 +209,13 @@ Here is a list of all 124 processors, listed alphabetically, that are currently 
 <li><a href="#PostHTTP">PostHTTP</a></li>
 <li><a href="#PublishAMQP">PublishAMQP</a></li>
 <li><a href="#PublishJMS">PublishJMS</a></li>
+<li><a href="#PublishKafka">PublishKafka</a></li>
+<li><a href="#PublishMQTT">PublishMQTT</a></li>
 <li><a href="#PutAzureEventHub">PutAzureEventHub</a></li>
 <li><a href="#PutCassandraQL">PutCassandraQL</a></li>
 <li><a href="#PutCouchbaseKey">PutCouchbaseKey</a></li>
 <li><a href="#PutDistributedMapCache">PutDistributedMapCache</a></li>
+<li><a href="#PutDynamoDB">PutDynamoDB</a></li>
 <li><a href="#PutElasticsearch">PutElasticsearch</a></li>
 <li><a href="#PutEmail">PutEmail</a></li>
 <li><a href="#PutFile">PutFile</a></li>
@@ -209,6 +223,7 @@ Here is a list of all 124 processors, listed alphabetically, that are currently 
 <li><a href="#PutHBaseCell">PutHBaseCell</a></li>
 <li><a href="#PutHBaseJSON">PutHBaseJSON</a></li>
 <li><a href="#PutHDFS">PutHDFS</a></li>
+<li><a href="#PutHiveQL">PutHiveQL</a></li>
 <li><a href="#PutHTMLElement">PutHTMLElement</a></li>
 <li><a href="#PutJMS">PutJMS</a></li>
 <li><a href="#PutKafka">PutKafka</a></li>
@@ -217,6 +232,7 @@ Here is a list of all 124 processors, listed alphabetically, that are currently 
 <li><a href="#PutMongo">PutMongo</a></li>
 <li><a href="#PutRiemann">PutRiemann</a></li>
 <li><a href="#PutS3Object">PutS3Object</a></li>
+<li><a href="#PutSlack">PutSlack</a></li>
 <li><a href="#PutSFTP">PutSFTP</a></li>
 <li><a href="#PutSNS">PutSNS</a></li>
 <li><a href="#PutSolrContentStream">PutSolrContentStream</a></li>
@@ -224,6 +240,8 @@ Here is a list of all 124 processors, listed alphabetically, that are currently 
 <li><a href="#PutSQL">PutSQL</a></li>
 <li><a href="#PutSQS">PutSQS</a></li>
 <li><a href="#PutSyslog">PutSyslog</a></li>
+<li><a href="#PutTCP">PutTCP</a></li>
+<li><a href="#PutUDP">PutUDP</a></li>
 <li><a href="#QueryCassandra">QueryCassandra</a></li>
 <li><a href="#QueryDatabaseTable">QueryDatabaseTable</a></li>
 <li><a href="#ReplaceText">ReplaceText</a></li>
@@ -235,7 +253,9 @@ Here is a list of all 124 processors, listed alphabetically, that are currently 
 <li><a href="#RouteText">RouteText</a></li>
 <li><a href="#ScanAttribute">ScanAttribute</a></li>
 <li><a href="#ScanContent">ScanContent</a></li>
+<li><a href="#SelectHiveQL">SelectHiveQL</a></li>
 <li><a href="#SegmentContent">SegmentContent</a></li>
+<li><a href="#SetSNMP">SetSNMP</a></li>
 <li><a href="#SplitAvro">SplitAvro</a></li>
 <li><a href="#SplitContent">SplitContent</a></li>
 <li><a href="#SpringContextProcessor">SpringContextProcessor</a></li>
@@ -272,11 +292,19 @@ Here is a list of all 124 processors, listed alphabetically, that are currently 
 
 <p>Consumes JMS Message of type BytesMessage or TextMessage transforming its content to a FlowFile and transitioning it to &lsquo;success&rsquo; relationship.</p>
 
+<h3><a name="ConsumeKafka"></a>ConsumeKafka</h3>
+
+<p>This Processors polls Apache Kafka for data using KafkaConsumer API available with Kafka 0.9+. When a message is received from Kafka, this Processor emits a FlowFile where the content of the FlowFile is the value of the Kafka message.</p>
+
+<h3><a name="ConsumeMQTT"></a>ConsumeMQTT</h3>
+
+<p>Subscribes to a topic and receives messages from an MQTT broker</p>
+
 <h3><a name="ControlRate"></a>ControlRate</h3>
 
 <p>This processor controls the rate at which data is transferred to follow-on processors.</p>
 
-<h3><a name="ConvertAvroSchema"></a></h3>
+<h3><a name="ConvertAvroSchema"></a>ConvertAvroSchema</h3>
 
 <p>Convert records from one Avro schema to another, including support for flattening and simple type conversions.</p>
 
@@ -321,6 +349,14 @@ ZIP
 FlowFileStream v3
 The created SequenceFile is named the same as the incoming FlowFile with the suffix &lsquo;.sf&rsquo;. For incoming FlowFiles that are bundled, the keys in the SequenceFile are the individual file names, the values are the contents of each file.
 NOTE: The value portion of a key/value pair is loaded into memory. While there is a max size limit of 2GB, this could cause memory issues if there are too many concurrent tasks and the flow file sizes are large.</p>
+
+<h3><a name="DebugFlow"></a>DebugFlow</h3>
+
+<p>The DebugFlow processor aids testing and debugging the FlowFile framework by allowing various responses to be explicitly triggered in response to the receipt of a FlowFile or a timer event without a FlowFile if using timer or cron based scheduling. It can force responses needed to exercise or test various failure modes that can occur when a processor runs.</p>
+
+<h3><a name="DeleteDynamoDB"></a>DeleteDynamoDB</h3>
+
+<p>Deletes a document from DynamoDB based on hash and range key. The key can be string or number. The request requires all the primary keys for the operation (hash or hash and range key)</p>
 
 <h3><a name="DeleteS3Object"></a>DeleteS3Object</h3>
 
@@ -400,6 +436,10 @@ NOTE: The value portion of a key/value pair is loaded into memory. While there i
 
 <p>Extract the image metadata from flowfiles containing images. This processor relies on this metadata extractor library <a href="https://github.com/drewnoakes/metadata-extractor.">https://github.com/drewnoakes/metadata-extractor.</a> It extracts a long list of metadata types including but not limited to EXIF, IPTC, XMP and Photoshop fields. For the full list visit the library&rsquo;s website.NOTE: The library being used loads the images into memory so extremely large images may cause problems</p>
 
+<h3><a name="ExtractMediaMetadata"></a>ExtractMediaMetadata</h3>
+
+<p>Extract the content metadata from flowfiles containing audio, video, image, and other file types. This processor relies on the Apache Tika project for file format detection and parsing. It extracts a long list of metadata types for media files including audio, video, and print media formats.NOTE: the attribute names and content extracted may vary across upgrades because parsing is performed by the external Tika tools which in turn depend on other projects for metadata extraction. For the more details and the list of supported file types, visit the library&rsquo;s website at <a href="http://tika.apache.org/.">http://tika.apache.org/.</a></p>
+
 <h3><a name="ExtractText"></a>ExtractText</h3>
 
 <p>Evaluates one or more Regular Expressions against the content of a FlowFile. The results of those Regular Expressions are assigned to FlowFile Attributes. Regular Expressions are entered by adding user-defined properties; the name of the property maps to the Attribute Name into which the result will be placed. The first capture group, if any found, will be placed into that attribute name.But all capture groups, including the matching string sequence itself will also be provided at that attribute name with an index value provided.The value of the property must be a valid Regular Expressions with one or more capturing groups. If the Regular Expression matches more than once, only the first match will be used. If any provided Regular Expression matches, the FlowFile(s) will be routed to &lsquo;matched&rsquo;. If no provided Regular Expression matches, the FlowFile will be routed to &lsquo;unmatched&rsquo; and no attributes will be applied to the FlowFile.</p>
@@ -444,6 +484,10 @@ NOTE: The value portion of a key/value pair is loaded into memory. While there i
 
 <p>Get a document from Couchbase Server via Key/Value access. The ID of the document to fetch may be supplied by setting the <Document Id> property. NOTE: if the Document Id property is not set, the contents of the FlowFile will be read to determine the Document Id, which means that the contents of the entire FlowFile will be buffered in memory.</p>
 
+<h3><a name="GetDynamoDB"></a>GetDynamoDB</h3>
+
+<p>Retrieves a document from DynamoDB based on hash and range key. The key can be string or number.For any get request all the primary keys are required (hash or hash and range based on the table keys).A Json Document (&lsquo;Map&rsquo;) attribute of the DynamoDB item is read into the content of the FlowFile.</p>
+
 <h3><a name="GetFile"></a>GetFile</h3>
 
 <p>This processor obtains FlowFiles from a local directory. NiFi will need at least read permissions on the files it will pull otherwise it will ignore them.</p>
@@ -459,6 +503,10 @@ NOTE: The value portion of a key/value pair is loaded into memory. While there i
 <h3><a name="GetHDFS"></a>GetHDFS</h3>
 
 <p>Fetch files from Hadoop Distributed File System (HDFS) into FlowFiles. This Processor will delete the file from HDFS after fetching it.</p>
+
+<h3><a name="GetHDFSEvents"></a>GetHDFSEvents</h3>
+
+<p>This processor polls the notification events provided by the HdfsAdmin API. Since this uses the HdfsAdmin APIs it is required to run as an HDFS super user. Currently there are six types of events (append, close, create, metadata, rename, and unlink). Please see org.apache.hadoop.hdfs.inotify.Event documentation for full explanations of each event. This processor will poll for new events based on a defined duration. For each event received a new flow file will be created with the expected attributes and the event itself serialized to JSON and written to the flow file&rsquo;s content. For example, if event.type is APPEND then the content of the flow file will contain a JSON file containing the information about the append event. If successful the flow files are sent to the &lsquo;success&rsquo; relationship. Be careful of where the generated flow files are stored. If the flow files are stored in one of processor&rsquo;s watch directories there will be a never ending flow of events. It is also important to be aware that this processor must consume all events. The filtering must happen within the processor. This is because the HDFS admin&rsquo;s event notifications API does not have filtering.</p>
 
 <h3><a name="GetHDFSSequenceFile"></a>GetHDFSSequenceFile</h3>
 
@@ -493,6 +541,10 @@ NOTE: The value portion of a key/value pair is loaded into memory. While there i
 <h3><a name="GetSFTP"></a>GetSFTP</h3>
 
 <p>This processor pulls files from an SFTP server and creates FlowFiles to encapsulate them.</p>
+
+<h3><a name="GetSNMP"></a>GetSNMP</h3>
+
+<p>Retrieves information from SNMP Agent and outputs a FlowFile with information in attributes and without any content.</p>
 
 <h3><a name="GetSolr"></a>GetSolr</h3>
 
@@ -593,9 +645,17 @@ NOTE: The value portion of a key/value pair is loaded into memory. While there i
 
 <p>Experimental - Invokes a script engine for a Processor defined in the given script. The script must define a valid class that implements the Processor interface, and it must set a variable &lsquo;processor&rsquo; to an instance of the class. Processor methods such as onTrigger() will be delegated to the scripted Processor instance. Also any Relationships or PropertyDescriptors defined by the scripted processor will be added to the configuration dialog. Experimental: Impact of sustained usage not yet verified.</p>
 
+<h3><a name="JoltTransformJSON"></a>JoltTransformJSON</h3>
+
+<p>Applies a list of Jolt specifications to the flowfile JSON payload. A new FlowFile is created with transformed content and is routed to the &lsquo;success&rsquo; relationship. If the JSON transform fails, the original FlowFile is routed to the &lsquo;failure&rsquo; relationship.</p>
+
 <h3><a name="ListenHTTP"></a>ListenHTTP</h3>
 
 <p>This processor starts an HTTP service that is used to receive FlowFiles from remote sources. The URL of the service is <a href="http://">http://</a>{hostname}:{port}/contentListener.</p>
+
+<h3><a name="ListenLumberjack"></a>ListenLumberjack</h3>
+
+<p>Listens for Lumberjack messages being sent to a given port over TCP. Each message will be acknowledged after successfully writing the message to a FlowFile. Each FlowFile will contain data portion of one or more Lumberjack frames. In the case where the Lumberjack frames contain syslog messages, the output of this processor can be sent to a ParseSyslog processor for further processing.</p>
 
 <h3><a name="ListenRELP"></a>ListenRELP</h3>
 
@@ -620,6 +680,10 @@ NOTE: The value portion of a key/value pair is loaded into memory. While there i
 <h3><a name="ListHDFS"></a>ListHDFS</h3>
 
 <p>This processor retrieves a listing of files from HDFS. For each file that is listed in HDFS, creates a FlowFile that represents the HDFS file so that it can be fetched in conjunction with ListHDFS. This Processor is designed to run on Primary Node only in a cluster. If the primary node changes, the new Primary Node will pick up where the previous node left off without duplicating all of the data. Unlike GetHDFS, this Processor does not delete any data from HDFS.</p>
+
+<h3><a name="ListS3"></a>ListS3</h3>
+
+<p>Retrieves a listing of objects from an S3 bucket. For each object that is listed, creates a FlowFile that represents the object so that it can be fetched in conjunction with FetchS3Object. This Processor is designed to run on Primary Node only in a cluster. If the primary node changes, the new Primary Node will pick up where the previous node left off without duplicating all of the data.</p>
 
 <h3><a name="ListSFTP"></a>ListSFTP</h3>
 
@@ -661,6 +725,14 @@ NOTE: The value portion of a key/value pair is loaded into memory. While there i
 
 <p>Creates a JMS Message from the contents of a FlowFile and sends it to a JMS Destination (queue or topic) as JMS BytesMessage.</p>
 
+<h3><a name="PublishKafka"></a>PublishKafka</h3>
+
+<p>Sends the contents of a FlowFile as a message to Apache Kafka. The messages to send may be individual FlowFiles or may be delimited, using a user-specified delimiter, such as a new-line.</p>
+
+<h3><a name="PublishMQTT"></a>PublishMQTT</h3>
+
+<p>Publishes a message to an MQTT topic</p>
+
 <h3><a name="PutAzureEventHub"></a>PutAzureEventHub</h3>
 
 <p>Sends the contents of a FlowFile to a Windows Azure Event Hub. Note: the content of the FlowFile will be buffered into memory before being sent, so care should be taken to avoid sending FlowFiles to this Processor that exceed the amount of Java Heap Space available.</p>
@@ -676,6 +748,10 @@ NOTE: The value portion of a key/value pair is loaded into memory. While there i
 <h3><a name="PutDistributedMapCache"></a>PutDistributedMapCache</h3>
 
 <p>Gets the content of a FlowFile and puts it to a distributed map cache, using a cache key computed from FlowFile attributes. If the cache already contains the entry and the cache update strategy is &lsquo;keep original&rsquo; the entry is not replaced.&#8217;</p>
+
+<h3><a name="PutDynamoDB"></a>PutDynamoDB</h3>
+
+<p>Puts a document from DynamoDB based on hash and range key. The table can have either hash and range or hash key alone. Currently the keys supported are string and number and value can be json document. In case of hash and range keys both key are required for the operation. The FlowFile content must be JSON. FlowFile content is mapped to the specified Json Document attribute in the DynamoDB item.</p>
 
 <h3><a name="PutElasticsearch"></a>PutElasticsearch</h3>
 
@@ -710,6 +786,10 @@ NOTE: The value portion of a key/value pair is loaded into memory. While there i
 <p>NOTE: This processor can change owner or group only if the user identity of the NiFi process has super user privilege in HDFS to do so.</p>
 
 <p>NOTE: The Permissions umask property cannot add execute permissions to regular files.</p>
+
+<h3><a name="PutHiveQL"></a>PutHiveQL</h3>
+
+<p>Executes a HiveQL DDL/DML command (UPDATE, INSERT, e.g.). The content of an incoming FlowFile is expected to be the HiveQL command to execute. The HiveQL command may use the ? to escape parameters. In this case, the parameters to use must exist as FlowFile attributes with the naming convention hiveql.args.N.type and hiveql.args.N.value, where N is a positive integer. The hiveql.args.N.type is expected to be a number indicating the JDBC Type. The content of the FlowFile is expected to be in UTF-8 format.</p>
 
 <h3><a name="PutHTMLElement"></a>PutHTMLElement</h3>
 
@@ -749,6 +829,12 @@ NOTE: The value portion of a key/value pair is loaded into memory. While there i
 
 <p>This processor sends FlowFiles via SFTP to an SFTP server.</p>
 
+<h3><a name="PutSlack"></a>PutSlack</h3>
+
+<p>The PutSlack processor sends messages to Slack, a team-oriented messaging service.</p>
+
+<p>This processor uses Slack&rsquo;s incoming webhooks custom integration to post messages to a specific channel. Before using PutSlack, your Slack team should be configured for the incoming webhooks custom integration, and you&rsquo;ll need to configure at least one incoming webhook.</p>
+
 <h3><a name="PutSNS"></a>PutSNS</h3>
 
 <p>Sends the content of a FlowFile as a notification to the Amazon Simple Notification Service</p>
@@ -784,6 +870,14 @@ split=/exams&amp;f=first:/first&amp;f=last:/last&amp;f=grade:/grade</li>
 <h3><a name="PutSyslog"></a>PutSyslog</h3>
 
 <p>Sends Syslog messages to a given host and port over TCP or UDP. Messages are constructed from the &ldquo;Message ___&rdquo; properties of the processor which can use expression language to generate messages from incoming FlowFiles. The properties are used to construct messages of the form: (<PRIORITY>)(VERSION )(TIMESTAMP) (HOSTNAME) (BODY) where version is optional. The constructed messages are checked against regular expressions for RFC5424 and RFC3164 formatted messages. The timestamp can be an RFC5424 timestamp with a format of &ldquo;yyyy-MM-dd&rsquo;T&#8217;HH:mm:ss.SZ&rdquo; or &ldquo;yyyy-MM-dd&rsquo;T&#8217;HH:mm:ss.S+hh:mm&rdquo;, or it can be an RFC3164 timestamp with a format of &ldquo;MMM d HH:mm:ss&rdquo;. If a message is constructed that does not form a valid Syslog message according to the above description, then it is routed to the invalid relationship. Valid messages are sent to the Syslog server and successes are routed to the success relationship, failures routed to the failure relationship.</p>
+
+<h3><a name="PutTCP"></a>PutTCP</h3>
+
+<p>The PutTCP processor receives a FlowFile and transmits the FlowFile content over a TCP connection to the configured TCP server. By default, the FlowFiles are transmitted over the same TCP connection (or pool of TCP connections if multiple input threads are configured). To assist the TCP server with determining message boundaries, an optional &ldquo;Outgoing Message Delimiter&rdquo; string can be configured which is appended to the end of each FlowFiles content when it is transmitted over the TCP connection. An optional &ldquo;Connection Per FlowFile&rdquo; parameter can be specified to change the behaviour so that each FlowFiles content is transmitted over a single TCP connection which is opened when the FlowFile is received and closed after the FlowFile has been sent. This option should only be used for low message volume scenarios, otherwise the platform may run out of TCP sockets.</p>
+
+<h3><a name="PutUDP"></a>PutUDP</h3>
+
+<p>The PutUDP processor receives a FlowFile and packages the FlowFile content into a single UDP datagram packet which is then transmitted to the configured UDP server. The user must ensure that the FlowFile content being fed to this processor is not larger than the maximum size for the underlying UDP transport. The maximum transport size will vary based on the platform setup but is generally just under 64KB. FlowFiles will be marked as failed if their content is larger than the maximum transport size.</p>
 
 <h3><a name="QueryCassandra"></a>QueryCassandra</h3>
 
@@ -842,6 +936,14 @@ In this example, all files with filenames that start with ABC will follow the AB
 
 <p>This processor segments a FlowFile into multiple smaller segments on byte boundaries. Each segment is given attributes that can then be used by the MergeContent processor to reconstruct the original FlowFile.</p>
 
+<h3><a name="SelectHiveQL"></a>SelectHiveQL</h3>
+
+<p>Execute provided HiveQL SELECT query against a Hive database connection. Query result will be converted to Avro or CSV format. Streaming is used so arbitrarily large result sets are supported. This processor can be scheduled to run on a timer, or cron expression, using the standard scheduling methods, or it can be triggered by an incoming FlowFile. If it is triggered by an incoming FlowFile, then attributes of that FlowFile will be available when evaluating the select query. FlowFile attribute &lsquo;selecthiveql.row.count&rsquo; indicates how many rows were selected.</p>
+
+<h3><a name="SetSNMP"></a>SetSNMP</h3>
+
+<p>Based on incoming FlowFile attributes, the processor will execute SNMP Set requests. When founding attributes with name like snmp$<OID>, the processor will atempt to set the value of attribute to the corresponding OID given in the attribute name</p>
+
 <h3><a name="SplitAvro"></a>SplitAvro</h3>
 
 <p>Splits a binary encoded Avro datafile into smaller files based on the configured Output Size. The Output Strategy determines if the smaller files will be Avro datafiles, or bare Avro records with metadata in the FlowFile attributes. The output will always be binary encoded.</p>
@@ -868,7 +970,7 @@ In this example, all files with filenames that start with ABC will follow the AB
 
 <h3><a name="StoreInKiteDataset"></a>StoreInKiteDataset</h3>
 
-<p>No description is given for this processor.</p>
+<p>Stores Avro records in a Kite dataset.</p>
 
 <h3><a name="TailFile"></a>TailFile</h3>
 
@@ -894,7 +996,7 @@ In this example, all files with filenames that start with ABC will follow the AB
 
 <p>Translates content and attributes from one language to another</p>
 
-<p>If you have questions about a processor, I&rsquo;d encourage you to download the binaries and start up Apache Nifi.  If you really want more information, let me know and I&rsquo;ll try to compile a more complete post about each and every processor.</p>
+<p>If you have questions about a processor, I&rsquo;d encourage you to download the binaries and start up Apache Nifi.  Now you can see the documentation for processors in <a href="https://nifi.apache.org/docs.html">their documentation</a>, which is now built with each release.  If you really want more information, let me know and I&rsquo;ll try to compile a more complete post about each and every processor.</p>
 </div>
 
 
@@ -910,7 +1012,7 @@ In this example, all files with filenames that start with ABC will follow the AB
 
 
 
-<time class='updated' datetime='1970-01-01T00:33:36+00:00'><span class='date'>January  1, 1970</span> <span class='time'></span></time>
+<time class='updated' datetime='2016-07-13T12:00:00+00:00'><span class='date'>July 13, 2016</span> <span class='time'></span></time>
       
 
 <span class="categories">
@@ -961,6 +1063,10 @@ In this example, all files with filenames that start with ABC will follow the AB
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/apache-nifi-release-0-dot-7-0-highlights/">Apache Nifi Release 0.7.0 Highlights</a>
+      </li>
+    
+      <li class="post">
         <a href="/apache-nifi-release-0-dot-6-0-highlights/">Apache Nifi Release 0.6.0 Highlights</a>
       </li>
     
@@ -974,10 +1080,6 @@ In this example, all files with filenames that start with ABC will follow the AB
     
       <li class="post">
         <a href="/apache-nifi-release-0-dot-4-0-highlights/">Apache Nifi Release 0.4.0 highlights</a>
-      </li>
-    
-      <li class="post">
-        <a href="/apache-nifi-release-0-dot-3-0-highlights/">Apache Nifi Release 0.3.0 highlights</a>
       </li>
     
   </ul>

@@ -5,18 +5,18 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>Apache Nifi Release 0.6.0 Highlights - NiFi.rocks</title>
+  <title>Apache Nifi Release 0.7.0 Highlights - NiFi.rocks</title>
   <meta name="author" content="">
 
-<meta name="description" content="Nifi release 0.6.0. What's new and release highlights">
-<meta name="keywords" content="Apache Nifi, apache nifi, Nifi, Release, Nifi Release 0.6.0, Apache Nifi Release 0.6.1, Nifi Release 0.6.1">
+<meta name="description" content="Nifi release 0.7.0. What's new and release highlights">
+<meta name="keywords" content="Apache Nifi, apache nifi, Nifi, Release, Nifi Release 0.7.0, Apache Nifi Release 0.7.0">
   <!-- http://t.co/dKP3o1e -->
   <meta name="HandheldFriendly" content="True">
   <meta name="MobileOptimized" content="320">
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <link rel="canonical" href="http://www.nifi.rocks/apache-nifi-release-0-dot-6-0-highlights">
+  <link rel="canonical" href="http://www.nifi.rocks/apache-nifi-release-0-dot-7-0-highlights">
   <link href="/favicon.png" rel="icon">
   <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
   <link href="/atom.xml" rel="alternate" title="NiFi.rocks" type="application/atom+xml">
@@ -79,7 +79,7 @@
   <header>
   
     
-      <h1 class="entry-title">Apache Nifi Release 0.6.0 Highlights</h1>
+      <h1 class="entry-title">Apache Nifi Release 0.7.0 Highlights</h1>
     
   
     
@@ -89,7 +89,7 @@
 
 
 
-<time class='entry-date' datetime='2016-07-12T02:25:08+00:00'><span class='date'>July 12, 2016</span> <span class='time'></span></time>
+<time class='entry-date' datetime='2016-07-13T02:07:13+00:00'><span class='date'>July 13, 2016</span> <span class='time'></span></time>
         
          | <a href="#disqus_thread">Comments</a>
         
@@ -98,40 +98,62 @@
   </header>
 
 
-<div class="entry-content"><p>Apache Nifi release 0.6.0 and 0.6.1 recently and I wanted to go throught and highlight some of the key changes that may affect you Nifi users.  So far Nifi has kept pretty well to thier 6 week release schedule that they have discussed.  That&rsquo;s a really agressive release schedule so we&rsquo;ll see if they can keep that up once they hit the 0.7.0/1.0.0 release, which they say is going to actually be pushed back a little.  The 0.6.0 release was again substantial with 52 bug fixes, 15 improvements and 7 new features.  0.6.1 didn&rsquo;t take to long to follow with 11 bug fixes and 1 improvement.  The release binaries are on the <a href="https://nifi.apache.org/download.html">Apache Nifi download page</a>The full release notes are avaialble on <a href="https://cwiki.apache.org/confluence/display/NIFI/Release+Notes#ReleaseNotes-Version0.6.1">Apaches Nifi&rsquo;s wiki page</a>.  The combined 0.6.* release information is below.</p>
+<div class="entry-content"><p>Apache Nifi&rsquo;s newest release is out, 0.7.0.  You can grab the binaries from <a href="https://nifi.apache.org/download.html">thier site</a> as always.  So lets dive in and see what to look for in this release!</p>
 
 <ul>
-<li><a href="#bugfixes">Bug Fixes</a>:           63</li>
-<li><a href="#improvements">Improvements</a>:    16</li>
-<li><a href="#new-features">New Features</a>:    7</li>
+<li><a href="#bugfixes">Bug Fixes</a>:           72</li>
+<li><a href="#improvements">Improvements</a>:    49</li>
+<li><a href="#new-features">New Features</a>:    10</li>
 </ul>
 
+
+<p>As always, a bunch of bug fixes, but this time there are quite a few improvements.</p>
 
 <!--more-->
 
 
 <h3><a name="bugfixes"></a>Bug Fixes</h3>
 
-<p>So many bug fixes, yet again! Even though Apache Nifi has not released a major version, Apache Nifi is going strong and fixing those annoying issues.  There are quite a few bug fixes that resolve issues with Apache Nifi Processors, which is great since these are the main part of nifi; PutKafka, InferAvroSchema, GetHttp, ControlRate, PutElsaticSearch, GetKafka, ListFile, SplitText, all had fixes!  And this just touches on some of the bug fixes.  If you really want to see if a specific bug fix was completed, you can check <a href="https://issues.apache.org/jira/secure/ReleaseNote.jspa?projectId=12316020&amp;version=12334372">here</a>, but really no need, just reset assured the bugs are getting fixed!</p>
+<p>Where to begin!  This release has the second most bug fixes we&rsquo;ve seen.  Again, there are a ton to cover so take a peak at the full <a href="https://issues.apache.org/jira/secure/ReleaseNote.jspa?projectId=12316020&amp;version=12335078">release notes</a> if you want to see more, since this is just a quick highlight.  Lots of processor fixes - NullPointerException to non-responsive processors, a few nifi startup fixes, and other fixes such as fixing OS specific issues, looking at you Windows bugs.  UI interaction was fixed when many HDFS and HBase processors were on the graph.  Bug fixes are hard to highlight, since they are so user specific for what you might have run into, but it is nice to know that reported bugs are getting fixed.</p>
 
 <h3><a name="improvements"></a>Improvements</h3>
 
-<p>The big improvements in this release are proxy support for the AWS Processors and RouteText to use Nifi Expression Language to route lines.  The other improvements are pretty good too, but mostly under the covers, for example ListHDFS to set the correct state in Zookeeper.</p>
+<p>I didn&rsquo;t know where to start for Bug fixes, but really don&rsquo;t know where to begin for Improvements.  I&rsquo;ll start by saying there are a few new processors that they included in this section, but I&rsquo;m going to list in the New Features below to remain consistent.  Other actual improvements were updates to HTTP Processors to allow proxy authentication which I know I saw someone on here asked about, so it&rsquo;s nice to see that it is now doable!  You are now able to use SSL with AMQP processors.  ExecuteScript processors can now be executed concurrently too.  Performance improvements in StreamScanner, SSL for the mongo processors, and the Mock framework can now register FlowFile Assertions.</p>
+
+<p>It&rsquo;s good to mentiont that new documentation has been created for an in depth dive for developers, with Nifi and it&rsquo;s design decisions.  This is a great read and I will try to do a quick</p>
 
 <h3><a name="new-features"></a>New Features</h3>
 
-<p>Let&rsquo;s get straight to them, new features an new processors:</p>
+<p>A few new processors here, but outside of that Apache Nifi now supports custom properties in the Expression Language.</p>
+
+<p>New Processors:</p>
 
 <ul>
-<li>Processors for Apache <a href="http://www.nifi.rocks/apache-nifi-processors/#PutCassandraQL">Cassandra</a></li>
-<li>Kerberos authentication</li>
-<li><a href="http://www.nifi.rocks/apache-nifi-processors/#PublishJMS">PublishJMS Processor</a></li>
-<li><a href="http://www.nifi.rocks/apache-nifi-processors/#ConsumeJMS">ConsumeJMS Processor</a></li>
-<li><a href="http://www.nifi.rocks/apache-nifi-processors/#PutLambda">AWS Lambda Processor</a></li>
+<li><a href="http://www.nifi.rocks/apache-nifi-processors/#ConsumeKafka">ConsumeKafka</a></li>
+<li><a href="http://www.nifi.rocks/apache-nifi-processors/#ConsumeMQTT">ConsumeMQTT</a></li>
+<li><a href="http://www.nifi.rocks/apache-nifi-processors/#DebugFlow">DebugFlow</a></li>
+<li><a href="http://www.nifi.rocks/apache-nifi-processors/#DeleteDynamoDB">DeleteDynamoDB</a></li>
+<li><a href="http://www.nifi.rocks/apache-nifi-processors/#ExtractMediaMetadata">ExtractMediaMetadata</a></li>
+<li><a href="http://www.nifi.rocks/apache-nifi-processors/#GetDynamoDB">GetDynamoDB</a></li>
+<li><a href="http://www.nifi.rocks/apache-nifi-processors/#GetHDFSEvents">GetHDFSEvents</a></li>
+<li><a href="http://www.nifi.rocks/apache-nifi-processors/#GetSNMP">GetSNMP</a></li>
+<li><a href="http://www.nifi.rocks/apache-nifi-processors/#JoltTransformJSON">JoltTransformJSON</a></li>
+<li><a href="http://www.nifi.rocks/apache-nifi-processors/#ListenLumberjack">ListenLumberjack</a></li>
+<li><a href="http://www.nifi.rocks/apache-nifi-processors/#ListS3">ListS3</a></li>
+<li><a href="http://www.nifi.rocks/apache-nifi-processors/#PublishKafka">PublishKafka</a></li>
+<li><a href="http://www.nifi.rocks/apache-nifi-processors/#PublishMQTT">PublishMQTT</a></li>
+<li><a href="http://www.nifi.rocks/apache-nifi-processors/#PutDynamoDB">PutDynamoDB</a></li>
+<li><a href="http://www.nifi.rocks/apache-nifi-processors/#PutHiveQL">PutHiveQL</a></li>
+<li><a href="http://www.nifi.rocks/apache-nifi-processors/#PutSlack">PutSlack</a></li>
+<li><a href="http://www.nifi.rocks/apache-nifi-processors/#PutTCP">PutTCP</a></li>
+<li><a href="http://www.nifi.rocks/apache-nifi-processors/#PutUDP">PutUDP</a></li>
+<li><a href="http://www.nifi.rocks/apache-nifi-processors/#SelectHiveQL">SelectHiveQL</a></li>
+<li><a href="http://www.nifi.rocks/apache-nifi-processors/#SetSNMP">SetSNMP</a></li>
 </ul>
 
 
-<p>That&rsquo;s pretty much it.  To see all processors, checkout our <a href="http://www.nifi.rocks/apache-nifi-processors/">processor page</a> which lists all current processors and their descriptions.  Check back after next release for a quick break down!</p>
+<p>Most of these could be seen in the pipleine since they had some similarties to current ones, for example AMQP or JMS consume and publish, and now adding MQTT to be supported.  Apache Nifi now has more support for AWS services, Amazon&rsquo;s Dynamo and S3, with the ListS3 and the Delete/Put DynamoDB Processors.  The biggest upgrade, I think, for processors is the DebugFlow processor, which allows you to produce a behavior you&rsquo;d like to test for a flow.  This could be transfering a flow file to a success/failure relationship, wanting to rollback a FlowFile to test behaviour without penalty, or just throwing an exception.
+I encourage you to take a look at the descriptions of these procesors on our <a href="http://www.nifi.rocks/apache-nifi-processors/">Processors Page</a> which lists all current processors, and is updated after every release.</p>
 </div>
 
 
@@ -147,7 +169,7 @@
 
 
 
-<time class='entry-date' datetime='2016-07-12T02:25:08+00:00'><span class='date'>July 12, 2016</span> <span class='time'></span></time>
+<time class='entry-date' datetime='2016-07-13T02:07:13+00:00'><span class='date'>July 13, 2016</span> <span class='time'></span></time>
       
 
 <span class="categories">
@@ -161,7 +183,7 @@
     
       <div class="sharing">
   
-  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://www.nifi.rocks/apache-nifi-release-0-dot-6-0-highlights/" data-via="nifirocks" data-counturl="http://www.nifi.rocks/apache-nifi-release-0-dot-6-0-highlights/" >Tweet</a>
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://www.nifi.rocks/apache-nifi-release-0-dot-7-0-highlights/" data-via="nifirocks" data-counturl="http://www.nifi.rocks/apache-nifi-release-0-dot-7-0-highlights/" >Tweet</a>
   
   
   <div class="g-plusone" data-size="medium"></div>
@@ -174,10 +196,8 @@
     
     <p class="meta">
       
-        <a class="basic-alignment left" href="/apache-nifi-release-0-dot-5-0-highlights/" title="Previous Post: Apache Nifi Release 0.5.0 Highlights">&laquo; Apache Nifi Release 0.5.0 Highlights</a>
+        <a class="basic-alignment left" href="/apache-nifi-release-0-dot-6-0-highlights/" title="Previous Post: Apache Nifi Release 0.6.0 Highlights">&laquo; Apache Nifi Release 0.6.0 Highlights</a>
       
-      
-        <a class="basic-alignment right" href="/apache-nifi-release-0-dot-7-0-highlights/" title="Next Post: Apache Nifi Release 0.7.0 Highlights">Apache Nifi Release 0.7.0 Highlights &raquo;</a>
       
     </p>
   </footer>
@@ -245,8 +265,8 @@
       
         
         // var disqus_developer = 1;
-        var disqus_identifier = 'http://www.nifi.rocks/apache-nifi-release-0-dot-6-0-highlights/';
-        var disqus_url = 'http://www.nifi.rocks/apache-nifi-release-0-dot-6-0-highlights/';
+        var disqus_identifier = 'http://www.nifi.rocks/apache-nifi-release-0-dot-7-0-highlights/';
+        var disqus_url = 'http://www.nifi.rocks/apache-nifi-release-0-dot-7-0-highlights/';
         var disqus_script = 'embed.js';
       
     (function () {
